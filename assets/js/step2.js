@@ -1,51 +1,11 @@
 // Step 2: Platform Selection JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management
+// Updated: 2025-07-15 Enhanced Data Management - Data loaded from JSON
 // User: jharrvis
 
 class Step2PlatformSelection {
   constructor() {
-    this.platformData = {
-      magento: {
-        versions: {
-          "2.4.5": {
-            php: "8.1",
-            mariadb: "10.4",
-            redis: "6.2",
-            opensearch: "2.6",
-          },
-          "2.4.4": {
-            php: "8.0",
-            mariadb: "10.4",
-            redis: "6.0",
-            opensearch: "2.4",
-          },
-          "2.3.7": {
-            php: "7.4",
-            mariadb: "10.3",
-            redis: "5.0",
-            opensearch: "N/A",
-          },
-        },
-      },
-      laravel: {
-        versions: {
-          11: { php: "8.2", mariadb: "10.6", redis: "7.2", opensearch: "N/A" },
-          10: { php: "8.1", mariadb: "10.4", redis: "6.2", opensearch: "N/A" },
-          9: { php: "8.0", mariadb: "10.3", redis: "6.0", opensearch: "N/A" },
-          8: { php: "7.4", mariadb: "10.3", redis: "5.0", opensearch: "N/A" },
-          7: { php: "7.3", mariadb: "10.2", redis: "5.0", opensearch: "N/A" },
-        },
-      },
-      wordpress: {
-        versions: {
-          6.5: { php: "8.1", mariadb: "10.4", redis: "7.0", opensearch: "N/A" },
-          6.4: { php: "8.0", mariadb: "10.3", redis: "6.0", opensearch: "N/A" },
-          6.3: { php: "7.4", mariadb: "10.2", redis: "5.0", opensearch: "N/A" },
-          6.2: { php: "7.3", mariadb: "10.1", redis: "5.0", opensearch: "N/A" },
-          5.9: { php: "7.2", mariadb: "10.0", redis: "4.0", opensearch: "N/A" },
-        },
-      },
-    };
+    // Initialize platformData as an empty object; it will be loaded asynchronously.
+    this.platformData = {};
 
     this.dependencyIcons = {
       php: "fab fa-php",
@@ -60,7 +20,8 @@ class Step2PlatformSelection {
     this.init();
   }
 
-  init() {
+  async init() {
+    await this.loadPlatformData(); // Load platform data first
     this.bindEvents();
     this.loadStoredData();
 
@@ -68,6 +29,22 @@ class Step2PlatformSelection {
     setTimeout(() => {
       this.updateNextButton();
     }, 100);
+  }
+
+  // New method to load platform data from JSON
+  async loadPlatformData() {
+    try {
+      const response = await fetch("assets/data/platform-data.json");
+      if (!response.ok) {
+        throw new Error("Failed to load platform-data.json");
+      }
+      this.platformData = await response.json();
+      console.log("Platform data loaded from file:", this.platformData);
+    } catch (error) {
+      console.error("Error loading platform data from file:", error);
+      // Fallback or display error message if data cannot be loaded
+      // For now, we'll just log the error.
+    }
   }
 
   bindEvents() {
@@ -291,14 +268,14 @@ class Step2PlatformSelection {
     const iconClass = this.dependencyIcons[dependency] || "fas fa-cog";
 
     item.innerHTML = `
-            <div class="dependency-icon ${dependency}">
-              <i class="${iconClass}"></i>
-            </div>
-            <div class="dependency-details">
-              <div class="dependency-name">${dependency.toUpperCase()}</div>
-              <div class="dependency-version">v${version}</div>
-            </div>
-          `;
+              <div class="dependency-icon ${dependency}">
+                <i class="${iconClass}"></i>
+              </div>
+              <div class="dependency-details">
+                <div class="dependency-name">${dependency.toUpperCase()}</div>
+                <div class="dependency-version">v${version}</div>
+              </div>
+            `;
 
     // Add hover effect
     item.addEventListener("mouseenter", () => {

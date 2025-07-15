@@ -12,6 +12,11 @@ body {
   flex-direction: column;
 }
 
+/* Add this to handle body overflow when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
 /* Hide main.css layout elements when in wizard mode */
 .main,
 .footer:not(.wizard-footer) {
@@ -352,7 +357,6 @@ body {
   height: 100%;
   background: linear-gradient(90deg, #009bde 0%, #ff7101 100%);
   border-radius: 1rem;
-  transition: width 0.3s ease-out;
   width: 16.66%;
 }
 

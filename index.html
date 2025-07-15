@@ -406,16 +406,6 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="theme-preview-section">
-                  <button
-                    class="btn btn-secondary"
-                    onclick="window.step3StylesDesign?.openThemePreview()"
-                  >
-                    <i class="fas fa-eye"></i>
-                    Preview Theme
-                  </button>
-                </div>
               </div>
 
               <!-- Logo Tab -->
@@ -603,6 +593,16 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <!-- Move the Preview Theme button outside the tab-panel but within step-content -->
+            <div class="theme-preview-section">
+              <button
+                class="btn btn-secondary"
+                onclick="window.step3StylesDesign?.openThemePreview()"
+              >
+                <i class="fas fa-eye"></i>
+                Preview Theme
+              </button>
             </div>
           </div>
 
@@ -917,6 +917,155 @@
       </div>
     </div>
 
+    <!-- Theme Preview Modal -->
+    <div class="theme-preview-modal" id="themePreviewModal">
+      <div
+        class="modal-overlay"
+        onclick="window.step3StylesDesign?.closeThemePreview()"
+      ></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-header-left">
+            <h2 class="modal-title" id="themePreviewTitle">Theme Preview</h2>
+          </div>
+          <div class="modal-header-right">
+            <div class="preview-device-toggle">
+              <button
+                class="device-btn active"
+                data-device="desktop"
+                onclick="window.step3StylesDesign?.switchPreviewMode('desktop')"
+              >
+                <i class="fas fa-desktop"></i>
+              </button>
+              <button
+                class="device-btn"
+                data-device="mobile"
+                onclick="window.step3StylesDesign?.switchPreviewMode('mobile')"
+              >
+                <i class="fas fa-mobile-alt"></i>
+              </button>
+            </div>
+            <button
+              class="modal-close"
+              onclick="window.step3StylesDesign?.closeThemePreview()"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+        <div class="modal-body theme-preview-body">
+          <!-- Preview content will be loaded here -->
+          <div class="preview-desktop-view">
+            <div class="preview-header">
+              <div class="preview-logo-container">
+                <img
+                  id="previewDesktopLogo"
+                  src="https://placehold.co/150x40/cccccc/ffffff?text=Your+Logo"
+                  alt="Desktop Logo"
+                  class="preview-desktop-logo"
+                />
+              </div>
+              <nav class="preview-nav">
+                <a href="#" class="preview-nav-item">Home</a>
+                <a href="#" class="preview-nav-item">Shop</a>
+                <a href="#" class="preview-nav-item">About</a>
+                <a href="#" class="preview-nav-item">Contact</a>
+              </nav>
+              <div class="preview-icons">
+                <i class="fas fa-search"></i>
+                <i class="fas fa-user"></i>
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+            </div>
+            <div class="preview-hero">
+              <h1 id="previewHeadline">Welcome to Your Store!</h1>
+              <p id="previewSubtext">
+                Experience the best online shopping with us.
+              </p>
+              <button class="preview-button" id="previewButton">
+                Shop Now
+              </button>
+            </div>
+            <div class="preview-product-grid">
+              <div class="preview-product-card">
+                <img
+                  src="https://placehold.co/200x200/f0f0f0/333333?text=Product+1"
+                  alt="Product 1"
+                />
+                <h4 class="product-title">Amazing Product</h4>
+                <p class="product-price">$29.99</p>
+              </div>
+              <div class="preview-product-card">
+                <img
+                  src="https://placehold.co/200x200/f0f0f0/333333?text=Product+2"
+                  alt="Product 2"
+                />
+                <h4 class="product-title">Great Item</h4>
+                <p class="product-price">$49.99</p>
+              </div>
+              <div class="preview-product-card">
+                <img
+                  src="https://placehold.co/200x200/f0f0f0/333333?text=Product+3"
+                  alt="Product 3"
+                />
+                <h4 class="product-title">Cool Gadget</h4>
+                <p class="product-price">$19.99</p>
+              </div>
+            </div>
+            <div class="preview-footer">
+              <p>&copy; 2025 Your Store. All rights reserved.</p>
+            </div>
+          </div>
+
+          <div class="preview-mobile-view" style="display: none">
+            <div class="preview-header">
+              <div class="preview-logo-container">
+                <img
+                  id="previewMobileLogo"
+                  src="https://placehold.co/80x30/cccccc/ffffff?text=Logo"
+                  alt="Mobile Logo"
+                  class="preview-mobile-logo"
+                />
+              </div>
+              <div class="preview-icons">
+                <i class="fas fa-bars"></i>
+                <!-- Mobile menu icon -->
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+            </div>
+            <div class="preview-hero">
+              <h1 id="previewMobileHeadline">Welcome!</h1>
+              <p id="previewMobileSubtext">Shop on the go!</p>
+              <button class="preview-button" id="previewMobileButton">
+                View Products
+              </button>
+            </div>
+            <div class="preview-product-grid">
+              <div class="preview-product-card">
+                <img
+                  src="https://placehold.co/150x150/f0f0f0/333333?text=Mobile+P1"
+                  alt="Product 1"
+                />
+                <h4 class="product-title">Mobile Product</h4>
+                <p class="product-price">$15.00</p>
+              </div>
+              <div class="preview-product-card">
+                <img
+                  src="https://placehold.co/150x150/f0f0f0/333333?text=Mobile+P2"
+                  alt="Product 2"
+                />
+                <h4 class="product-title">Best Seller</h4>
+                <p class="product-price">$25.00</p>
+              </div>
+            </div>
+            <div class="preview-footer">
+              <p>&copy; 2025 Mobile Store</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- License Key Modal -->
     <div class="license-modal" id="licenseModal">
       <div class="modal-overlay" onclick="closeLicenseModal()"></div>
@@ -946,6 +1095,29 @@
               Save License Key
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Message Box (for alerts/confirms) -->
+    <div id="customMessageBox" class="custom-message-box" style="display: none">
+      <div class="message-box-overlay"></div>
+      <div class="message-box-content">
+        <div class="message-box-header">
+          <h3 class="message-box-title">Pesan</h3>
+          <button class="message-box-close">&times;</button>
+        </div>
+        <div class="message-box-body">
+          <p>Ini adalah pesan kustom.</p>
+        </div>
+        <div class="message-box-actions">
+          <button class="btn btn-primary message-box-confirm">OK</button>
+          <button
+            class="btn btn-secondary message-box-cancel"
+            style="display: none"
+          >
+            Batal
+          </button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 // Step 6: Summary & Installation JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management
+// Updated: 2025-07-15 Enhanced Data Management - Modal styling, faster simulation, and close functionality
 // User: jharrvis
 
 class Step6SummaryInstallation {
@@ -11,28 +11,28 @@ class Step6SummaryInstallation {
         title: "Downloading Platform",
         description: "Downloading and extracting platform files...",
         icon: "fas fa-download",
-        duration: 2000,
+        duration: 1000, // Reduced duration
       },
       {
         id: "databaseStep",
         title: "Setting up Database",
         description: "Creating database structure and tables...",
         icon: "fas fa-database",
-        duration: 3000,
+        duration: 1500, // Reduced duration
       },
       {
         id: "configStep",
         title: "Configuring Platform",
         description: "Applying configuration settings and plugins...",
         icon: "fas fa-cog",
-        duration: 2500,
+        duration: 1200, // Reduced duration
       },
       {
         id: "completeStep",
         title: "Installation Complete",
         description: "Your website is ready to use!",
         icon: "fas fa-check",
-        duration: 1000,
+        duration: 800, // Reduced duration
       },
     ];
 
@@ -60,6 +60,24 @@ class Step6SummaryInstallation {
         this.exportConfiguration();
       }
     });
+
+    // Close modal button (if added dynamically)
+    document.addEventListener("click", (e) => {
+      if (e.target.closest("#closeInstallationModalBtn")) {
+        this.closeInstallationModal();
+      }
+    });
+
+    // Close modal by clicking overlay
+    const modal = document.getElementById("installationModal");
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          // Only close if clicking the overlay itself
+          this.closeInstallationModal();
+        }
+      });
+    }
   }
 
   loadWizardData() {
@@ -224,11 +242,11 @@ class Step6SummaryInstallation {
         }
 
         li.innerHTML = `
-            <span>${pluginName}${statusText}</span>
-            <span class="summary-list-value">${
-              needsLicense ? "Premium" : "Free"
-            }</span>
-          `;
+              <span>${pluginName}${statusText}</span>
+              <span class="summary-list-value">${
+                needsLicense ? "Premium" : "Free"
+              }</span>
+            `;
 
         // Add warning class if license is required but not provided
         if (needsLicense && !hasLicense) {
@@ -284,28 +302,28 @@ class Step6SummaryInstallation {
     const requirementsSection = document.createElement("div");
     requirementsSection.className = "summary-item system-requirements";
     requirementsSection.innerHTML = `
-          <h4 class="h4-headline">
-            <i class="fas fa-server"></i>
-            System Requirements
-          </h4>
-          <div class="requirements-grid">
-            ${requirements
-              .map(
-                (req) => `
-              <div class="requirement-item">
-                <div class="requirement-icon">
-                  <i class="${req.icon}"></i>
+            <h4 class="h4-headline">
+              <i class="fas fa-server"></i>
+              System Requirements
+            </h4>
+            <div class="requirements-grid">
+              ${requirements
+                .map(
+                  (req) => `
+                <div class="requirement-item">
+                  <div class="requirement-icon">
+                    <i class="${req.icon}"></i>
+                  </div>
+                  <div>
+                    <div class="requirement-text">${req.name}</div>
+                    <div class="requirement-version">v${req.version}</div>
+                  </div>
                 </div>
-                <div>
-                  <div class="requirement-text">${req.name}</div>
-                  <div class="requirement-version">v${req.version}</div>
-                </div>
-              </div>
-            `
-              )
-              .join("")}
-          </div>
-        `;
+              `
+                )
+                .join("")}
+            </div>
+          `;
 
     summaryDisplay.appendChild(requirementsSection);
   }
@@ -344,56 +362,56 @@ class Step6SummaryInstallation {
     const installationSummary = document.createElement("div");
     installationSummary.className = "summary-item installation-summary";
     installationSummary.innerHTML = `
-          <h4 class="h4-headline">
-            <i class="fas fa-rocket"></i>
-            Installation Estimate
-          </h4>
-          <p class="p-text">Your website configuration is complete and ready to be installed.</p>
-          <div class="installation-estimates">
-            <div class="estimate-item">
-              <span class="estimate-value">${estimatedTime}</span>
-              <span class="estimate-label">Install Time</span>
+            <h4 class="h4-headline">
+              <i class="fas fa-rocket"></i>
+              Installation Estimate
+            </h4>
+            <p class="p-text">Your website configuration is complete and ready to be installed.</p>
+            <div class="installation-estimates">
+              <div class="estimate-item">
+                <span class="estimate-value">${estimatedTime}</span>
+                <span class="estimate-label">Install Time</span>
+              </div>
+              <div class="estimate-item">
+                <span class="estimate-value">${estimatedSize}</span>
+                <span class="estimate-label">Total Size</span>
+              </div>
             </div>
-            <div class="estimate-item">
-              <span class="estimate-value">${estimatedSize}</span>
-              <span class="estimate-label">Total Size</span>
-            </div>
-          </div>
-        `;
+          `;
 
     summaryDisplay.appendChild(installationSummary);
   }
 
   calculateInstallationTime() {
-    let baseTime = 3; // Base time in minutes
+    let baseTime = 1; // Base time in minutes, significantly reduced
 
     // Add time for sample data
     if (this.wizardData.sampleData === "with_sample") {
-      baseTime += 2;
+      baseTime += 0.5; // Reduced
     }
 
     // Add time for plugins
     const pluginCount = Object.keys(this.wizardData.plugins || {}).filter(
       (id) => this.wizardData.plugins[id]
     ).length;
-    baseTime += pluginCount * 0.5;
+    baseTime += pluginCount * 0.1; // Reduced
 
     return `${Math.ceil(baseTime)} min`;
   }
 
   calculateInstallationSize() {
-    let baseSize = 150; // Base size in MB
+    let baseSize = 50; // Base size in MB, reduced
 
     // Add size for sample data
     if (this.wizardData.sampleData === "with_sample") {
-      baseSize += 50;
+      baseSize += 20; // Reduced
     }
 
     // Add size for plugins
     const pluginCount = Object.keys(this.wizardData.plugins || {}).filter(
       (id) => this.wizardData.plugins[id]
     ).length;
-    baseSize += pluginCount * 5;
+    baseSize += pluginCount * 2; // Reduced
 
     return baseSize > 1000
       ? `${(baseSize / 1000).toFixed(1)} GB`
@@ -408,13 +426,13 @@ class Step6SummaryInstallation {
     const buttonContainer = document.createElement("div");
     buttonContainer.className = "summary-actions";
     buttonContainer.innerHTML = `
-        <button class="btn btn-secondary edit-config-btn">
-          <i class="fas fa-edit"></i> Edit Configuration
-        </button>
-        <button class="btn btn-outline export-config-btn">
-          <i class="fas fa-download"></i> Export Config
-        </button>
-      `;
+          <button class="btn btn-secondary edit-config-btn">
+            <i class="fas fa-edit"></i> Edit Configuration
+          </button>
+          <button class="btn btn-outline export-config-btn">
+            <i class="fas fa-download"></i> Export Config
+          </button>
+        `;
 
     summaryDisplay.appendChild(buttonContainer);
   }
@@ -430,17 +448,17 @@ class Step6SummaryInstallation {
       const warningSection = document.createElement("div");
       warningSection.className = "summary-item config-warnings";
       warningSection.innerHTML = `
-            <h4 class="h4-headline">
-              <i class="fas fa-exclamation-triangle"></i>
-              Configuration Warnings
-            </h4>
-            <p class="p-text">Please review the following before installation:</p>
-            <ul class="warning-list">
-              ${warnings
-                .map((warning) => `<li class="warning-item">${warning}</li>`)
-                .join("")}
-            </ul>
-          `;
+              <h4 class="h4-headline">
+                <i class="fas fa-exclamation-triangle"></i>
+                Configuration Warnings
+              </h4>
+              <p class="p-text">Please review the following before installation:</p>
+              <ul class="warning-list">
+                ${warnings
+                  .map((warning) => `<li class="warning-item">${warning}</li>`)
+                  .join("")}
+              </ul>
+            `;
 
       // Insert at the beginning of summary
       summaryDisplay.insertBefore(warningSection, summaryDisplay.firstChild);
@@ -513,12 +531,28 @@ class Step6SummaryInstallation {
   }
 
   editConfiguration() {
-    if (confirm("Do you want to go back and edit your configuration?")) {
-      // Go back to step 1
-      if (typeof showStep === "function") {
-        showStep(1);
-      }
+    // Hide the modal if it's open
+    const modal = document.getElementById("installationModal");
+    if (modal) {
+      modal.classList.remove("show");
+      document.body.classList.remove("modal-open");
     }
+
+    // Use a custom message box instead of confirm()
+    this.showCustomMessageBox(
+      "Konfirmasi",
+      "Apakah Anda ingin kembali dan mengedit konfigurasi Anda?",
+      () => {
+        // User confirmed "Yes"
+        if (typeof showStep === "function") {
+          showStep(1);
+        }
+      },
+      () => {
+        // User confirmed "No"
+        // Do nothing or provide alternative action
+      }
+    );
   }
 
   exportConfiguration() {
@@ -574,6 +608,7 @@ class Step6SummaryInstallation {
   // Installation process methods
   startInstallation() {
     this.showInstallationModal();
+    this.resetInstallationModal(); // Reset modal state before starting
     this.runInstallationSteps();
   }
 
@@ -583,6 +618,37 @@ class Step6SummaryInstallation {
       modal.classList.add("show");
       document.body.classList.add("modal-open");
     }
+  }
+
+  // New method to reset installation modal state
+  resetInstallationModal() {
+    const progressFill = document.querySelector(".installation-progress-fill");
+    const progressText = document.querySelector(".installation-progress-text");
+    const installationStepsContainer = document.querySelector(
+      ".installation-steps"
+    );
+    const installationComplete = document.getElementById(
+      "installationComplete"
+    );
+
+    if (progressFill) progressFill.style.width = "0%";
+    if (progressText) progressText.textContent = "Preparing installation...";
+
+    if (installationStepsContainer) {
+      installationStepsContainer.style.display = "flex"; // Ensure steps are visible
+      // Reset all step statuses
+      this.installationSteps.forEach((step) => {
+        const stepElement = document.getElementById(step.id);
+        if (stepElement) {
+          stepElement.classList.remove("active", "completed");
+          const icon = stepElement.querySelector(".install-status i");
+          if (icon) {
+            icon.className = "fas fa-clock"; // Reset to initial clock icon
+          }
+        }
+      });
+    }
+    if (installationComplete) installationComplete.style.display = "none";
   }
 
   runInstallationSteps() {
@@ -664,6 +730,18 @@ class Step6SummaryInstallation {
       this.showFinalStats();
       this.updateWebsiteDetails();
       this.saveFinalConfiguration();
+
+      // Add a close button to the installation complete section
+      const installationActions = document.querySelector(
+        "#installationComplete .installation-actions"
+      );
+      if (installationActions) {
+        const closeButton = document.createElement("button");
+        closeButton.id = "closeInstallationModalBtn";
+        closeButton.className = "btn btn-secondary";
+        closeButton.innerHTML = '<i class="fas fa-times"></i> Tutup';
+        installationActions.appendChild(closeButton);
+      }
     }, 1000);
   }
 
@@ -693,14 +771,14 @@ class Step6SummaryInstallation {
     statsSection.innerHTML = stats
       .map(
         (stat) => `
-          <div class="final-stat">
-            <div class="final-stat-icon">
-              <i class="${stat.icon}"></i>
+            <div class="final-stat">
+              <div class="final-stat-icon">
+                <i class="${stat.icon}"></i>
+              </div>
+              <span class="final-stat-value">${stat.value}</span>
+              <div class="final-stat-label">${stat.label}</div>
             </div>
-            <span class="final-stat-value">${stat.value}</span>
-            <div class="final-stat-label">${stat.label}</div>
-          </div>
-        `
+          `
       )
       .join("");
   }
@@ -745,32 +823,32 @@ class Step6SummaryInstallation {
     const websiteDetails = document.querySelector(".website-details");
     if (websiteDetails) {
       websiteDetails.innerHTML = `
-            <h4>Your Website is Ready!</h4>
-            <div class="website-details-grid">
-              <div class="website-detail-item">
-                <div class="website-detail-icon">
-                  <i class="fas fa-globe"></i>
+              <h4>Your Website is Ready!</h4>
+              <div class="website-details-grid">
+                <div class="website-detail-item">
+                  <div class="website-detail-icon">
+                    <i class="fas fa-globe"></i>
+                  </div>
+                  <div class="website-detail-content">
+                    <div class="website-detail-label">Website URL</div>
+                    <div class="website-detail-value">
+                      <a href="${websiteUrl}" target="_blank">${websiteUrl}</a>
+                    </div>
+                  </div>
                 </div>
-                <div class="website-detail-content">
-                  <div class="website-detail-label">Website URL</div>
-                  <div class="website-detail-value">
-                    <a href="${websiteUrl}" target="_blank">${websiteUrl}</a>
+                <div class="website-detail-item">
+                  <div class="website-detail-icon">
+                    <i class="fas fa-user-shield"></i>
+                  </div>
+                  <div class="website-detail-content">
+                    <div class="website-detail-label">Admin Panel</div>
+                    <div class="website-detail-value">
+                      <a href="${adminUrl}" target="_blank">${adminUrl}</a>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="website-detail-item">
-                <div class="website-detail-icon">
-                  <i class="fas fa-user-shield"></i>
-                </div>
-                <div class="website-detail-content">
-                  <div class="website-detail-label">Admin Panel</div>
-                  <div class="website-detail-value">
-                    <a href="${adminUrl}" target="_blank">${adminUrl}</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
+            `;
     }
   }
 
@@ -1002,6 +1080,81 @@ class Step6SummaryInstallation {
       },
     };
   }
+
+  // New method to close the installation modal
+  closeInstallationModal() {
+    const modal = document.getElementById("installationModal");
+    if (modal) {
+      modal.classList.remove("show");
+      document.body.classList.remove("modal-open");
+      // Reset the modal content to its initial state (optional, but good practice)
+      this.resetInstallationModal();
+    }
+  }
+
+  // Custom message box function (replaces native alert/confirm)
+  showCustomMessageBox(title, message, onConfirm, onCancel) {
+    // Create modal elements dynamically or use a pre-existing hidden modal
+    let msgBox = document.getElementById("customMessageBox");
+    if (!msgBox) {
+      msgBox = document.createElement("div");
+      msgBox.id = "customMessageBox";
+      msgBox.className = "custom-message-box";
+      document.body.appendChild(msgBox);
+    }
+
+    msgBox.innerHTML = `
+        <div class="message-box-overlay"></div>
+        <div class="message-box-content">
+          <div class="message-box-header">
+            <h3 class="message-box-title">${title}</h3>
+            <button class="message-box-close">&times;</button>
+          </div>
+          <div class="message-box-body">
+            <p>${message}</p>
+          </div>
+          <div class="message-box-actions">
+            <button class="btn btn-primary message-box-confirm">Ya</button>
+            <button class="btn btn-secondary message-box-cancel">Tidak</button>
+          </div>
+        </div>
+      `;
+
+    // Show the message box
+    msgBox.classList.add("show");
+    document.body.classList.add("modal-open");
+
+    // Bind events
+    const confirmBtn = msgBox.querySelector(".message-box-confirm");
+    const cancelBtn = msgBox.querySelector(".message-box-cancel");
+    const closeBtn = msgBox.querySelector(".message-box-close");
+    const overlay = msgBox.querySelector(".message-box-overlay");
+
+    const closeMessageBox = () => {
+      msgBox.classList.remove("show");
+      document.body.classList.remove("modal-open");
+      // Clean up event listeners to prevent memory leaks
+      confirmBtn.removeEventListener("click", handleConfirm);
+      cancelBtn.removeEventListener("click", handleCancel);
+      closeBtn.removeEventListener("click", handleCancel);
+      overlay.removeEventListener("click", handleCancel);
+    };
+
+    const handleConfirm = () => {
+      if (onConfirm) onConfirm();
+      closeMessageBox();
+    };
+
+    const handleCancel = () => {
+      if (onCancel) onCancel();
+      closeMessageBox();
+    };
+
+    confirmBtn.addEventListener("click", handleConfirm);
+    cancelBtn.addEventListener("click", handleCancel);
+    closeBtn.addEventListener("click", handleCancel);
+    overlay.addEventListener("click", handleCancel);
+  }
 }
 
 // Global functions for installation flow
@@ -1015,22 +1168,21 @@ window.viewWebsite = function () {
     .toLowerCase()
     .replace(/\s+/g, "-")}.com`;
 
-  if (
-    confirm(`Opening ${storeName}... Would you like to create another website?`)
-  ) {
-    // Reset wizard for new installation
-    localStorage.removeItem("wizardData");
-    location.reload();
-  } else {
-    // Close modal and show completion
-    const modal = document.getElementById("installationModal");
-    if (modal) {
-      modal.classList.remove("show");
-      document.body.classList.remove("modal-open");
+  // Use custom message box instead of confirm()
+  window.step6SummaryInstallation.showCustomMessageBox(
+    "Instalasi Selesai",
+    `Pembukaan ${storeName}... Apakah Anda ingin membuat situs web lain?`,
+    () => {
+      // User confirmed "Yes" (create another website)
+      localStorage.removeItem("wizardData");
+      location.reload();
+    },
+    () => {
+      // User confirmed "No" (do not create another website)
+      window.step6SummaryInstallation.closeInstallationModal();
+      console.log(`Installation complete! Website available at: ${websiteUrl}`);
     }
-
-    console.log(`Installation complete! Website available at: ${websiteUrl}`);
-  }
+  );
 };
 
 window.startInstallation = function () {

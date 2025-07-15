@@ -1,5 +1,5 @@
 // Step 3: Styles & Design JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management
+// Updated: 2025-07-15 Enhanced Data Management - Theme Preview Modal with Responsive Toggle
 // User: jharrvis
 
 class Step3StylesDesign {
@@ -19,6 +19,7 @@ class Step3StylesDesign {
       desktopName: null,
       mobileName: null,
     };
+    this.currentPreviewMode = "desktop"; // 'desktop' or 'mobile'
 
     this.popularGoogleFonts = [
       "Open Sans",
@@ -162,6 +163,43 @@ class Step3StylesDesign {
         this.hideFontSuggestions();
       }
     });
+
+    // Responsive device toggle buttons
+    document
+      .querySelectorAll(".preview-device-toggle .device-btn")
+      .forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const device = button.dataset.device;
+          this.switchPreviewMode(device);
+        });
+      });
+
+    // Close theme preview modal by clicking overlay
+    const themePreviewModal = document.getElementById("themePreviewModal");
+    if (themePreviewModal) {
+      themePreviewModal.addEventListener("click", (e) => {
+        if (e.target === themePreviewModal) {
+          // Only close if clicking the overlay itself
+          console.log(
+            "Theme Preview Modal Overlay clicked, attempting to close."
+          ); // Debug log
+          this.closeThemePreview();
+        }
+      });
+    }
+
+    // Close theme preview modal by clicking the 'x' button
+    const themePreviewCloseBtn = document.querySelector(
+      "#themePreviewModal .modal-close"
+    );
+    if (themePreviewCloseBtn) {
+      themePreviewCloseBtn.addEventListener("click", () => {
+        console.log(
+          "Theme Preview Modal Close button clicked, attempting to close."
+        ); // Debug log
+        this.closeThemePreview();
+      });
+    }
   }
 
   loadStoredData() {
@@ -184,7 +222,12 @@ class Step3StylesDesign {
         // Colors
         if (styling.colors) {
           Object.assign(this.colors, styling.colors);
-          this.updateColorInputs();
+          console.log(
+            "Before updateColorInputs in loadStoredData:",
+            this,
+            typeof this.updateColorInputs
+          ); // Debug log
+          this.updateColorInputs(); // Call the arrow function property
         }
 
         // Fonts
@@ -320,12 +363,24 @@ class Step3StylesDesign {
 
     // Validate file
     if (file.size > 2 * 1024 * 1024) {
-      alert("File size must be less than 2MB");
+      // Use custom message box instead of alert()
+      window.step6SummaryInstallation.showCustomMessageBox(
+        "Ukuran File Terlalu Besar",
+        "Ukuran file harus kurang dari 2MB.",
+        () => {}, // OK callback
+        () => {} // Cancel callback (not applicable for info)
+      );
       return;
     }
 
     if (!file.type.match(/^image\/(png|jpg|jpeg|svg\+xml)$/)) {
-      alert("Please upload a valid image file (PNG, JPG, SVG)");
+      // Use custom message box instead of alert()
+      window.step6SummaryInstallation.showCustomMessageBox(
+        "Format File Tidak Valid",
+        "Mohon unggah file gambar yang valid (PNG, JPG, SVG).",
+        () => {}, // OK callback
+        () => {} // Cancel callback (not applicable for info)
+      );
       return;
     }
 
@@ -335,6 +390,7 @@ class Step3StylesDesign {
       this.logos[`${type}Name`] = file.name;
       this.displayLogo(type, e.target.result);
       this.saveStylingData();
+      this.updateThemePreviewContent(); // Update preview when logo changes
     };
     reader.readAsDataURL(file);
   }
@@ -372,7 +428,13 @@ class Step3StylesDesign {
     }
 
     this.saveStylingData();
+    console.log(
+      "Before updateColorGuide in updateColor:",
+      this,
+      typeof this.updateColorGuide
+    ); // Debug log
     this.updateColorGuide();
+    this.updateThemePreviewContent(); // Update preview when color changes
   }
 
   updateColorFromText(colorType, value) {
@@ -386,11 +448,50 @@ class Step3StylesDesign {
       }
 
       this.saveStylingData();
+      console.log(
+        "Before updateColorGuide in updateColorFromText:",
+        this,
+        typeof this.updateColorGuide
+      ); // Debug log
       this.updateColorGuide();
+      this.updateThemePreviewContent(); // Update preview when color changes
     }
   }
 
-  updateColorInputs() {
+  // Changed to arrow function property to ensure 'this' context
+  updateColorGuide = () => {
+    console.log(
+      "Executing updateColorGuide. this:",
+      this,
+      "this.colors:",
+      this.colors
+    ); // Debug log
+    if (!this.colors) {
+      console.error("this.colors is not defined in updateColorGuide.");
+      return;
+    }
+    const primaryDemo = document.querySelector(".primary-demo");
+    const secondaryDemo = document.querySelector(".secondary-demo");
+    const tertiaryDemo = document.querySelector(".tertiary-demo");
+
+    if (primaryDemo) primaryDemo.style.backgroundColor = this.colors.primary;
+    if (secondaryDemo)
+      secondaryDemo.style.backgroundColor = this.colors.secondary;
+    if (tertiaryDemo) tertiaryDemo.style.backgroundColor = this.colors.tertiary;
+  };
+
+  // Changed to arrow function property to ensure 'this' context
+  updateColorInputs = () => {
+    console.log(
+      "Executing updateColorInputs. this:",
+      this,
+      "this.colors:",
+      this.colors
+    ); // Debug log
+    if (!this.colors) {
+      console.error("this.colors is not defined in updateColorInputs.");
+      return;
+    }
     Object.entries(this.colors).forEach(([type, value]) => {
       const picker = document.getElementById(`${type}ColorPicker`);
       const input = document.getElementById(`${type}ColorValue`);
@@ -400,21 +501,15 @@ class Step3StylesDesign {
     });
 
     this.updateColorGuide();
-  }
-
-  updateColorGuide() {
-    const primaryDemo = document.querySelector(".primary-demo");
-    const secondaryDemo = document.querySelector(".secondary-demo");
-    const tertiaryDemo = document.querySelector(".tertiary-demo");
-
-    if (primaryDemo) primaryDemo.style.backgroundColor = this.colors.primary;
-    if (secondaryDemo)
-      secondaryDemo.style.backgroundColor = this.colors.secondary;
-    if (tertiaryDemo) tertiaryDemo.style.backgroundColor = this.colors.tertiary;
-  }
+  };
 
   initializeColorGuide() {
     setTimeout(() => {
+      console.log(
+        "Before updateColorGuide in initializeColorGuide timeout. this:",
+        this,
+        typeof this.updateColorGuide
+      ); // Debug log
       this.updateColorGuide();
     }, 100);
   }
@@ -443,6 +538,7 @@ class Step3StylesDesign {
     }
 
     this.saveStylingData();
+    this.updateThemePreviewContent(); // Update preview when font changes
   }
 
   searchGoogleFonts(query) {
@@ -473,11 +569,11 @@ class Step3StylesDesign {
     const suggestionsHTML = fonts
       .map(
         (font) => `
-          <div class="font-suggestion-item" onclick="window.step3StylesDesign.selectGoogleFont('${font}')">
-            <div class="font-suggestion-name">${font}</div>
-            <div class="font-suggestion-preview" style="font-family: '${font}', sans-serif;">Sample Text</div>
-          </div>
-        `
+            <div class="font-suggestion-item" onclick="window.step3StylesDesign.selectGoogleFont('${font}')">
+              <div class="font-suggestion-name">${font}</div>
+              <div class="font-suggestion-preview" style="font-family: '${font}', sans-serif;">Sample Text</div>
+            </div>
+          `
       )
       .join("");
 
@@ -507,6 +603,7 @@ class Step3StylesDesign {
     this.loadGoogleFont(fontName);
     this.updateFontPreview(fontName);
     this.saveStylingData();
+    this.updateThemePreviewContent(); // Update preview when font changes
   }
 
   loadGoogleFont(fontName) {
@@ -580,18 +677,201 @@ class Step3StylesDesign {
     }
   }
 
+  // Method to open the theme preview modal
   openThemePreview() {
-    if (!this.selectedTheme) return;
+    const modal = document.getElementById("themePreviewModal");
+    if (modal) {
+      modal.classList.add("show");
+      document.body.classList.add("modal-open");
+      this.updateThemePreviewContent(); // Update content when modal opens
+      this.switchPreviewMode(this.currentPreviewMode); // Ensure correct mode is shown
+    }
+  }
 
-    const themeData = this.themePreviewData[this.selectedTheme];
-    if (!themeData) return;
+  // Method to close the theme preview modal
+  closeThemePreview() {
+    console.log("Attempting to close theme preview modal."); // Debug log
+    const modal = document.getElementById("themePreviewModal");
+    if (modal) {
+      modal.classList.remove("show");
+      document.body.classList.remove("modal-open");
+      console.log("Theme preview modal classes removed."); // Debug log
+    } else {
+      console.warn("Theme preview modal element not found for closing.");
+    }
+  }
 
-    // This would typically open a modal - for now just show an alert
-    console.log("Opening preview for:", themeData.name);
+  // Method to switch between desktop and mobile preview modes
+  switchPreviewMode(mode) {
+    this.currentPreviewMode = mode;
 
-    // You can implement the modal logic here or call a global function
-    if (typeof window.openThemePreview === "function") {
-      window.openThemePreview(this.selectedTheme);
+    const desktopView = document.querySelector(".preview-desktop-view");
+    const mobileView = document.querySelector(".preview-mobile-view");
+    const desktopBtn = document.querySelector(
+      '.device-btn[data-device="desktop"]'
+    );
+    const mobileBtn = document.querySelector(
+      '.device-btn[data-device="mobile"]'
+    );
+
+    if (desktopView && mobileView && desktopBtn && mobileBtn) {
+      if (mode === "desktop") {
+        desktopView.style.display = "flex";
+        mobileView.style.display = "none";
+        desktopBtn.classList.add("active");
+        mobileBtn.classList.remove("active");
+      } else {
+        // mode === 'mobile'
+        desktopView.style.display = "none";
+        mobileView.style.display = "flex";
+        desktopBtn.classList.remove("active");
+        mobileBtn.classList.add("active");
+      }
+    }
+    this.updateThemePreviewContent(); // Update content for the new mode
+  }
+
+  // Method to update the content of the theme preview modal
+  updateThemePreviewContent() {
+    const previewBody = document.querySelector(".theme-preview-body");
+    if (!previewBody) return;
+
+    // Update Logos for both desktop and mobile views
+    const previewDesktopLogo = document.getElementById("previewDesktopLogo");
+    const previewMobileLogo = document.getElementById("previewMobileLogo");
+
+    // Desktop Logo
+    if (previewDesktopLogo) {
+      if (this.logos.desktop) {
+        previewDesktopLogo.src = this.logos.desktop;
+      } else {
+        previewDesktopLogo.src =
+          "https://placehold.co/150x40/cccccc/ffffff?text=Your+Logo";
+      }
+    }
+    // Mobile Logo
+    if (previewMobileLogo) {
+      if (this.logos.mobile) {
+        previewMobileLogo.src = this.logos.mobile;
+      } else {
+        previewMobileLogo.src =
+          "https://placehold.co/80x30/cccccc/ffffff?text=Logo";
+      }
+    }
+
+    // Update Colors
+    const elementsToColor = [
+      {
+        selector: ".preview-button",
+        prop: "backgroundColor",
+        color: this.colors.primary,
+      },
+      {
+        selector: ".preview-button",
+        prop: "borderColor",
+        color: this.colors.primary,
+      },
+      {
+        selector: ".preview-button:hover",
+        prop: "backgroundColor",
+        color: this.colors.secondary,
+      }, // Example hover
+      {
+        selector: ".preview-nav-item:hover",
+        prop: "color",
+        color: this.colors.secondary,
+      },
+      {
+        selector: ".preview-icons i:hover",
+        prop: "color",
+        color: this.colors.secondary,
+      },
+      {
+        selector: ".product-price",
+        prop: "color",
+        color: this.colors.tertiary,
+      },
+      // Add more elements as needed
+    ];
+
+    elementsToColor.forEach((item) => {
+      const el = previewBody.querySelector(item.selector);
+      if (el) {
+        el.style[item.prop] = item.color;
+      }
+    });
+
+    // Update dynamic CSS for colors (e.g., hover states that can't be directly set)
+    const styleTagId = "preview-dynamic-styles";
+    let styleTag = document.getElementById(styleTagId);
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleTagId;
+      document.head.appendChild(styleTag);
+    }
+    styleTag.innerHTML = `
+        .preview-button {
+          background-color: ${this.colors.primary} !important;
+          border-color: ${this.colors.primary} !important;
+        }
+        .preview-button:hover {
+          background-color: ${this.colors.secondary} !important;
+          box-shadow: 0 0.5rem 1.5rem rgba(0, 155, 222, 0.2) !important; /* Example shadow change */
+        }
+        .preview-nav-item:hover {
+          color: ${this.colors.secondary} !important;
+        }
+        .preview-icons i:hover {
+          color: ${this.colors.secondary} !important;
+        }
+        .product-price {
+          color: ${this.colors.tertiary} !important;
+        }
+        /* Add more dynamic styles here */
+      `;
+
+    // Update Fonts
+    const fontToApply = this.useDefaultFont
+      ? "Montserrat, sans-serif"
+      : `'${this.customFont}', sans-serif`;
+    previewBody.style.fontFamily = fontToApply;
+
+    // Apply font to specific elements if needed (e.g., headings might have different font-weights)
+    const previewHeadline = document.getElementById("previewHeadline");
+    const previewSubtext = document.getElementById("previewSubtext");
+    const previewButton = document.getElementById("previewButton");
+    const productTitles = previewBody.querySelectorAll(".product-title");
+    const previewNavItems = previewBody.querySelectorAll(".preview-nav-item");
+
+    // Apply to desktop view elements
+    if (previewHeadline) previewHeadline.style.fontFamily = fontToApply;
+    if (previewSubtext) previewSubtext.style.fontFamily = fontToApply;
+    if (previewButton) previewButton.style.fontFamily = fontToApply;
+    productTitles.forEach((el) => (el.style.fontFamily = fontToApply));
+    previewNavItems.forEach((el) => (el.style.fontFamily = fontToApply));
+
+    // Apply to mobile view specific elements
+    const previewMobileHeadline = document.getElementById(
+      "previewMobileHeadline"
+    );
+    const previewMobileSubtext = document.getElementById(
+      "previewMobileSubtext"
+    );
+    const previewMobileButton = document.getElementById("previewMobileButton");
+    const mobileProductTitles = document.querySelectorAll(
+      ".preview-mobile-view .product-title"
+    );
+
+    if (previewMobileHeadline)
+      previewMobileHeadline.style.fontFamily = fontToApply;
+    if (previewMobileSubtext)
+      previewMobileSubtext.style.fontFamily = fontToApply;
+    if (previewMobileButton) previewMobileButton.style.fontFamily = fontToApply;
+    mobileProductTitles.forEach((el) => (el.style.fontFamily = fontToApply));
+
+    // Ensure custom font is loaded if selected
+    if (!this.useDefaultFont && this.customFont) {
+      this.loadGoogleFont(this.customFont);
     }
   }
 
@@ -759,7 +1039,13 @@ window.updateThemeGrid = function (platform) {
 document.addEventListener("DOMContentLoaded", function () {
   const step3Content = document.querySelector('.step-content[data-step="3"]');
   if (step3Content) {
-    window.step3StylesDesign = new Step3StylesDesign();
+    // Ensure it's not initialized multiple times if somehow DOMContentLoaded fires more than once
+    if (!window.step3StylesDesign) {
+      window.step3StylesDesign = new Step3StylesDesign();
+      console.log("Step3StylesDesign initialized.");
+    } else {
+      console.log("Step3StylesDesign already initialized.");
+    }
 
     // Force reload data after initialization
     setTimeout(() => {
@@ -784,6 +1070,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Reload data when step becomes active
                 window.step3StylesDesign.loadStoredData();
                 window.step3StylesDesign.updateThemeOptions();
+                window.step3StylesDesign.updateThemePreviewContent(); // Update preview content on tab activation
                 window.step3StylesDesign.updateNextButton();
               }
             }, 100);

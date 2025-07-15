@@ -80,28 +80,6 @@
   padding: 2rem;
 }
 
-/* .summary-list li {
-  padding: 1rem 0;
-  font: 500 1.5rem/1.4 "Montserrat", sans-serif;
-  color: #666;
-  border-bottom: 1px solid rgba(0, 155, 222, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.summary-list li:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.summary-list li:before {
-  content: "▶";
-  color: #ff7101;
-  margin-right: 1rem;
-  font-size: 1.2rem;
-} */
-
 .summary-list li {
   padding: 1rem 0;
   font: 500 1.5rem/1.4 "Montserrat", sans-serif;
@@ -117,25 +95,10 @@
   padding-bottom: 0;
 }
 
-/* Bagian ini sudah tidak diperlukan dan harus dihapus */
-/* .summary-list li:before {
-    content: "▶";
-    color: #ff7101;
-    margin-right: 1rem;
-    font-size: 1.2rem;
-  } 
-  */
-
-/* Anda bisa menambahkan styling khusus untuk nilai di kanan jika perlu */
 .summary-list .summary-list-value {
-  color: #009bde; /* Contoh: membuat warna nilai sedikit berbeda */
+  color: #009bde;
   font-weight: 600;
 }
-
-/* .summary-list-value {
-  font-weight: 600;
-  color: #009bde;
-} */
 
 /* Configuration Grid */
 .config-grid {
@@ -265,7 +228,6 @@
 .requirement-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
   padding: 1.5rem;
   background: rgba(50, 190, 125, 0.1);
   border-radius: 1rem;
@@ -298,12 +260,65 @@
 
 /* Installation Modal Enhancements */
 .installation-modal {
+  position: fixed; /* Make it fixed to the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Dark overlay */
+  display: none; /* Hidden by default */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  z-index: 9999; /* Ensure it's on top of everything */
   backdrop-filter: blur(8px);
+  opacity: 0; /* Start with opacity 0 for fade-in */
+  visibility: hidden; /* Hidden for accessibility/interaction */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+}
+
+.installation-modal.show {
+  display: flex; /* Show the modal */
+  opacity: 1; /* Fade in */
+  visibility: visible; /* Make visible */
 }
 
 .installation-modal .modal-content {
+  background: #fff;
+  border-radius: 1.5rem;
   max-width: 90rem;
   width: 95%;
+  position: relative; /* Needed for z-index and internal positioning */
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.3);
+  z-index: 10000; /* Ensure content is above overlay */
+  transform: translateY(20px); /* Start slightly off-screen for animation */
+  opacity: 0; /* Start hidden for animation */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Animation for content */
+  overflow: hidden; /* Ensure rounded corners clip content */
+}
+
+.installation-modal.show .modal-content {
+  transform: translateY(0); /* Slide into place */
+  opacity: 1; /* Fade in */
+}
+
+.installation-modal .modal-header {
+  padding: 2rem;
+  border-bottom: 1px solid rgba(0, 155, 222, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+  color: #fff;
+  /* Removed border-radius here as it's handled by .modal-content */
+}
+
+.installation-modal .modal-title {
+  font: 700 2.2rem/1.2 "Montserrat", sans-serif; /* Slightly larger font */
+  margin: 0;
+}
+
+.installation-modal .modal-body {
+  padding: 3rem; /* Increased padding */
 }
 
 /* Installation Steps */
@@ -754,13 +769,19 @@
 
   .install-step {
     flex-direction: column;
-    text-align: center;
+    align-items: flex-start; /* Align content to start for better readability on small screens */
+    text-align: left; /* Align text to left */
     gap: 1rem;
   }
 
   .install-icon {
     margin-right: 0;
     margin-bottom: 1rem;
+    align-self: center; /* Center icon when stacked */
+  }
+
+  .install-text {
+    text-align: center; /* Center text within the text block */
   }
 
   .website-details-grid {

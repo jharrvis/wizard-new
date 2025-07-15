@@ -1,5 +1,5 @@
 // Main wizard controller
-// Updated: 2025-07-15 Enhanced Data Management
+// Updated: 2025-07-15 Enhanced Data Management - Fix for Install Now button
 // User: jharrvis
 
 // Global wizard data object with complete structure
@@ -168,7 +168,10 @@ window.updateNextButton = function () {
       }
       break;
     case 6:
-      isValid = true; // Summary step is always valid
+      // Step 6 validation: check if all required data is present
+      if (window.step6SummaryInstallation) {
+        isValid = window.step6SummaryInstallation.validateStep();
+      }
       break;
   }
 
@@ -264,8 +267,21 @@ function nextStep() {
   if (currentStep < maxStep) {
     showStep(currentStep + 1);
   } else {
-    // Last step - show installation modal
-    showInstallationModal();
+    // Last step - trigger installation via Step6SummaryInstallation instance
+    if (window.step6SummaryInstallation) {
+      // Validate step 6 before starting installation
+      if (window.step6SummaryInstallation.validateStep()) {
+        window.step6SummaryInstallation.startInstallation();
+      } else {
+        // Optionally, show a warning if validation fails
+        console.warn(
+          "Installation cannot start: Missing required configuration."
+        );
+        // You might want to display a user-friendly message here
+      }
+    } else {
+      console.error("Step6SummaryInstallation not initialized.");
+    }
   }
 }
 
@@ -410,125 +426,59 @@ function updateNavigationButtons(stepNumber) {
   }
 }
 
-function showInstallationModal() {
-  const modal = document.getElementById("installationModal");
-  if (modal) {
-    modal.style.display = "flex";
-    startInstallation();
-  }
-}
-
-function startInstallation() {
-  console.log("Starting installation with data:", window.wizardData);
-
-  const steps = [
-    {
-      id: "downloadStep",
-      duration: 3000,
-      text: "Downloading platform files...",
-    },
-    { id: "databaseStep", duration: 2000, text: "Setting up database..." },
-    { id: "configStep", duration: 2500, text: "Configuring platform..." },
-    { id: "completeStep", duration: 1000, text: "Installation complete!" },
-  ];
-
-  let currentStepIndex = 0;
-  const progressFill = document.querySelector(".installation-progress-fill");
-  const progressText = document.querySelector(".installation-progress-text");
-
-  function processStep() {
-    if (currentStepIndex >= steps.length) {
-      // Installation complete
-      document.getElementById("installationComplete").style.display = "block";
-      return;
-    }
-
-    const step = steps[currentStepIndex];
-    const stepElement = document.getElementById(step.id);
-
-    // Update progress
-    const progress = ((currentStepIndex + 1) / steps.length) * 100;
-    progressFill.style.width = progress + "%";
-    progressText.textContent = step.text;
-
-    // Update step status
-    stepElement.querySelector(".install-status").innerHTML =
-      '<i class="fas fa-spinner fa-spin"></i>';
-
-    setTimeout(() => {
-      stepElement.querySelector(".install-status").innerHTML =
-        '<i class="fas fa-check"></i>';
-      currentStepIndex++;
-      processStep();
-    }, step.duration);
-  }
-
-  processStep();
-}
+// Removed the old showInstallationModal and startInstallation functions from here
+// These are now handled by the Step6SummaryInstallation class
 
 // Export configuration with complete data
 window.exportConfiguration = function () {
-  const config = {
-    timestamp: new Date().toISOString(),
-    user: "John Doe",
-    data: window.wizardData,
-    summary: generateConfigSummary(),
-    requirements: getSystemRequirements(),
-  };
-
-  const blob = new Blob([JSON.stringify(config, null, 2)], {
-    type: "application/json",
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `wizard-config-${new Date().getTime()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+  // This function is now called directly from step6.js's exportConfiguration method
+  // It's kept here for backward compatibility if other parts of the app rely on it.
+  if (window.step6SummaryInstallation) {
+    window.step6SummaryInstallation.exportConfiguration();
+  } else {
+    console.error("Step6SummaryInstallation not initialized for export.");
+  }
 };
 
 // Generate configuration summary
 function generateConfigSummary() {
-  return {
-    storeName: window.wizardData.storeInfo?.name || "Not Set",
-    platform: window.wizardData.platform?.selected || "Not Selected",
-    version: window.wizardData.platform?.version || "Not Selected",
-    theme: window.wizardData.theme || "Not Selected",
-    selectedPlugins: Object.keys(window.wizardData.plugins || {}).filter(
-      (id) => window.wizardData.plugins[id]
-    ),
-    hasLogos: {
-      desktop: !!window.wizardData.styling?.logos?.desktop,
-      mobile: !!window.wizardData.styling?.logos?.mobile,
-    },
-    sampleData: window.wizardData.sampleData === "with_sample",
-    customization: {
-      colors: window.wizardData.styling?.colors || {},
-      customFont: !window.wizardData.styling?.fonts?.useDefault,
-    },
-  };
+  // This function is now handled by step6.js's generateConfigSummary method
+  // It's kept here for backward compatibility if other parts of the app rely on it.
+  if (window.step6SummaryInstallation) {
+    return window.step6SummaryInstallation.generateConfigSummary();
+  }
+  return {};
 }
 
 // Get system requirements based on platform
 function getSystemRequirements() {
-  const platform = window.wizardData.platform?.selected;
-  const version = window.wizardData.platform?.version;
-
-  if (!platform || !version) return null;
-
-  return window.wizardData.platform?.dependencies || null;
+  // This function is now handled by step6.js's getSystemRequirements method
+  // It's kept here for backward compatibility if other parts of the app rely on it.
+  if (window.step6SummaryInstallation) {
+    return window.step6SummaryInstallation.getSystemRequirements(
+      window.wizardData.platform?.selected,
+      window.wizardData.platform?.version
+    );
+  }
+  return null;
 }
 
 // View website function
 function viewWebsite() {
-  const storeName = window.wizardData.storeInfo?.name || "yourwebsite";
-  const websiteUrl = `https://${storeName
-    .toLowerCase()
-    .replace(/\s+/g, "-")}.com`;
-  window.open(websiteUrl, "_blank");
+  // This function is now handled by step6.js's viewWebsite method
+  // It's kept here for backward compatibility if other parts of the app rely on it.
+  if (window.step6SummaryInstallation) {
+    window.step6SummaryInstallation.viewWebsite();
+  } else {
+    const storeName = window.wizardData.storeInfo?.name || "yourwebsite";
+    const websiteUrl = `https://${storeName
+      .toLowerCase()
+      .replace(/\s+/g, "-")}.com`;
+    window.open(websiteUrl, "_blank");
+  }
 }
 
-// License modal functions
+// License modal functions (these are still used by step4.js, so keep them)
 function openLicenseModal(pluginName) {
   const modal = document.getElementById("licenseModal");
   const title = document.getElementById("licenseModalTitle");
@@ -566,10 +516,10 @@ function saveLicenseKey() {
     // Update UI to show license key is saved
     const plugin = document.querySelector(`[data-plugin="${pluginName}"]`);
     if (plugin) {
-      const licenseIndicator = plugin.querySelector(".license-indicator");
+      const licenseIndicator = plugin.querySelector(".plugin-license-status"); // Corrected selector
       if (licenseIndicator) {
-        licenseIndicator.textContent = "License Key Saved";
-        licenseIndicator.classList.add("saved");
+        licenseIndicator.textContent = "✓ License key configured";
+        // No need to add 'saved' class as it's handled by updatePluginItem in step4.js
       }
     }
   }

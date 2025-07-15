@@ -1,5 +1,5 @@
 // Step 4: Plugin Settings JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management
+// Updated: 2025-07-15 Enhanced Data Management - Data loaded from JSON
 // User: jharrvis
 
 class Step4PluginSettings {
@@ -7,14 +7,14 @@ class Step4PluginSettings {
     this.selectedPlugins = {};
     this.licenseKeys = {};
     this.currentLicensePlugin = null;
-    this.pluginData = {};
+    this.pluginData = {}; // Will be populated from JSON
     this.isDataLoaded = false;
 
     this.init();
   }
 
   async init() {
-    await this.loadPluginData();
+    await this.loadPluginData(); // Load plugin data first
     this.bindEvents();
     this.loadStoredData();
     this.renderPluginSections();
@@ -25,174 +25,23 @@ class Step4PluginSettings {
     }, 100);
   }
 
+  // Method to load plugin data from JSON
   async loadPluginData() {
     try {
-      this.pluginData = this.getDefaultPluginData();
+      const response = await fetch("assets/data/plugins-data.json");
+      if (!response.ok) {
+        throw new Error("Failed to load plugins-data.json");
+      }
+      this.pluginData = await response.json();
       this.isDataLoaded = true;
-      console.log("Plugin data loaded");
+      console.log("Plugin data loaded from file:", this.pluginData);
     } catch (error) {
-      console.error("Error loading plugin data:", error);
-      this.pluginData = this.getDefaultPluginData();
+      console.error("Error loading plugin data from file:", error);
+      // Fallback to a default structure or display an error to the user
+      // For now, we'll just log the error and proceed with empty data.
+      this.pluginData = {};
       this.isDataLoaded = true;
     }
-  }
-
-  getDefaultPluginData() {
-    return {
-      payments: {
-        title: "Payment Processors",
-        description: "Essential payment processing plugins for your store",
-        plugins: [
-          {
-            id: "ppcp",
-            name: "PayPal Complete Payments",
-            description:
-              "Full-stack payment solution with fraud protection and global payment support",
-            needsLicense: false,
-          },
-          {
-            id: "stripe",
-            name: "Stripe",
-            description:
-              "Comprehensive payment platform with advanced features and fraud protection",
-            needsLicense: false,
-          },
-          {
-            id: "mollie",
-            name: "Mollie",
-            description:
-              "European payment provider with transparent pricing and user-friendly API",
-            needsLicense: false,
-          },
-          {
-            id: "adyen",
-            name: "Adyen",
-            description:
-              "Global payment company offering unified platform for accepting payments",
-            needsLicense: false,
-          },
-        ],
-      },
-      emailSms: {
-        title: "Email & SMS Marketing",
-        description:
-          "Email marketing and SMS notification plugins for customer engagement",
-        plugins: [
-          {
-            id: "klaviyo",
-            name: "Klaviyo Email",
-            description:
-              "Data-driven email marketing platform for personalized customer campaigns",
-            needsLicense: true,
-          },
-          {
-            id: "mailchimp",
-            name: "Mailchimp",
-            description:
-              "All-in-one marketing platform with email automation and audience insights",
-            needsLicense: true,
-          },
-          {
-            id: "sendgrid",
-            name: "SendGrid",
-            description:
-              "Cloud-based email delivery service for transactional and marketing emails",
-            needsLicense: true,
-          },
-        ],
-      },
-      reviewsUgc: {
-        title: "Reviews & User Content",
-        description:
-          "Customer review and user-generated content plugins to build trust",
-        plugins: [
-          {
-            id: "yotpo",
-            name: "Yotpo Reviews",
-            description:
-              "Customer review platform to collect, display, and leverage authentic reviews",
-            needsLicense: true,
-          },
-          {
-            id: "trustpilot",
-            name: "Trustpilot",
-            description:
-              "Global review platform helping businesses collect and display customer reviews",
-            needsLicense: true,
-          },
-          {
-            id: "reviewsio",
-            name: "Reviews.io",
-            description:
-              "Review collection and management platform for authentic customer feedback",
-            needsLicense: true,
-          },
-        ],
-      },
-      searchMerchandising: {
-        title: "Search & Recommendations",
-        description:
-          "Advanced search and product recommendation plugins for better discovery",
-        plugins: [
-          {
-            id: "klevu",
-            name: "Klevu",
-            description:
-              "AI-powered site search and product discovery with smart merchandising",
-            needsLicense: true,
-          },
-          {
-            id: "algolia",
-            name: "Algolia",
-            description:
-              "Fast and relevant search-as-a-service platform with instant search capabilities",
-            needsLicense: true,
-          },
-          {
-            id: "elasticsearch",
-            name: "Elasticsearch",
-            description:
-              "Powerful search and analytics engine for fast, scalable search functionality",
-            needsLicense: false,
-          },
-        ],
-      },
-      taxShipping: {
-        title: "Tax & Shipping",
-        description:
-          "Tax calculation and shipping management plugins for accurate pricing",
-        plugins: [
-          {
-            id: "avalara",
-            name: "Avalara",
-            description:
-              "Automated tax compliance solution with real-time calculations and filing",
-            needsLicense: true,
-          },
-          {
-            id: "shipperq",
-            name: "ShipperHQ",
-            description:
-              "Shipping rate management platform with real-time rates and delivery options",
-            needsLicense: true,
-          },
-          {
-            id: "fedex",
-            name: "FedEx Shipping",
-            description:
-              "Official FedEx integration for real-time shipping rates and tracking",
-            needsLicense: false,
-          },
-          {
-            id: "ups",
-            name: "UPS Shipping",
-            description:
-              "UPS shipping integration with real-time rates and delivery options",
-            needsLicense: false,
-          },
-        ],
-      },
-    };
   }
 
   bindEvents() {
@@ -261,9 +110,9 @@ class Step4PluginSettings {
 
     container.innerHTML = "";
 
-    if (!this.isDataLoaded) {
+    if (!this.isDataLoaded || Object.keys(this.pluginData).length === 0) {
       container.innerHTML =
-        '<div class="plugin-loading">Loading plugins...</div>';
+        '<div class="plugin-loading">Loading plugins or no plugin data available...</div>';
       return;
     }
 
@@ -287,21 +136,21 @@ class Step4PluginSettings {
     sectionDiv.setAttribute("data-section", sectionKey);
 
     sectionDiv.innerHTML = `
-          <div class="plugin-category-header">
-            <i class="fas fa-puzzle-piece"></i>
-            ${section.title}
-          </div>
-          
-          <div class="plugin-section-description">
-            ${section.description}
-          </div>
-    
-          <div class="plugin-list">
-            ${section.plugins
-              .map((plugin) => this.createPluginItem(plugin))
-              .join("")}
-          </div>
-        `;
+            <div class="plugin-category-header">
+              <i class="fas fa-puzzle-piece"></i>
+              ${section.title}
+            </div>
+            
+            <div class="plugin-section-description">
+              ${section.description}
+            </div>
+      
+            <div class="plugin-list">
+              ${section.plugins
+                .map((plugin) => this.createPluginItem(plugin))
+                .join("")}
+            </div>
+          `;
 
     return sectionDiv;
   }
@@ -312,81 +161,68 @@ class Step4PluginSettings {
     const needsLicense = plugin.needsLicense || false;
 
     return `
-          <div class="plugin-item ${
-            isSelected ? "selected" : ""
-          }" data-plugin="${plugin.id}">
-            <div class="plugin-info">
-              <div class="plugin-name">
-                ${this.getPluginIcon(plugin)}
-                ${plugin.name}
+            <div class="plugin-item ${
+              isSelected ? "selected" : ""
+            }" data-plugin="${plugin.id}">
+              <div class="plugin-info">
+                <div class="plugin-name">
+                  ${this.getPluginIcon(plugin)}
+                  ${plugin.name}
+                  ${
+                    needsLicense
+                      ? '<span class="plugin-status premium">Premium</span>'
+                      : '<span class="plugin-status free">Free</span>'
+                  }
+                </div>
+                <div class="plugin-description">${plugin.description}</div>
                 ${
-                  needsLicense
-                    ? '<span class="plugin-status premium">Premium</span>'
-                    : '<span class="plugin-status free">Free</span>'
+                  needsLicense && hasLicense
+                    ? '<div class="plugin-license-status">✓ License key configured</div>'
+                    : ""
                 }
               </div>
-              <div class="plugin-description">${plugin.description}</div>
-              ${
-                needsLicense && hasLicense
-                  ? '<div class="plugin-license-status">✓ License key configured</div>'
-                  : ""
-              }
-            </div>
-            <div class="plugin-controls">
-              <div class="plugin-toggle">
-                <input type="checkbox" id="${
-                  plugin.id
-                }" class="plugin-checkbox" ${isSelected ? "checked" : ""}>
-                <label for="${plugin.id}" class="toggle-switch"></label>
+              <div class="plugin-controls">
+                <div class="plugin-toggle">
+                  <input type="checkbox" id="${
+                    plugin.id
+                  }" class="plugin-checkbox" ${isSelected ? "checked" : ""}>
+                  <label for="${plugin.id}" class="toggle-switch"></label>
+                </div>
+                ${
+                  needsLicense
+                    ? `
+                  <button class="license-btn" data-plugin="${plugin.id}">
+                    <i class="fas ${hasLicense ? "fa-edit" : "fa-key"}"></i>
+                    ${hasLicense ? "Edit License" : "Add License"}
+                  </button>
+                `
+                    : ""
+                }
               </div>
-              ${
-                needsLicense
-                  ? `
-                <button class="license-btn" data-plugin="${plugin.id}">
-                  <i class="fas ${hasLicense ? "fa-edit" : "fa-key"}"></i>
-                  ${hasLicense ? "Edit License" : "Add License"}
-                </button>
-              `
-                  : ""
-              }
             </div>
-          </div>
-        `;
+          `;
   }
 
   getPluginIcon(plugin) {
-    const iconMap = {
-      ppcp: '<div class="plugin-icon" style="background: #003087;">PP</div>',
-      stripe: '<div class="plugin-icon" style="background: #635bff;">S</div>',
-      mollie: '<div class="plugin-icon" style="background: #ff6100;">M</div>',
-      adyen: '<div class="plugin-icon" style="background: #0abf53;">A</div>',
-      klaviyo: '<div class="plugin-icon" style="background: #ff6900;">K</div>',
-      mailchimp:
-        '<div class="plugin-icon" style="background: #ffe01b; color: #000;">MC</div>',
-      sendgrid:
-        '<div class="plugin-icon" style="background: #1a82e2;">SG</div>',
-      yotpo: '<div class="plugin-icon" style="background: #32be7d;">Y</div>',
-      trustpilot:
-        '<div class="plugin-icon" style="background: #00b67a;">TP</div>',
-      reviewsio:
-        '<div class="plugin-icon" style="background: #ff6900;">RI</div>',
-      klevu: '<div class="plugin-icon" style="background: #009bde;">KL</div>',
-      algolia: '<div class="plugin-icon" style="background: #5468ff;">A</div>',
-      elasticsearch:
-        '<div class="plugin-icon" style="background: #005571;">ES</div>',
-      avalara: '<div class="plugin-icon" style="background: #ff6900;">AV</div>',
-      shipperq:
-        '<div class="plugin-icon" style="background: #0052cc;">SQ</div>',
-      fedex: '<div class="plugin-icon" style="background: #660099;">FX</div>',
-      ups: '<div class="plugin-icon" style="background: #8b4513;">UP</div>',
-    };
-
-    return (
-      iconMap[plugin.id] ||
-      `<div class="plugin-icon" style="background: #009bde;">${plugin.name
-        .substring(0, 2)
-        .toUpperCase()}</div>`
-    );
+    // If the icon is a URL, use it directly
+    if (plugin.icon && plugin.icon.startsWith("http")) {
+      return `<div class="plugin-icon" style="background: none;"><img src="${plugin.icon}" alt="${plugin.name} icon" style="max-width: 100%; max-height: 100%; object-fit: contain;"></div>`;
+    }
+    // If the icon is a letter, extract the letter and use it
+    if (plugin.icon && plugin.icon.startsWith("letter:")) {
+      const letter = plugin.icon.split(":")[1];
+      let bgColor = "#009bde"; // Default background color
+      // Assign different colors based on the letter for variety
+      if (letter === "F" || letter === "M" || letter === "S")
+        bgColor = "#ff7101";
+      if (letter === "A" || letter === "T" || letter === "SG")
+        bgColor = "#32be7d";
+      return `<div class="plugin-icon" style="background: ${bgColor};">${letter}</div>`;
+    }
+    // Fallback if no specific icon is provided
+    return `<div class="plugin-icon" style="background: #0f488a;">${plugin.name
+      .substring(0, 2)
+      .toUpperCase()}</div>`;
   }
 
   handlePluginToggle(checkbox) {
@@ -509,7 +345,8 @@ class Step4PluginSettings {
 
     const licenseKey = inputElement.value.trim();
     if (!licenseKey) {
-      alert("Please enter a license key");
+      // Use a custom message box instead of alert()
+      this.showNotification("Please enter a license key", "error");
       return;
     }
 
@@ -527,17 +364,26 @@ class Step4PluginSettings {
     const notification = document.createElement("div");
     notification.className = `notification ${type}`;
     notification.innerHTML = `
-          <i class="fas ${
-            type === "success" ? "fa-check-circle" : "fa-info-circle"
-          }"></i>
-          ${message}
-        `;
+            <i class="fas ${
+              type === "success"
+                ? "fa-check-circle"
+                : type === "error"
+                ? "fa-exclamation-circle"
+                : "fa-info-circle"
+            }"></i>
+            ${message}
+          `;
 
     Object.assign(notification.style, {
       position: "fixed",
       top: "2rem",
       right: "2rem",
-      background: type === "success" ? "#32be7d" : "#009bde",
+      background:
+        type === "success"
+          ? "#32be7d"
+          : type === "error"
+          ? "#e91e64"
+          : "#009bde",
       color: "#fff",
       padding: "1rem 2rem",
       borderRadius: "0.5rem",
@@ -670,7 +516,7 @@ class Step4PluginSettings {
 
   // Method to get plugin summary for display
   getPluginSummary() {
-    const selectedPluginIds = Object.keys(this.selectedPlugins).filter(
+    const selectedPluginIds = Object.keys(this.selectedPlugins || {}).filter(
       (id) => this.selectedPlugins[id]
     );
 
