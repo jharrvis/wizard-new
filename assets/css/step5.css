@@ -1,0 +1,292 @@
+/* Step 5: Sample Data Fixed Styles */
+/* Updated: 2025-07-15 Fixed Radio Button Issues */
+/* User: jharrvis */
+
+/* Sample Data Selection Container */
+.sample-data-selection {
+  max-width: 70rem;
+  margin: 0 auto;
+  padding: 3rem 0;
+}
+
+/* Sample Data Question */
+.sample-data-question {
+  font: 600 2rem/1.4 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+/* Sample Data Options */
+.sample-data-options {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+/* Sample Data Option - Fixed Structure */
+.sample-data-option {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.5rem;
+  background: #fff;
+  border: 2px solid #e1e8ed;
+  border-radius: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.sample-data-option:hover {
+  border-color: #009bde;
+  background: rgba(0, 155, 222, 0.03);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 155, 222, 0.1);
+}
+
+.sample-data-option.selected {
+  border-color: #009bde;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 155, 222, 0.08) 0%,
+    rgba(0, 155, 222, 0.05) 100%
+  );
+  box-shadow: 0 8px 25px rgba(0, 155, 222, 0.15);
+}
+
+.sample-data-option.selected::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #009bde;
+}
+
+/* Radio Button Container - Fixed */
+.sample-radio {
+  position: relative;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Hide default radio input */
+.sample-radio input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Custom Radio Button Outer Circle */
+.sample-radio::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 2px solid #cbd5e0;
+  border-radius: 50%;
+  background: #fff;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Custom Radio Button Inner Circle */
+.sample-radio::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: #009bde;
+  transform: translate(-50%, -50%) scale(0);
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* Radio Button Hover State */
+.sample-data-option:hover .sample-radio::before {
+  border-color: #009bde;
+}
+
+/* Radio Button Selected State */
+.sample-data-option.selected .sample-radio::before {
+  border-color: #009bde;
+  background: #fff;
+  box-shadow: 0 0 0 1px #009bde inset;
+}
+
+.sample-data-option.selected .sample-radio::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Focus State */
+.sample-radio input[type="radio"]:focus + .sample-radio::before,
+.sample-radio input[type="radio"]:focus::before {
+  box-shadow: 0 0 0 3px rgba(0, 155, 222, 0.2);
+  outline: none;
+}
+
+/* Sample Option Label */
+.sample-option-label {
+  flex: 1;
+  font: 500 1.7rem/1.4 "Montserrat", sans-serif;
+  color: #2d3748;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.sample-data-option.selected .sample-option-label {
+  color: #0f488a;
+  font-weight: 600;
+}
+
+/* Additional Info Panel */
+.sample-data-info {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #009bde;
+  border-radius: 0.8rem;
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sample-data-info h4 {
+  color: #0f488a;
+  margin-bottom: 1rem;
+  font: 600 1.6rem/1.3 "Montserrat", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.sample-data-info h4 i {
+  color: #009bde;
+}
+
+.sample-data-info p {
+  color: #4a5568;
+  font: 400 1.4rem/1.6 "Montserrat", sans-serif;
+  margin: 0;
+}
+
+/* Animation for step entry */
+.step-content[data-step="5"].active {
+  animation: slideInFromBottom 0.5s ease-out;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Selection Animation */
+@keyframes radioSelect {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.sample-data-option.selected .sample-radio::after {
+  animation: radioSelect 0.4s ease-out;
+}
+
+/* Card Selection Animation */
+@keyframes cardSelect {
+  0% {
+    transform: translateY(-2px) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    transform: translateY(-2px) scale(1);
+  }
+}
+
+.sample-data-option.selected {
+  animation: cardSelect 0.5s ease-out;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .sample-data-selection {
+    padding: 2rem 1rem;
+  }
+
+  .sample-data-option {
+    padding: 2rem;
+  }
+
+  .sample-data-question {
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+  }
+
+  .sample-option-label {
+    font-size: 1.5rem;
+  }
+
+  .sample-radio {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .sample-radio::before {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .sample-radio::after {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .sample-data-options {
+    gap: 1.5rem;
+  }
+
+  .sample-data-option {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .sample-option-label {
+    font-size: 1.4rem;
+  }
+}

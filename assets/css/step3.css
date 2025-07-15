@@ -1,0 +1,599 @@
+/* Step 3: Styles & Design Specific Styles */
+
+/* Style Tabs */
+.style-tabs {
+  margin-top: 3rem;
+}
+
+.style-tabs .tab-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 4rem;
+  border-bottom: 0.2rem solid rgba(0, 155, 222, 0.1);
+  padding-bottom: 2rem;
+  justify-content: center;
+}
+
+.style-tabs .tab-button {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 2.5rem;
+  background: rgba(0, 155, 222, 0.05);
+  border: 0.2rem solid rgba(0, 155, 222, 0.1);
+  border-radius: 3rem;
+  font: 600 1.4rem/1 "Montserrat", sans-serif;
+  color: #009bde;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.style-tabs .tab-button:hover {
+  background: rgba(255, 113, 1, 0.1);
+  border-color: #ff7101;
+  color: #ff7101;
+  transform: translateY(-2px);
+}
+
+.style-tabs .tab-button.active {
+  background: #ff7101;
+  border-color: #ff7101;
+  color: #fff;
+  box-shadow: 0 0.5rem 1.5rem rgba(255, 113, 1, 0.3);
+}
+
+.style-tabs .tab-button i {
+  margin-right: 1rem;
+  font-size: 1.6rem;
+}
+
+.style-tabs .tab-panel {
+  display: none;
+  padding: 4rem;
+  background: rgba(0, 155, 222, 0.02);
+  border-radius: 2rem;
+  min-height: 40rem;
+  border: 2px solid rgba(0, 155, 222, 0.05);
+}
+
+.style-tabs .tab-panel.active {
+  display: block;
+  animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Theme Selection */
+.theme-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.theme-item {
+  width: 100%;
+  cursor: pointer;
+}
+
+.theme-item .theme-card {
+  display: flex;
+  align-items: center;
+  padding: 3rem;
+  background: #fff;
+  border: 0.2rem solid rgba(0, 155, 222, 0.1);
+  border-radius: 2rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.theme-item .theme-card:hover {
+  border-color: #ff7101;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.theme-item.selected .theme-card {
+  border-color: #ff7101;
+  background: rgba(255, 113, 1, 0.05);
+  box-shadow: 0 1rem 2rem rgba(255, 113, 1, 0.2);
+}
+
+/* Theme Icons */
+.theme-icon {
+  width: 8rem;
+  height: 8rem;
+  margin-right: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 155, 222, 0.1);
+  border-radius: 1rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.theme-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.theme-item.selected .theme-icon {
+  background: rgba(255, 113, 1, 0.1);
+  transform: scale(1.05);
+}
+
+/* Theme Info */
+.theme-info {
+  flex: 1;
+}
+
+.theme-name {
+  font: 700 2rem/1.2 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 1rem;
+}
+
+.license-required {
+  color: #ff7101;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-left: 1rem;
+}
+
+.theme-description {
+  font: 400 1.5rem/1.4 "Montserrat", sans-serif;
+  color: #666;
+}
+
+/* Theme Actions */
+.theme-actions {
+  margin-left: 2rem;
+}
+
+.theme-radio-visual {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0.3rem solid #009bde;
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.theme-radio-visual:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: #ff7101;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.theme-item.selected .theme-radio-visual:before {
+  opacity: 1;
+}
+
+.theme-item.selected .theme-radio-visual {
+  border-color: #ff7101;
+}
+
+/* Theme Preview Section */
+.theme-preview-section {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+/* Logo Uploads */
+.logo-uploads {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40rem, 1fr));
+  gap: 4rem;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-upload-area {
+  border: 2px dashed rgba(0, 155, 222, 0.3);
+  border-radius: 1.5rem;
+  padding: 4rem;
+  text-align: center;
+  background: rgba(0, 155, 222, 0.02);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 2rem;
+}
+
+.logo-upload-area:hover {
+  border-color: #ff7101;
+  background: rgba(255, 113, 1, 0.02);
+  transform: translateY(-2px);
+}
+
+.logo-upload-area input[type="file"] {
+  display: none;
+}
+
+.upload-content i {
+  font-size: 4rem;
+  color: #009bde;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.logo-upload-area:hover .upload-content i {
+  color: #ff7101;
+  transform: scale(1.1);
+}
+
+.upload-content p {
+  font: 600 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 0.5rem;
+}
+
+.upload-content small {
+  font: 400 1.4rem/1 "Montserrat", sans-serif;
+  color: #666;
+}
+
+/* Logo Preview */
+.logo-preview {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 155, 222, 0.1);
+}
+
+.logo-preview img {
+  max-width: 100%;
+  max-height: 10rem;
+  border-radius: 0.5rem;
+}
+
+/* Color Selection */
+.color-selection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  gap: 3rem;
+}
+
+.color-item {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding: 3rem;
+  border-radius: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 155, 222, 0.1);
+  transition: all 0.3s ease;
+}
+
+.color-item:hover {
+  border-color: rgba(255, 113, 1, 0.2);
+  transform: translateY(-2px);
+}
+
+.color-label {
+  font: 600 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.color-input-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.color-picker {
+  width: 6rem;
+  height: 4rem;
+  border: 2px solid rgba(0, 155, 222, 0.2);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.color-picker:hover {
+  border-color: #ff7101;
+  transform: scale(1.05);
+}
+
+.color-value {
+  flex: 1;
+  font: 500 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  background: #fff;
+  border: 2px solid rgba(0, 155, 222, 0.2);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.color-value:focus {
+  outline: none;
+  border-color: #ff7101;
+  box-shadow: 0 0 0 0.3rem rgba(255, 113, 1, 0.1);
+}
+
+/* Color Guide */
+.color-guide {
+  margin-top: 4rem;
+  padding: 3rem;
+  background: #fff;
+  border-radius: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 155, 222, 0.1);
+}
+
+.color-guide-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.guide-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: rgba(0, 155, 222, 0.02);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.guide-item:hover {
+  background: rgba(255, 113, 1, 0.05);
+}
+
+.guide-color {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.guide-item:hover .guide-color {
+  transform: scale(1.1);
+}
+
+.guide-text {
+  font: 400 1.5rem/1.4 "Montserrat", sans-serif;
+  color: #666;
+}
+
+.guide-text strong {
+  color: #0f488a;
+}
+
+/* Font Selection */
+.font-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.font-item {
+  background: #fff;
+  padding: 3rem;
+  border-radius: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 155, 222, 0.1);
+}
+
+.default-font-option {
+  margin-bottom: 2rem;
+}
+
+.checkbox-label {
+  font: 600 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#useDefaultFont {
+  transform: scale(1.2);
+}
+
+.custom-font-selection {
+  margin-top: 2rem;
+}
+
+/* Font Search */
+.font-search-container {
+  position: relative;
+  width: 100%;
+}
+
+.font-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.font-search-icon {
+  position: absolute;
+  left: 2rem;
+  color: #009bde;
+  font-size: 1.8rem;
+  z-index: 1;
+}
+
+.font-search-input {
+  width: 100%;
+  padding: 2rem 2rem 2rem 5rem;
+  border: 0.2rem solid rgba(0, 155, 222, 0.1);
+  border-radius: 2rem;
+  font: 500 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.font-search-input:focus {
+  outline: none;
+  border-color: #ff7101;
+  box-shadow: 0 0 0 0.3rem rgba(255, 113, 1, 0.1);
+}
+
+.font-search-input:focus + .font-search-icon {
+  color: #ff7101;
+}
+
+/* Font Suggestions */
+.font-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 0.2rem solid rgba(0, 155, 222, 0.1);
+  border-top: none;
+  border-radius: 0 0 2rem 2rem;
+  max-height: 25rem;
+  overflow-y: auto;
+  z-index: 10;
+  display: none;
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.font-suggestions.show {
+  display: block;
+}
+
+.font-suggestion-item {
+  padding: 1.5rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 0.1rem solid rgba(0, 155, 222, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.font-suggestion-item:hover {
+  background: rgba(255, 113, 1, 0.05);
+  color: #ff7101;
+}
+
+.font-suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.font-suggestion-name {
+  font: 500 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  transition: all 0.3s ease;
+}
+
+.font-suggestion-preview {
+  font: 400 1.4rem/1 "Montserrat", sans-serif;
+  color: #666;
+  font-style: italic;
+}
+
+.font-suggestion-item:hover .font-suggestion-name {
+  color: #ff7101;
+}
+
+/* Font Preview */
+.font-preview-area {
+  background: #fff;
+  padding: 4rem;
+  border-radius: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 155, 222, 0.1);
+}
+
+.font-preview-text h3 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #0f488a;
+  transition: all 0.3s ease;
+}
+
+.font-preview-text p {
+  font-size: 1.8rem;
+  line-height: 1.6;
+  color: #666;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+/* Responsive Design for Step 3 */
+@media screen and (max-width: 768px) {
+  .style-tabs .tab-navigation {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+
+  .logo-uploads {
+    grid-template-columns: 1fr;
+  }
+
+  .color-selection {
+    grid-template-columns: 1fr;
+  }
+
+  .theme-item .theme-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .theme-icon {
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .theme-actions {
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+}
+
+/* Animation for step entry */
+.step-content[data-step="3"].active {
+  animation: slideInFromLeft 0.5s ease-out;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

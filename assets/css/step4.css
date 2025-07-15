@@ -1,0 +1,358 @@
+/* Step 4: Plugin Settings Simplified Styles */
+/* Updated: 2025-07-14 21:47:44 UTC */
+/* User: jharrvis */
+
+/* Plugin Sections */
+.plugin-section {
+  margin-bottom: 3rem;
+  background: #fff;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 155, 222, 0.1);
+}
+
+.plugin-section:hover {
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+.plugin-category-header {
+  background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+  color: #fff;
+  padding: 2rem;
+  font: 700 1.8rem/1 "Montserrat", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.plugin-section-description {
+  padding: 1.5rem 2rem;
+  background: rgba(0, 155, 222, 0.05);
+  font: 400 1.4rem/1.4 "Montserrat", sans-serif;
+  color: #666;
+  border-bottom: 1px solid rgba(0, 155, 222, 0.1);
+}
+
+/* Plugin List */
+.plugin-list {
+  background: #fff;
+}
+
+.plugin-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  border-bottom: 1px solid rgba(0, 155, 222, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.plugin-item:last-child {
+  border-bottom: none;
+}
+
+.plugin-item:hover {
+  background-color: rgba(0, 155, 222, 0.05);
+}
+
+.plugin-item.selected {
+  background-color: rgba(50, 190, 125, 0.1);
+}
+
+/* Plugin Info */
+.plugin-info {
+  flex: 1;
+  margin-right: 2rem;
+}
+
+.plugin-name {
+  font: 700 1.6rem/1.2 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.plugin-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.plugin-description {
+  font: 400 1.3rem/1.4 "Montserrat", sans-serif;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.plugin-license-status {
+  font: 400 1.2rem/1 "Montserrat", sans-serif;
+  color: #32be7d;
+  margin-top: 0.5rem;
+}
+
+/* Plugin Status */
+.plugin-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font: 600 1.1rem/1 "Montserrat", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.plugin-status.free {
+  background: rgba(0, 155, 222, 0.1);
+  color: #009bde;
+}
+
+.plugin-status.premium {
+  background: rgba(255, 113, 1, 0.1);
+  color: #ff7101;
+}
+
+/* Plugin Controls */
+.plugin-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Toggle Switch */
+.plugin-toggle {
+  position: relative;
+}
+
+.plugin-checkbox {
+  display: none;
+}
+
+.toggle-switch {
+  display: block;
+  width: 5rem;
+  height: 2.5rem;
+  background: rgba(0, 155, 222, 0.1);
+  border-radius: 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid rgba(0, 155, 222, 0.2);
+}
+
+.toggle-switch:hover {
+  border-color: rgba(255, 113, 1, 0.3);
+}
+
+.toggle-switch:before {
+  content: "";
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: #009bde;
+  top: 0.15rem;
+  left: 0.15rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.plugin-checkbox:checked + .toggle-switch {
+  background: rgba(50, 190, 125, 0.2);
+  border-color: #32be7d;
+}
+
+.plugin-checkbox:checked + .toggle-switch:before {
+  left: 2.7rem;
+  background: #32be7d;
+}
+
+/* License Button */
+.license-btn {
+  background: #ff7101;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 1.5rem;
+  font: 600 1.1rem/1 "Montserrat", sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 0.2rem 0.5rem rgba(255, 113, 1, 0.2);
+}
+
+.license-btn:hover {
+  background: #009bde;
+  transform: translateY(-1px);
+  box-shadow: 0 0.3rem 0.8rem rgba(0, 155, 222, 0.3);
+}
+
+/* License Modal */
+.license-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.license-modal .modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.license-modal .modal-content {
+  background: #fff;
+  border-radius: 1.5rem;
+  max-width: 50rem;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.license-modal .modal-header {
+  padding: 2rem;
+  border-bottom: 1px solid rgba(0, 155, 222, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+  color: #fff;
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.license-modal .modal-title {
+  font: 700 2rem/1.2 "Montserrat", sans-serif;
+  margin: 0;
+}
+
+.license-modal .modal-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.license-modal .modal-close:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.license-modal .modal-body {
+  padding: 2rem;
+}
+
+.license-modal .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.license-modal .form-label {
+  font: 600 1.4rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.license-modal .form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid rgba(0, 155, 222, 0.2);
+  border-radius: 0.5rem;
+  font: 500 1.4rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.license-modal .form-input:focus {
+  outline: none;
+  border-color: #ff7101;
+}
+
+.license-modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Loading and Error States */
+.plugin-loading,
+.plugin-error {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font: 500 1.4rem/1 "Montserrat", sans-serif;
+}
+
+.plugin-loading {
+  color: #009bde;
+}
+
+.plugin-error {
+  color: #e91e64;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .plugin-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .plugin-info {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .plugin-controls {
+    align-self: flex-end;
+  }
+
+  .license-modal .modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .license-modal .modal-header {
+    padding: 1.5rem;
+  }
+
+  .license-modal .modal-title {
+    font-size: 1.6rem;
+  }
+}
