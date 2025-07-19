@@ -10,6 +10,10 @@
   margin-bottom: 4rem;
 }
 
+.form__fieldset_box:after {
+  top: 3rem !important;
+}
+
 .store-info-form .form__fieldset_h4 {
   font: 700 2.5rem/1.2 "Montserrat", sans-serif;
   color: #0f488a;
@@ -21,7 +25,7 @@
 .store-info-form .form__fieldset_input {
   height: 7rem;
   font-size: 2rem;
-  padding: 0 3rem;
+  padding: 0 3rem 0 5rem;
 }
 
 /* Store Name Validation */
