@@ -31,7 +31,8 @@
   top: 0;
   bottom: 0;
   width: 4px;
-  background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
+  background: #009bde;
   border-radius: 2px;
 }
 
@@ -154,7 +155,8 @@
 
 /* Installation Summary */
 .installation-summary {
-  background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
+  background: #009bde;
   color: #fff;
   padding: 3rem;
   border-radius: 2rem;
@@ -307,7 +309,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
+  background: #009bde;
   color: #fff;
   /* Removed border-radius here as it's handled by .modal-content */
 }
@@ -644,7 +647,8 @@
 
 .installation-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #009bde 0%, #ff7101 100%);
+  /* background: linear-gradient(90deg, #009bde 0%, #ff7101 100%); */
+  background: #009bde;
   border-radius: 1rem;
   width: 0%;
   transition: width 0.3s ease;
