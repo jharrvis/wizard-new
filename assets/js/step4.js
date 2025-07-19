@@ -1,5 +1,5 @@
 // Step 4: Plugin Settings JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management - Data loaded from JSON
+// Updated: 2025-07-19 Production Ready - Zero Console Spam
 // User: jharrvis
 
 class Step4PluginSettings {
@@ -9,6 +9,7 @@ class Step4PluginSettings {
     this.currentLicensePlugin = null;
     this.pluginData = {}; // Will be populated from JSON
     this.isDataLoaded = false;
+    this.isProduction = true; // Production mode flag
 
     this.init();
   }
@@ -25,6 +26,22 @@ class Step4PluginSettings {
     }, 100);
   }
 
+  // Debug logging only when explicitly enabled
+  debugLog(message, data = null) {
+    if (!this.isProduction && window.DEBUG_MODE) {
+      if (data) {
+        console.log(`[Step4] ${message}:`, data);
+      } else {
+        console.log(`[Step4] ${message}`);
+      }
+    }
+  }
+
+  // Error logging (always enabled for critical issues)
+  errorLog(message, error = null) {
+    console.error(`[Step4 Error] ${message}`, error || "");
+  }
+
   // Method to load plugin data from JSON
   async loadPluginData() {
     try {
@@ -34,11 +51,10 @@ class Step4PluginSettings {
       }
       this.pluginData = await response.json();
       this.isDataLoaded = true;
-      console.log("Plugin data loaded from file:", this.pluginData);
+      this.debugLog("Plugin data loaded from file", this.pluginData);
     } catch (error) {
-      console.error("Error loading plugin data from file:", error);
+      this.errorLog("Error loading plugin data from file", error);
       // Fallback to a default structure or display an error to the user
-      // For now, we'll just log the error and proceed with empty data.
       this.pluginData = {};
       this.isDataLoaded = true;
     }
@@ -83,7 +99,7 @@ class Step4PluginSettings {
     const savedData = this.getWizardData();
 
     if (savedData) {
-      console.log("Loading plugin data from localStorage:", savedData);
+      this.debugLog("Loading plugin data from localStorage", savedData);
 
       if (savedData.plugins) {
         this.selectedPlugins = { ...savedData.plugins };
@@ -104,7 +120,7 @@ class Step4PluginSettings {
   renderPluginSections() {
     const container = document.getElementById("pluginSections");
     if (!container) {
-      console.error("Plugin sections container not found");
+      this.errorLog("Plugin sections container not found");
       return;
     }
 
@@ -124,7 +140,7 @@ class Step4PluginSettings {
 
       this.updatePluginStates();
     } catch (error) {
-      console.error("Error rendering plugin sections:", error);
+      this.errorLog("Error rendering plugin sections", error);
       container.innerHTML =
         '<div class="plugin-error">Error loading plugins</div>';
     }
@@ -315,7 +331,7 @@ class Step4PluginSettings {
     const inputElement = document.getElementById("licenseKeyInput");
 
     if (!modal || !titleElement || !inputElement) {
-      console.error("License modal elements not found");
+      this.errorLog("License modal elements not found");
       return;
     }
 
@@ -345,7 +361,7 @@ class Step4PluginSettings {
 
     const licenseKey = inputElement.value.trim();
     if (!licenseKey) {
-      // Use a custom message box instead of alert()
+      // Use a custom notification instead of alert()
       this.showNotification("Please enter a license key", "error");
       return;
     }
@@ -361,6 +377,7 @@ class Step4PluginSettings {
   }
 
   showNotification(message, type = "info") {
+    // Create notification element
     const notification = document.createElement("div");
     notification.className = `notification ${type}`;
     notification.innerHTML = `
@@ -374,6 +391,7 @@ class Step4PluginSettings {
             ${message}
           `;
 
+    // Style the notification
     Object.assign(notification.style, {
       position: "fixed",
       top: "2rem",
@@ -393,10 +411,13 @@ class Step4PluginSettings {
       display: "flex",
       alignItems: "center",
       gap: "0.5rem",
+      maxWidth: "300px",
+      wordWrap: "break-word",
     });
 
     document.body.appendChild(notification);
 
+    // Auto-remove notification after 3 seconds
     setTimeout(() => {
       if (notification.parentNode) {
         notification.parentNode.removeChild(notification);
@@ -424,9 +445,9 @@ class Step4PluginSettings {
       wizardData.licenseKeys = this.licenseKeys;
       localStorage.setItem("wizardData", JSON.stringify(wizardData));
 
-      console.log("Plugin data saved:", pluginData);
+      this.debugLog("Plugin data saved", pluginData);
     } catch (error) {
-      console.error("Error saving plugin data:", error);
+      this.errorLog("Error saving plugin data", error);
     }
   }
 
@@ -435,21 +456,16 @@ class Step4PluginSettings {
       const saved = localStorage.getItem("wizardData");
       return saved ? JSON.parse(saved) : null;
     } catch (error) {
-      console.error("Error loading wizard data:", error);
+      this.errorLog("Error loading wizard data", error);
       return null;
     }
   }
 
   updateNextButton() {
-    console.log("Step 4: Updating next button state");
-
     const nextBtn = document.getElementById("nextBtn");
     if (nextBtn) {
       nextBtn.disabled = false;
       nextBtn.classList.remove("disabled");
-      console.log("Step 4: Next button enabled");
-    } else {
-      console.warn("Step 4: Next button not found");
     }
 
     // Also call global update function
@@ -460,7 +476,7 @@ class Step4PluginSettings {
 
   // Public methods
   validateStep() {
-    console.log("Step 4: Validating step - always returns true");
+    this.debugLog("Step 4: Validating step - always returns true");
 
     // Save data when validating
     this.saveData();
@@ -588,37 +604,62 @@ class Step4PluginSettings {
       missingLicenses,
     };
   }
+
+  // Method to cleanup resources when component is destroyed
+  cleanup() {
+    // Remove event listeners if they were bound to specific elements
+    if (this.boundEventHandlers) {
+      this.boundEventHandlers.forEach(({ element, event, handler }) => {
+        element.removeEventListener(event, handler);
+      });
+    }
+
+    // Clear any pending operations
+    if (this.pendingOperations) {
+      this.pendingOperations.forEach((operation) => {
+        if (operation.cancel) {
+          operation.cancel();
+        }
+      });
+    }
+
+    this.debugLog("Step 4 cleanup completed");
+  }
 }
 
-// Global functions for modal
+// Global functions for modal - Production ready
 window.saveLicenseKey = function () {
   if (window.step4PluginSettings) {
     window.step4PluginSettings.saveLicenseKey();
+  } else {
+    console.error("Step4PluginSettings not initialized");
   }
 };
 
 window.closeLicenseModal = function () {
   if (window.step4PluginSettings) {
     window.step4PluginSettings.closeLicenseModal();
+  } else {
+    console.error("Step4PluginSettings not initialized");
   }
 };
 
-// Initialize
+// Initialize - Production optimized
 document.addEventListener("DOMContentLoaded", function () {
   const step4Content = document.querySelector('.step-content[data-step="4"]');
   if (step4Content) {
     window.step4PluginSettings = new Step4PluginSettings();
 
-    // Force reload data after initialization
+    // Force reload data after initialization with reduced timeout
     setTimeout(() => {
       if (window.step4PluginSettings) {
         window.step4PluginSettings.loadStoredData();
         window.step4PluginSettings.renderPluginSections();
         window.step4PluginSettings.updateNextButton();
       }
-    }, 300);
+    }, 200); // Reduced timeout
 
-    // Observer untuk memantau ketika step 4 menjadi aktif
+    // Observer for when step 4 becomes active - optimized
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
@@ -627,7 +668,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
           const step4 = document.querySelector('.step-content[data-step="4"]');
           if (step4 && step4.classList.contains("active")) {
-            console.log("Step 4 is now active, updating button state");
+            // Use shorter timeout for better performance
             setTimeout(() => {
               if (window.step4PluginSettings) {
                 // Reload data when step becomes active
@@ -635,14 +676,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.step4PluginSettings.updatePluginStates();
                 window.step4PluginSettings.updateNextButton();
               }
-            }, 100);
+            }, 50); // Reduced from 100ms
           }
         }
       });
     });
 
-    // Start observing
-    observer.observe(step4Content, { attributes: true });
+    // Start observing with optimized settings
+    observer.observe(step4Content, {
+      attributes: true,
+      attributeFilter: ["class"], // Only watch for class changes
+    });
+  }
+});
+
+// Cleanup on page unload to prevent memory leaks
+window.addEventListener("beforeunload", function () {
+  if (
+    window.step4PluginSettings &&
+    typeof window.step4PluginSettings.cleanup === "function"
+  ) {
+    window.step4PluginSettings.cleanup();
   }
 });
 

@@ -1,5 +1,5 @@
 // Step 3: Styles & Design JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management - Theme Preview Modal with Responsive Toggle
+// Updated: 2025-07-19 Performance Optimization - Removed excessive console logging
 // User: jharrvis
 
 class Step3StylesDesign {
@@ -179,10 +179,6 @@ class Step3StylesDesign {
     if (themePreviewModal) {
       themePreviewModal.addEventListener("click", (e) => {
         if (e.target === themePreviewModal) {
-          // Only close if clicking the overlay itself
-          console.log(
-            "Theme Preview Modal Overlay clicked, attempting to close."
-          ); // Debug log
           this.closeThemePreview();
         }
       });
@@ -194,9 +190,6 @@ class Step3StylesDesign {
     );
     if (themePreviewCloseBtn) {
       themePreviewCloseBtn.addEventListener("click", () => {
-        console.log(
-          "Theme Preview Modal Close button clicked, attempting to close."
-        ); // Debug log
         this.closeThemePreview();
       });
     }
@@ -207,7 +200,10 @@ class Step3StylesDesign {
     const savedData = this.getWizardData();
 
     if (savedData) {
-      console.log("Loading styling data from localStorage:", savedData);
+      // Only log in debug mode
+      if (window.DEBUG_MODE) {
+        console.log("Loading styling data from localStorage:", savedData);
+      }
 
       // Load theme
       if (savedData.theme) {
@@ -222,12 +218,7 @@ class Step3StylesDesign {
         // Colors
         if (styling.colors) {
           Object.assign(this.colors, styling.colors);
-          console.log(
-            "Before updateColorInputs in loadStoredData:",
-            this,
-            typeof this.updateColorInputs
-          ); // Debug log
-          this.updateColorInputs(); // Call the arrow function property
+          this.updateColorInputs();
         }
 
         // Fonts
@@ -364,23 +355,27 @@ class Step3StylesDesign {
     // Validate file
     if (file.size > 2 * 1024 * 1024) {
       // Use custom message box instead of alert()
-      window.step6SummaryInstallation.showCustomMessageBox(
-        "Ukuran File Terlalu Besar",
-        "Ukuran file harus kurang dari 2MB.",
-        () => {}, // OK callback
-        () => {} // Cancel callback (not applicable for info)
-      );
+      if (window.step6SummaryInstallation) {
+        window.step6SummaryInstallation.showCustomMessageBox(
+          "File Size Too Large",
+          "File size must be less than 2MB.",
+          () => {}, // OK callback
+          () => {} // Cancel callback (not applicable for info)
+        );
+      }
       return;
     }
 
     if (!file.type.match(/^image\/(png|jpg|jpeg|svg\+xml)$/)) {
       // Use custom message box instead of alert()
-      window.step6SummaryInstallation.showCustomMessageBox(
-        "Format File Tidak Valid",
-        "Mohon unggah file gambar yang valid (PNG, JPG, SVG).",
-        () => {}, // OK callback
-        () => {} // Cancel callback (not applicable for info)
-      );
+      if (window.step6SummaryInstallation) {
+        window.step6SummaryInstallation.showCustomMessageBox(
+          "Invalid File Format",
+          "Please upload a valid image file (PNG, JPG, SVG).",
+          () => {}, // OK callback
+          () => {} // Cancel callback (not applicable for info)
+        );
+      }
       return;
     }
 
@@ -428,11 +423,6 @@ class Step3StylesDesign {
     }
 
     this.saveStylingData();
-    console.log(
-      "Before updateColorGuide in updateColor:",
-      this,
-      typeof this.updateColorGuide
-    ); // Debug log
     this.updateColorGuide();
     this.updateThemePreviewContent(); // Update preview when color changes
   }
@@ -448,11 +438,6 @@ class Step3StylesDesign {
       }
 
       this.saveStylingData();
-      console.log(
-        "Before updateColorGuide in updateColorFromText:",
-        this,
-        typeof this.updateColorGuide
-      ); // Debug log
       this.updateColorGuide();
       this.updateThemePreviewContent(); // Update preview when color changes
     }
@@ -460,14 +445,10 @@ class Step3StylesDesign {
 
   // Changed to arrow function property to ensure 'this' context
   updateColorGuide = () => {
-    console.log(
-      "Executing updateColorGuide. this:",
-      this,
-      "this.colors:",
-      this.colors
-    ); // Debug log
     if (!this.colors) {
-      console.error("this.colors is not defined in updateColorGuide.");
+      if (window.DEBUG_MODE) {
+        console.error("this.colors is not defined in updateColorGuide.");
+      }
       return;
     }
     const primaryDemo = document.querySelector(".primary-demo");
@@ -482,14 +463,10 @@ class Step3StylesDesign {
 
   // Changed to arrow function property to ensure 'this' context
   updateColorInputs = () => {
-    console.log(
-      "Executing updateColorInputs. this:",
-      this,
-      "this.colors:",
-      this.colors
-    ); // Debug log
     if (!this.colors) {
-      console.error("this.colors is not defined in updateColorInputs.");
+      if (window.DEBUG_MODE) {
+        console.error("this.colors is not defined in updateColorInputs.");
+      }
       return;
     }
     Object.entries(this.colors).forEach(([type, value]) => {
@@ -505,11 +482,6 @@ class Step3StylesDesign {
 
   initializeColorGuide() {
     setTimeout(() => {
-      console.log(
-        "Before updateColorGuide in initializeColorGuide timeout. this:",
-        this,
-        typeof this.updateColorGuide
-      ); // Debug log
       this.updateColorGuide();
     }, 100);
   }
@@ -642,7 +614,10 @@ class Step3StylesDesign {
       wizardData.theme = this.selectedTheme;
       localStorage.setItem("wizardData", JSON.stringify(wizardData));
 
-      console.log("Theme data saved:", this.selectedTheme);
+      // Only log in debug mode
+      if (window.DEBUG_MODE) {
+        console.log("Theme data saved:", this.selectedTheme);
+      }
     } catch (error) {
       console.error("Error saving theme data:", error);
     }
@@ -671,7 +646,10 @@ class Step3StylesDesign {
       wizardData.styling = stylingData;
       localStorage.setItem("wizardData", JSON.stringify(wizardData));
 
-      console.log("Styling data saved:", stylingData);
+      // Only log in debug mode
+      if (window.DEBUG_MODE) {
+        console.log("Styling data saved:", stylingData);
+      }
     } catch (error) {
       console.error("Error saving styling data:", error);
     }
@@ -690,14 +668,10 @@ class Step3StylesDesign {
 
   // Method to close the theme preview modal
   closeThemePreview() {
-    console.log("Attempting to close theme preview modal."); // Debug log
     const modal = document.getElementById("themePreviewModal");
     if (modal) {
       modal.classList.remove("show");
       document.body.classList.remove("modal-open");
-      console.log("Theme preview modal classes removed."); // Debug log
-    } else {
-      console.warn("Theme preview modal element not found for closing.");
     }
   }
 
@@ -816,7 +790,7 @@ class Step3StylesDesign {
         }
         .preview-button:hover {
           background-color: ${this.colors.secondary} !important;
-          box-shadow: 0 0.5rem 1.5rem rgba(0, 155, 222, 0.2) !important; /* Example shadow change */
+          box-shadow: 0 0.5rem 1.5rem rgba(0, 155, 222, 0.2) !important;
         }
         .preview-nav-item:hover {
           color: ${this.colors.secondary} !important;
@@ -827,7 +801,6 @@ class Step3StylesDesign {
         .product-price {
           color: ${this.colors.tertiary} !important;
         }
-        /* Add more dynamic styles here */
       `;
 
     // Update Fonts
@@ -836,7 +809,7 @@ class Step3StylesDesign {
       : `'${this.customFont}', sans-serif`;
     previewBody.style.fontFamily = fontToApply;
 
-    // Apply font to specific elements if needed (e.g., headings might have different font-weights)
+    // Apply font to specific elements if needed
     const previewHeadline = document.getElementById("previewHeadline");
     const previewSubtext = document.getElementById("previewSubtext");
     const previewButton = document.getElementById("previewButton");
@@ -1039,12 +1012,9 @@ window.updateThemeGrid = function (platform) {
 document.addEventListener("DOMContentLoaded", function () {
   const step3Content = document.querySelector('.step-content[data-step="3"]');
   if (step3Content) {
-    // Ensure it's not initialized multiple times if somehow DOMContentLoaded fires more than once
+    // Ensure it's not initialized multiple times
     if (!window.step3StylesDesign) {
       window.step3StylesDesign = new Step3StylesDesign();
-      console.log("Step3StylesDesign initialized.");
-    } else {
-      console.log("Step3StylesDesign already initialized.");
     }
 
     // Force reload data after initialization
@@ -1070,7 +1040,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Reload data when step becomes active
                 window.step3StylesDesign.loadStoredData();
                 window.step3StylesDesign.updateThemeOptions();
-                window.step3StylesDesign.updateThemePreviewContent(); // Update preview content on tab activation
+                window.step3StylesDesign.updateThemePreviewContent();
                 window.step3StylesDesign.updateNextButton();
               }
             }, 100);

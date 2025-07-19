@@ -1,5 +1,5 @@
 // Step 2: Platform Selection JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management - Data loaded from JSON
+// Updated: 2025-07-19 Performance Optimization - Reduced console logging
 // User: jharrvis
 
 class Step2PlatformSelection {
@@ -39,11 +39,15 @@ class Step2PlatformSelection {
         throw new Error("Failed to load platform-data.json");
       }
       this.platformData = await response.json();
-      console.log("Platform data loaded from file:", this.platformData);
+
+      // Only log in debug mode
+      if (window.DEBUG_MODE) {
+        console.log("Platform data loaded from file:", this.platformData);
+      }
     } catch (error) {
       console.error("Error loading platform data from file:", error);
       // Fallback or display error message if data cannot be loaded
-      // For now, we'll just log the error.
+      this.platformData = {};
     }
   }
 
@@ -70,10 +74,13 @@ class Step2PlatformSelection {
     const savedData = this.getWizardData();
 
     if (savedData && savedData.platform) {
-      console.log(
-        "Loading platform data from localStorage:",
-        savedData.platform
-      );
+      // Only log in debug mode
+      if (window.DEBUG_MODE) {
+        console.log(
+          "Loading platform data from localStorage:",
+          savedData.platform
+        );
+      }
 
       // Load platform first
       if (savedData.platform.selected) {
@@ -315,7 +322,10 @@ class Step2PlatformSelection {
       wizardData.platform = platformData;
       localStorage.setItem("wizardData", JSON.stringify(wizardData));
 
-      console.log("Platform data saved:", platformData);
+      // Only log in debug mode
+      if (window.DEBUG_MODE) {
+        console.log("Platform data saved:", platformData);
+      }
     } catch (error) {
       console.error("Error saving platform data:", error);
     }
@@ -356,11 +366,15 @@ class Step2PlatformSelection {
   // Public methods for validation and data access
   validateStep() {
     const isValid = !!(this.selectedPlatform && this.selectedVersion);
-    console.log("Step 2 validation:", {
-      platform: this.selectedPlatform,
-      version: this.selectedVersion,
-      isValid: isValid,
-    });
+
+    // Only log in debug mode
+    if (window.DEBUG_MODE) {
+      console.log("Step 2 validation:", {
+        platform: this.selectedPlatform,
+        version: this.selectedVersion,
+        isValid: isValid,
+      });
+    }
 
     // Save data when validating
     if (isValid) {

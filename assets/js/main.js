@@ -1,5 +1,5 @@
 // Main wizard controller
-// Updated: 2025-07-15 Enhanced Data Management - Fix for Install Now button
+// Updated: 2025-07-19 Performance Optimization - Removed excessive console logging
 // User: jharrvis
 
 // Global wizard data object with complete structure
@@ -61,7 +61,10 @@ window.saveWizardData = function () {
       }, 100);
     }
 
-    console.log("Wizard data saved:", window.wizardData);
+    // Only log in development mode
+    if (window.DEBUG_MODE) {
+      console.log("Wizard data saved:", window.wizardData);
+    }
   } catch (error) {
     console.error("Error saving wizard data:", error);
   }
@@ -75,7 +78,11 @@ window.loadWizardData = function () {
       const parsedData = JSON.parse(saved);
       // Merge with default structure to ensure all properties exist
       window.wizardData = mergeDeep(window.wizardData, parsedData);
-      console.log("Wizard data loaded:", window.wizardData);
+
+      // Only log in development mode
+      if (window.DEBUG_MODE) {
+        console.log("Wizard data loaded:", window.wizardData);
+      }
     }
   } catch (error) {
     console.error("Error loading wizard data:", error);
@@ -118,7 +125,10 @@ window.updateWizardData = function (section, data, saveImmediately = true) {
         window.saveWizardData();
       }
 
-      console.log(`Updated ${section}:`, window.wizardData[section]);
+      // Only log in development mode
+      if (window.DEBUG_MODE) {
+        console.log(`Updated ${section}:`, window.wizardData[section]);
+      }
     }
   } catch (error) {
     console.error(`Error updating ${section}:`, error);
@@ -135,8 +145,6 @@ function getCurrentStep() {
 window.updateNextButton = function () {
   const nextBtn = document.getElementById("nextBtn");
   const currentStep = getCurrentStep();
-
-  console.log(`Updating next button for step ${currentStep}`);
 
   let isValid = false;
 
@@ -160,7 +168,6 @@ window.updateNextButton = function () {
     case 4:
       // Step 4 is always valid - plugin selection is optional
       isValid = true;
-      console.log("Step 4: Setting isValid to true (plugins are optional)");
       break;
     case 5:
       if (window.step5SampleData) {
@@ -175,26 +182,25 @@ window.updateNextButton = function () {
       break;
   }
 
-  console.log(`Step ${currentStep} validation result:`, isValid);
-
   if (nextBtn) {
     nextBtn.disabled = !isValid;
 
     // Add visual feedback
     if (isValid) {
       nextBtn.classList.remove("disabled");
-      console.log("Next button enabled");
     } else {
       nextBtn.classList.add("disabled");
-      console.log("Next button disabled");
     }
-  } else {
-    console.warn("Next button not found");
   }
 };
 
 // Initialize wizard when DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
+  // Set debug mode based on URL parameter or environment
+  window.DEBUG_MODE =
+    new URLSearchParams(window.location.search).has("debug") ||
+    window.location.hostname === "localhost";
+
   // Load saved wizard data first
   window.loadWizardData();
 
@@ -220,9 +226,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Force reload of all step data after DOM is ready
   setTimeout(() => {
-    // Trigger loading for all steps
-    const currentStep = getCurrentStep();
-
     // Load data for each step based on localStorage
     if (window.step1StoreInfo) {
       window.step1StoreInfo.loadStoredData();
@@ -250,10 +253,10 @@ document.addEventListener("DOMContentLoaded", function () {
     window.updateNextButton();
   }, 500);
 
-  // Auto-save every 30 seconds
+  // Optimized auto-save - reduced frequency
   setInterval(() => {
     window.saveWizardData();
-  }, 30000);
+  }, 60000); // Changed from 30s to 60s
 });
 
 // Navigation functions
@@ -273,11 +276,9 @@ function nextStep() {
       if (window.step6SummaryInstallation.validateStep()) {
         window.step6SummaryInstallation.startInstallation();
       } else {
-        // Optionally, show a warning if validation fails
         console.warn(
           "Installation cannot start: Missing required configuration."
         );
-        // You might want to display a user-friendly message here
       }
     } else {
       console.error("Step6SummaryInstallation not initialized.");
@@ -294,8 +295,6 @@ function prevStep() {
 }
 
 function showStep(stepNumber) {
-  console.log(`Showing step ${stepNumber}`);
-
   // Save current step data before moving
   window.saveWizardData();
 
@@ -328,8 +327,6 @@ function showStep(stepNumber) {
 
   // Update button state for new step with delay
   setTimeout(() => {
-    console.log(`Updating button state for step ${stepNumber}`);
-
     // Special handling for each step
     switch (stepNumber) {
       case 1:
@@ -358,20 +355,12 @@ function showStep(stepNumber) {
         if (window.step5SampleData) {
           window.step5SampleData.loadStoredData();
           window.step5SampleData.updateSelectionState();
-          console.log(
-            "Step 5 data loaded:",
-            window.step5SampleData.getStepData()
-          );
         }
         break;
       case 6:
         if (window.step6SummaryInstallation) {
           window.step6SummaryInstallation.loadWizardData();
           window.step6SummaryInstallation.generateSummary();
-          console.log(
-            "Step 6 summary generated with data:",
-            window.step6SummaryInstallation.wizardData
-          );
         }
         break;
     }
@@ -426,57 +415,14 @@ function updateNavigationButtons(stepNumber) {
   }
 }
 
-// Removed the old showInstallationModal and startInstallation functions from here
-// These are now handled by the Step6SummaryInstallation class
-
 // Export configuration with complete data
 window.exportConfiguration = function () {
-  // This function is now called directly from step6.js's exportConfiguration method
-  // It's kept here for backward compatibility if other parts of the app rely on it.
   if (window.step6SummaryInstallation) {
     window.step6SummaryInstallation.exportConfiguration();
   } else {
     console.error("Step6SummaryInstallation not initialized for export.");
   }
 };
-
-// Generate configuration summary
-function generateConfigSummary() {
-  // This function is now handled by step6.js's generateConfigSummary method
-  // It's kept here for backward compatibility if other parts of the app rely on it.
-  if (window.step6SummaryInstallation) {
-    return window.step6SummaryInstallation.generateConfigSummary();
-  }
-  return {};
-}
-
-// Get system requirements based on platform
-function getSystemRequirements() {
-  // This function is now handled by step6.js's getSystemRequirements method
-  // It's kept here for backward compatibility if other parts of the app rely on it.
-  if (window.step6SummaryInstallation) {
-    return window.step6SummaryInstallation.getSystemRequirements(
-      window.wizardData.platform?.selected,
-      window.wizardData.platform?.version
-    );
-  }
-  return null;
-}
-
-// View website function
-function viewWebsite() {
-  // This function is now handled by step6.js's viewWebsite method
-  // It's kept here for backward compatibility if other parts of the app rely on it.
-  if (window.step6SummaryInstallation) {
-    window.step6SummaryInstallation.viewWebsite();
-  } else {
-    const storeName = window.wizardData.storeInfo?.name || "yourwebsite";
-    const websiteUrl = `https://${storeName
-      .toLowerCase()
-      .replace(/\s+/g, "-")}.com`;
-    window.open(websiteUrl, "_blank");
-  }
-}
 
 // License modal functions (these are still used by step4.js, so keep them)
 function openLicenseModal(pluginName) {
@@ -516,10 +462,9 @@ function saveLicenseKey() {
     // Update UI to show license key is saved
     const plugin = document.querySelector(`[data-plugin="${pluginName}"]`);
     if (plugin) {
-      const licenseIndicator = plugin.querySelector(".plugin-license-status"); // Corrected selector
+      const licenseIndicator = plugin.querySelector(".plugin-license-status");
       if (licenseIndicator) {
         licenseIndicator.textContent = "✓ License key configured";
-        // No need to add 'saved' class as it's handled by updatePluginItem in step4.js
       }
     }
   }
@@ -529,7 +474,7 @@ function saveLicenseKey() {
 function updateUserProfile() {
   const userNameElement = document.querySelector(".user-name");
   if (userNameElement) {
-    userNameElement.textContent = "John Doe"; // Update to actual user name
+    userNameElement.textContent = "John Doe";
   }
 
   const userAvatar = document.querySelector(".avatar-image");
@@ -539,8 +484,13 @@ function updateUserProfile() {
   }
 }
 
-// Debug function to check wizard data
+// Debug function - only available in debug mode
 window.debugWizardData = function () {
+  if (!window.DEBUG_MODE) {
+    console.warn("Debug mode is disabled. Add ?debug to URL to enable.");
+    return;
+  }
+
   console.log("=== Wizard Data Debug ===");
   console.log("Global wizard data:", window.wizardData);
 
@@ -579,8 +529,13 @@ window.debugWizardData = function () {
   console.log("========================");
 };
 
-// Function to force reload all step data
+// Function to force reload all step data - only in debug mode
 window.reloadAllStepData = function () {
+  if (!window.DEBUG_MODE) {
+    console.warn("Debug mode is disabled. Add ?debug to URL to enable.");
+    return;
+  }
+
   console.log("=== Force Reloading All Step Data ===");
 
   // Reload data for each step

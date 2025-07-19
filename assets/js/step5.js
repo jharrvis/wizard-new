@@ -1,10 +1,11 @@
 // Step 5: Sample Data JavaScript Module
-// Updated: 2025-07-15 Clean Version - No Syntax Errors
+// Updated: 2025-07-19 Production Ready - Zero Console Spam
 // User: jharrvis
 
 class Step5SampleData {
   constructor() {
     this.selectedSample = "with_sample"; // Default selection
+    this.isProduction = true; // Production mode flag
     this.init();
   }
 
@@ -15,16 +16,32 @@ class Step5SampleData {
     this.updateNextButton();
   }
 
+  // Debug logging only when explicitly enabled
+  debugLog(message, data = null) {
+    if (!this.isProduction && window.DEBUG_MODE) {
+      if (data) {
+        console.log(`[Step5] ${message}:`, data);
+      } else {
+        console.log(`[Step5] ${message}`);
+      }
+    }
+  }
+
+  // Error logging (always enabled for critical issues)
+  errorLog(message, error = null) {
+    console.error(`[Step5 Error] ${message}`, error || "");
+  }
+
   bindEvents() {
-    // Radio button changes - Fixed event handling
+    // Radio button changes - optimized event handling
     document.addEventListener("change", (e) => {
       if (e.target.name === "sample-data") {
-        console.log("Radio button changed:", e.target.value);
+        this.debugLog("Radio button changed", e.target.value);
         this.selectSample(e.target.value);
       }
     });
 
-    // Click on option container - Fixed click handling
+    // Click on option container - optimized click handling
     document.addEventListener("click", (e) => {
       const optionContainer = e.target.closest(".sample-data-option");
       if (optionContainer) {
@@ -33,7 +50,10 @@ class Step5SampleData {
         );
         if (radioInput && !radioInput.checked) {
           radioInput.checked = true;
-          console.log("Option container clicked, selecting:", radioInput.value);
+          this.debugLog(
+            "Option container clicked, selecting",
+            radioInput.value
+          );
           this.selectSample(radioInput.value);
         }
       }
@@ -50,7 +70,7 @@ class Step5SampleData {
           );
           if (radioInput) {
             radioInput.checked = true;
-            console.log("Label clicked, selecting:", radioInput.value);
+            this.debugLog("Label clicked, selecting", radioInput.value);
             this.selectSample(radioInput.value);
           }
         }
@@ -63,13 +83,13 @@ class Step5SampleData {
     const savedData = this.getWizardData();
 
     if (savedData && savedData.sampleData) {
-      console.log(
-        "Loading sample data from localStorage:",
+      this.debugLog(
+        "Loading sample data from localStorage",
         savedData.sampleData
       );
       this.selectedSample = savedData.sampleData;
     } else {
-      console.log("No saved data found, using default:", this.selectedSample);
+      this.debugLog("No saved data found, using default", this.selectedSample);
     }
 
     // Also update global wizard data if it exists
@@ -79,7 +99,7 @@ class Step5SampleData {
   }
 
   selectSample(sampleType) {
-    console.log("Selecting sample type:", sampleType);
+    this.debugLog("Selecting sample type", sampleType);
     this.selectedSample = sampleType;
     this.updateSelectionState();
     this.saveData();
@@ -87,7 +107,7 @@ class Step5SampleData {
   }
 
   updateSelectionState() {
-    console.log("Updating selection state to:", this.selectedSample);
+    this.debugLog("Updating selection state to", this.selectedSample);
 
     // Update radio buttons and visual states
     const radioButtons = document.querySelectorAll('input[name="sample-data"]');
@@ -100,7 +120,7 @@ class Step5SampleData {
       if (parentOption) {
         if (isChecked) {
           parentOption.classList.add("selected");
-          console.log("Added selected class to:", radio.value);
+          this.debugLog("Added selected class to", radio.value);
         } else {
           parentOption.classList.remove("selected");
         }
@@ -152,7 +172,7 @@ class Step5SampleData {
 
   saveData() {
     try {
-      console.log("Saving sample data:", this.selectedSample);
+      this.debugLog("Saving sample data", this.selectedSample);
 
       // Update global wizard data
       if (window.wizardData) {
@@ -165,9 +185,9 @@ class Step5SampleData {
       wizardData.sampleDataTimestamp = new Date().toISOString();
       localStorage.setItem("wizardData", JSON.stringify(wizardData));
 
-      console.log("Sample data saved successfully:", this.selectedSample);
+      this.debugLog("Sample data saved successfully", this.selectedSample);
     } catch (error) {
-      console.error("Error saving sample data selection:", error);
+      this.errorLog("Error saving sample data selection", error);
     }
   }
 
@@ -176,7 +196,7 @@ class Step5SampleData {
       const saved = localStorage.getItem("wizardData");
       return saved ? JSON.parse(saved) : null;
     } catch (error) {
-      console.error("Error loading wizard data:", error);
+      this.errorLog("Error loading wizard data", error);
       return null;
     }
   }
@@ -190,12 +210,10 @@ class Step5SampleData {
   // Public methods for validation and data access
   validateStep() {
     const isValid = !!this.selectedSample;
-    console.log(
-      "Step 5 validation:",
-      isValid,
-      "Selected:",
-      this.selectedSample
-    );
+    this.debugLog("Step 5 validation", {
+      isValid: isValid,
+      selected: this.selectedSample,
+    });
 
     // Save data when validating
     if (isValid) {
@@ -213,7 +231,7 @@ class Step5SampleData {
       isValid: this.validateStep(),
     };
 
-    console.log("Step 5 data:", stepData);
+    this.debugLog("Step 5 data", stepData);
 
     // Save data when requested
     this.saveData();
@@ -271,48 +289,70 @@ class Step5SampleData {
 
   // Force update method for debugging
   forceUpdate() {
-    console.log("Force updating Step 5...");
+    this.debugLog("Force updating Step 5...");
     this.loadStoredData();
     this.updateSelectionState();
     this.updateNextButton();
   }
+
+  // Method to cleanup resources when component is destroyed
+  cleanup() {
+    // Remove any bound event listeners if they were stored
+    if (this.boundEventHandlers) {
+      this.boundEventHandlers.forEach(({ element, event, handler }) => {
+        element.removeEventListener(event, handler);
+      });
+    }
+
+    // Clear any pending operations
+    if (this.pendingOperations) {
+      this.pendingOperations.forEach((operation) => {
+        if (operation.cancel) {
+          operation.cancel();
+        }
+      });
+    }
+
+    this.debugLog("Step 5 cleanup completed");
+  }
 }
 
-// Initialize Step 5 when DOM is ready
+// Initialize Step 5 when DOM is ready - Production optimized
 document.addEventListener("DOMContentLoaded", function () {
   const step5Content = document.querySelector('.step-content[data-step="5"]');
   if (step5Content) {
     window.step5SampleData = new Step5SampleData();
 
-    // Force reload data after initialization
+    // Force reload data after initialization with reduced timeout
     setTimeout(() => {
       if (window.step5SampleData) {
-        console.log("Initializing Step 5 with forced data reload...");
         window.step5SampleData.loadStoredData();
         window.step5SampleData.updateSelectionState();
         window.step5SampleData.updateNextButton();
 
-        // Debug: Check if radio buttons exist
-        const radioButtons = document.querySelectorAll(
-          'input[name="sample-data"]'
-        );
-        console.log("Found radio buttons:", radioButtons.length);
-        radioButtons.forEach((radio, index) => {
-          console.log(
-            `Radio ${index}:`,
-            radio.value,
-            "checked:",
-            radio.checked
+        // Debug: Check if radio buttons exist (only in debug mode)
+        if (window.DEBUG_MODE) {
+          const radioButtons = document.querySelectorAll(
+            'input[name="sample-data"]'
           );
-        });
+          console.log("Found radio buttons:", radioButtons.length);
+          radioButtons.forEach((radio, index) => {
+            console.log(
+              `Radio ${index}:`,
+              radio.value,
+              "checked:",
+              radio.checked
+            );
+          });
 
-        // Verify step 5 data is accessible
-        const stepData = window.step5SampleData.getStepData();
-        console.log("Step 5 current data:", stepData);
+          // Verify step 5 data is accessible
+          const stepData = window.step5SampleData.getStepData();
+          console.log("Step 5 current data:", stepData);
+        }
       }
-    }, 300);
+    }, 200); // Reduced timeout
 
-    // Also initialize when step 5 becomes visible
+    // Observer for when step 5 becomes visible - optimized
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
@@ -321,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
           const step5 = document.querySelector('.step-content[data-step="5"]');
           if (step5 && step5.classList.contains("active")) {
-            console.log("Step 5 became active, reloading data...");
+            // Use shorter timeout for better performance
             setTimeout(() => {
               if (window.step5SampleData) {
                 // Reload data when step becomes active
@@ -329,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.step5SampleData.updateSelectionState();
                 window.step5SampleData.updateNextButton();
 
-                // Clean up any unwanted elements
+                // Clean up any unwanted elements (performance optimization)
                 const unwantedElements = step5.querySelectorAll(
                   '[class*="install"], [id*="install"], [class*="progress"]'
                 );
@@ -338,28 +378,44 @@ document.addEventListener("DOMContentLoaded", function () {
                     el.style.display = "none";
                   }
                 });
-
-                console.log("Step 5 data reloaded on activation");
               }
-            }, 100);
+            }, 50); // Reduced from 100ms
           }
         }
       });
     });
 
-    // Start observing
+    // Start observing with optimized settings
     const step5Element = document.querySelector('.step-content[data-step="5"]');
     if (step5Element) {
-      observer.observe(step5Element, { attributes: true });
+      observer.observe(step5Element, {
+        attributes: true,
+        attributeFilter: ["class"], // Only watch for class changes
+      });
     }
+  }
+});
+
+// Cleanup on page unload to prevent memory leaks
+window.addEventListener("beforeunload", function () {
+  if (
+    window.step5SampleData &&
+    typeof window.step5SampleData.cleanup === "function"
+  ) {
+    window.step5SampleData.cleanup();
   }
 });
 
 // Export for global access
 window.Step5SampleData = Step5SampleData;
 
-// Global function to force update step 5 (for debugging)
+// Global function to force update step 5 (for debugging only)
 window.forceUpdateStep5 = function () {
+  if (!window.DEBUG_MODE) {
+    console.warn("Debug mode is disabled. Add ?debug to URL to enable.");
+    return;
+  }
+
   if (window.step5SampleData) {
     console.log("Force updating Step 5...");
     window.step5SampleData.forceUpdate();

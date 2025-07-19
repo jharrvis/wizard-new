@@ -312,10 +312,10 @@ body.modal-open {
 
 .step-description {
   /* Use main.css p-text pattern */
-  font: 400 1.4rem/1.5 "Montserrat", sans-serif;
+  font: 400 1.8rem/1.5 "Montserrat", sans-serif;
   color: #666;
   margin: 0;
-  text-align: left;
+  /* text-align: left; */
 }
 
 /* Main Content Area - extends main.css container */

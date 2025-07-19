@@ -1,38 +1,39 @@
 // Step 6: Summary & Installation JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management - Modal styling, faster simulation, and close functionality
+// Updated: 2025-07-19 Production Ready - Zero Console Spam
 // User: jharrvis
 
 class Step6SummaryInstallation {
   constructor() {
     this.wizardData = {};
+    this.isProduction = true; // Production mode flag
     this.installationSteps = [
       {
         id: "downloadStep",
         title: "Downloading Platform",
         description: "Downloading and extracting platform files...",
         icon: "fas fa-download",
-        duration: 1000, // Reduced duration
+        duration: 800, // Optimized duration
       },
       {
         id: "databaseStep",
         title: "Setting up Database",
         description: "Creating database structure and tables...",
         icon: "fas fa-database",
-        duration: 1500, // Reduced duration
+        duration: 1000, // Optimized duration
       },
       {
         id: "configStep",
         title: "Configuring Platform",
         description: "Applying configuration settings and plugins...",
         icon: "fas fa-cog",
-        duration: 1200, // Reduced duration
+        duration: 800, // Optimized duration
       },
       {
         id: "completeStep",
         title: "Installation Complete",
         description: "Your website is ready to use!",
         icon: "fas fa-check",
-        duration: 800, // Reduced duration
+        duration: 500, // Optimized duration
       },
     ];
 
@@ -44,6 +45,22 @@ class Step6SummaryInstallation {
     this.bindEvents();
     this.generateSummary();
     this.updateInstallButton();
+  }
+
+  // Debug logging only when explicitly enabled
+  debugLog(message, data = null) {
+    if (!this.isProduction && window.DEBUG_MODE) {
+      if (data) {
+        console.log(`[Step6] ${message}:`, data);
+      } else {
+        console.log(`[Step6] ${message}`);
+      }
+    }
+  }
+
+  // Error logging (always enabled for critical issues)
+  errorLog(message, error = null) {
+    console.error(`[Step6 Error] ${message}`, error || "");
   }
 
   bindEvents() {
@@ -61,7 +78,7 @@ class Step6SummaryInstallation {
       }
     });
 
-    // Close modal button (if added dynamically)
+    // Close modal button
     document.addEventListener("click", (e) => {
       if (e.target.closest("#closeInstallationModalBtn")) {
         this.closeInstallationModal();
@@ -73,7 +90,6 @@ class Step6SummaryInstallation {
     if (modal) {
       modal.addEventListener("click", (e) => {
         if (e.target === modal) {
-          // Only close if clicking the overlay itself
           this.closeInstallationModal();
         }
       });
@@ -82,26 +98,24 @@ class Step6SummaryInstallation {
 
   loadWizardData() {
     try {
-      // Always load from localStorage first for persistence across refreshes
+      // Load from localStorage - silent operation
       const saved = localStorage.getItem("wizardData");
       this.wizardData = saved ? JSON.parse(saved) : {};
 
-      // Also update global wizard data to match localStorage
+      // Sync with global wizard data
       if (window.wizardData && saved) {
         window.wizardData = { ...window.wizardData, ...this.wizardData };
       }
 
-      console.log(
-        "Loaded wizard data for summary from localStorage:",
-        this.wizardData
-      );
+      this.debugLog("Wizard data loaded for summary", this.wizardData);
     } catch (error) {
-      console.error("Error loading wizard data:", error);
+      this.errorLog("Error loading wizard data", error);
       this.wizardData = {};
     }
   }
 
   generateSummary() {
+    // Silent summary generation
     this.updateStoreInfo();
     this.updateSystemOptions();
     this.updateStylesSummary();
@@ -109,7 +123,7 @@ class Step6SummaryInstallation {
     this.updateSampleDataSummary();
     this.generateSystemRequirements();
     this.generateInstallationEstimate();
-    // this.addEditButton();
+    this.addEditButton();
     this.showConfigurationWarnings();
   }
 
@@ -138,6 +152,7 @@ class Step6SummaryInstallation {
   }
 
   updateStylesSummary() {
+    // Silent update of styles summary
     const themeElement = document.getElementById("summary-selected-theme");
     const desktopLogoElement = document.getElementById("summary-desktop-logo");
     const mobileLogoElement = document.getElementById("summary-mobile-logo");
@@ -271,7 +286,7 @@ class Step6SummaryInstallation {
       if (window.step5SampleData) {
         const step5Data = window.step5SampleData.getStepData();
         sampleData = step5Data.sampleData;
-        console.log("Got sample data from step 5:", sampleData);
+        this.debugLog("Got sample data from step 5", sampleData);
       }
 
       const sampleText =
@@ -280,7 +295,7 @@ class Step6SummaryInstallation {
           : "No, using own data";
       sampleDataElement.textContent = sampleText;
 
-      console.log("Updated sample data summary:", sampleText);
+      this.debugLog("Updated sample data summary", sampleText);
     }
   }
 
@@ -383,35 +398,35 @@ class Step6SummaryInstallation {
   }
 
   calculateInstallationTime() {
-    let baseTime = 1; // Base time in minutes, significantly reduced
+    let baseTime = 1; // Base time in minutes
 
     // Add time for sample data
     if (this.wizardData.sampleData === "with_sample") {
-      baseTime += 0.5; // Reduced
+      baseTime += 0.5;
     }
 
     // Add time for plugins
     const pluginCount = Object.keys(this.wizardData.plugins || {}).filter(
       (id) => this.wizardData.plugins[id]
     ).length;
-    baseTime += pluginCount * 0.1; // Reduced
+    baseTime += pluginCount * 0.1;
 
     return `${Math.ceil(baseTime)} min`;
   }
 
   calculateInstallationSize() {
-    let baseSize = 50; // Base size in MB, reduced
+    let baseSize = 50; // Base size in MB
 
     // Add size for sample data
     if (this.wizardData.sampleData === "with_sample") {
-      baseSize += 20; // Reduced
+      baseSize += 20;
     }
 
     // Add size for plugins
     const pluginCount = Object.keys(this.wizardData.plugins || {}).filter(
       (id) => this.wizardData.plugins[id]
     ).length;
-    baseSize += pluginCount * 2; // Reduced
+    baseSize += pluginCount * 2;
 
     return baseSize > 1000
       ? `${(baseSize / 1000).toFixed(1)} GB`
@@ -540,8 +555,8 @@ class Step6SummaryInstallation {
 
     // Use a custom message box instead of confirm()
     this.showCustomMessageBox(
-      "Konfirmasi",
-      "Apakah Anda ingin kembali dan mengedit konfigurasi Anda?",
+      "Confirmation",
+      "Do you want to go back and edit your configuration?",
       () => {
         // User confirmed "Yes"
         if (typeof showStep === "function") {
@@ -556,32 +571,38 @@ class Step6SummaryInstallation {
   }
 
   exportConfiguration() {
-    const config = {
-      timestamp: new Date().toISOString(),
-      configuration: this.wizardData,
-      summary: this.generateConfigSummary(),
-      systemRequirements: this.getSystemRequirements(
-        this.wizardData.platform?.selected,
-        this.wizardData.platform?.version
-      ),
-      estimates: {
-        installTime: this.calculateInstallationTime(),
-        totalSize: this.calculateInstallationSize(),
-      },
-      warnings: this.getConfigurationWarnings(),
-    };
+    try {
+      const config = {
+        timestamp: new Date().toISOString(),
+        configuration: this.wizardData,
+        summary: this.generateConfigSummary(),
+        systemRequirements: this.getSystemRequirements(
+          this.wizardData.platform?.selected,
+          this.wizardData.platform?.version
+        ),
+        estimates: {
+          installTime: this.calculateInstallationTime(),
+          totalSize: this.calculateInstallationSize(),
+        },
+        warnings: this.getConfigurationWarnings(),
+      };
 
-    const blob = new Blob([JSON.stringify(config, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `website-configuration-${new Date().getTime()}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+      const blob = new Blob([JSON.stringify(config, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `website-configuration-${new Date().getTime()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      this.debugLog("Configuration exported successfully");
+    } catch (error) {
+      this.errorLog("Failed to export configuration", error);
+    }
   }
 
   generateConfigSummary() {
@@ -605,10 +626,11 @@ class Step6SummaryInstallation {
     };
   }
 
-  // Installation process methods
+  // Installation process methods - Optimized for production
   startInstallation() {
+    this.debugLog("Starting installation process");
     this.showInstallationModal();
-    this.resetInstallationModal(); // Reset modal state before starting
+    this.resetInstallationModal();
     this.runInstallationSteps();
   }
 
@@ -620,7 +642,6 @@ class Step6SummaryInstallation {
     }
   }
 
-  // New method to reset installation modal state
   resetInstallationModal() {
     const progressFill = document.querySelector(".installation-progress-fill");
     const progressText = document.querySelector(".installation-progress-text");
@@ -635,7 +656,7 @@ class Step6SummaryInstallation {
     if (progressText) progressText.textContent = "Preparing installation...";
 
     if (installationStepsContainer) {
-      installationStepsContainer.style.display = "flex"; // Ensure steps are visible
+      installationStepsContainer.style.display = "flex";
       // Reset all step statuses
       this.installationSteps.forEach((step) => {
         const stepElement = document.getElementById(step.id);
@@ -643,7 +664,7 @@ class Step6SummaryInstallation {
           stepElement.classList.remove("active", "completed");
           const icon = stepElement.querySelector(".install-status i");
           if (icon) {
-            icon.className = "fas fa-clock"; // Reset to initial clock icon
+            icon.className = "fas fa-clock";
           }
         }
       });
@@ -720,12 +741,11 @@ class Step6SummaryInstallation {
 
   completeInstallation() {
     setTimeout(() => {
-      document
-        .querySelector(".installation-steps")
-        ?.style.setProperty("display", "none");
-      document
-        .getElementById("installationComplete")
-        ?.style.setProperty("display", "block");
+      const stepsContainer = document.querySelector(".installation-steps");
+      const completeSection = document.getElementById("installationComplete");
+
+      if (stepsContainer) stepsContainer.style.display = "none";
+      if (completeSection) completeSection.style.display = "block";
 
       this.showFinalStats();
       this.updateWebsiteDetails();
@@ -735,11 +755,14 @@ class Step6SummaryInstallation {
       const installationActions = document.querySelector(
         "#installationComplete .installation-actions"
       );
-      if (installationActions) {
+      if (
+        installationActions &&
+        !installationActions.querySelector("#closeInstallationModalBtn")
+      ) {
         const closeButton = document.createElement("button");
         closeButton.id = "closeInstallationModalBtn";
         closeButton.className = "btn btn-secondary";
-        closeButton.innerHTML = '<i class="fas fa-times"></i> Tutup';
+        closeButton.innerHTML = '<i class="fas fa-times"></i> Close';
         installationActions.appendChild(closeButton);
       }
     }, 1000);
@@ -758,7 +781,6 @@ class Step6SummaryInstallation {
       statsSection = document.createElement("div");
       statsSection.className = "final-stats";
 
-      // Insert before the website details
       const websiteDetails =
         installationComplete.querySelector(".website-details");
       if (websiteDetails) {
@@ -853,37 +875,41 @@ class Step6SummaryInstallation {
   }
 
   saveFinalConfiguration() {
-    const finalConfig = {
-      timestamp: new Date().toISOString(),
-      configuration: this.wizardData,
-      installation: {
-        completed: true,
-        duration: this.installationSteps.reduce(
-          (sum, step) => sum + step.duration,
-          0
-        ),
-        steps: this.installationSteps.map((step) => step.id),
-      },
-      website: {
-        url: `https://${
-          this.wizardData.storeInfo?.name?.toLowerCase().replace(/\s+/g, "-") ||
-          "yourwebsite"
-        }.com`,
-        adminUrl: `https://${
-          this.wizardData.storeInfo?.name?.toLowerCase().replace(/\s+/g, "-") ||
-          "yourwebsite"
-        }.com/admin`,
-      },
-      summary: this.generateConfigSummary(),
-    };
+    try {
+      const finalConfig = {
+        timestamp: new Date().toISOString(),
+        configuration: this.wizardData,
+        installation: {
+          completed: true,
+          duration: this.installationSteps.reduce(
+            (sum, step) => sum + step.duration,
+            0
+          ),
+          steps: this.installationSteps.map((step) => step.id),
+        },
+        website: {
+          url: `https://${
+            this.wizardData.storeInfo?.name
+              ?.toLowerCase()
+              .replace(/\s+/g, "-") || "yourwebsite"
+          }.com`,
+          adminUrl: `https://${
+            this.wizardData.storeInfo?.name
+              ?.toLowerCase()
+              .replace(/\s+/g, "-") || "yourwebsite"
+          }.com/admin`,
+        },
+        summary: this.generateConfigSummary(),
+      };
 
-    localStorage.setItem(
-      "finalInstallationConfig",
-      JSON.stringify(finalConfig)
-    );
-
-    // Could send to server here
-    console.log("Final configuration saved:", finalConfig);
+      localStorage.setItem(
+        "finalInstallationConfig",
+        JSON.stringify(finalConfig)
+      );
+      this.debugLog("Final configuration saved", finalConfig);
+    } catch (error) {
+      this.errorLog("Failed to save final configuration", error);
+    }
   }
 
   getPluginName(pluginId) {
@@ -1032,18 +1058,24 @@ class Step6SummaryInstallation {
 
   // Method to create backup point before installation
   createBackupPoint() {
-    const backupData = {
-      timestamp: new Date().toISOString(),
-      configuration: this.wizardData,
-      checksum: this.generateConfigChecksum(this.wizardData),
-    };
+    try {
+      const backupData = {
+        timestamp: new Date().toISOString(),
+        configuration: this.wizardData,
+        checksum: this.generateConfigChecksum(this.wizardData),
+      };
 
-    localStorage.setItem("wizardBackup", JSON.stringify(backupData));
-    return backupData;
+      localStorage.setItem("wizardBackup", JSON.stringify(backupData));
+      this.debugLog("Backup point created", backupData.timestamp);
+      return backupData;
+    } catch (error) {
+      this.errorLog("Failed to create backup point", error);
+      return null;
+    }
   }
 
   generateConfigChecksum(data) {
-    // Simple checksum generation
+    // Simple checksum generation - optimized for production
     const str = JSON.stringify(data);
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -1081,20 +1113,20 @@ class Step6SummaryInstallation {
     };
   }
 
-  // New method to close the installation modal
+  // Method to close the installation modal
   closeInstallationModal() {
     const modal = document.getElementById("installationModal");
     if (modal) {
       modal.classList.remove("show");
       document.body.classList.remove("modal-open");
-      // Reset the modal content to its initial state (optional, but good practice)
+      // Reset the modal content to its initial state
       this.resetInstallationModal();
     }
   }
 
   // Custom message box function (replaces native alert/confirm)
   showCustomMessageBox(title, message, onConfirm, onCancel) {
-    // Create modal elements dynamically or use a pre-existing hidden modal
+    // Create modal elements dynamically
     let msgBox = document.getElementById("customMessageBox");
     if (!msgBox) {
       msgBox = document.createElement("div");
@@ -1114,8 +1146,8 @@ class Step6SummaryInstallation {
             <p>${message}</p>
           </div>
           <div class="message-box-actions">
-            <button class="btn btn-primary message-box-confirm">Ya</button>
-            <button class="btn btn-secondary message-box-cancel">Tidak</button>
+            <button class="btn btn-primary message-box-confirm">Yes</button>
+            <button class="btn btn-secondary message-box-cancel">No</button>
           </div>
         </div>
       `;
@@ -1155,9 +1187,56 @@ class Step6SummaryInstallation {
     closeBtn.addEventListener("click", handleCancel);
     overlay.addEventListener("click", handleCancel);
   }
+
+  // Optimized method to handle large data operations
+  performBulkOperation(operation, data, callback) {
+    // Use requestAnimationFrame to prevent UI blocking
+    const batchSize = 100;
+    let index = 0;
+
+    const processBatch = () => {
+      const endIndex = Math.min(index + batchSize, data.length);
+
+      for (let i = index; i < endIndex; i++) {
+        operation(data[i], i);
+      }
+
+      index = endIndex;
+
+      if (index < data.length) {
+        requestAnimationFrame(processBatch);
+      } else if (callback) {
+        callback();
+      }
+    };
+
+    requestAnimationFrame(processBatch);
+  }
+
+  // Method to cleanup resources when component is destroyed
+  cleanup() {
+    // Clear any timers or intervals
+    if (this.autoSaveTimer) {
+      clearInterval(this.autoSaveTimer);
+    }
+
+    // Remove event listeners
+    document.removeEventListener("click", this.boundClickHandler);
+
+    // Clear any pending operations
+    if (this.pendingOperations) {
+      this.pendingOperations.forEach((operation) => {
+        if (operation.cancel) {
+          operation.cancel();
+        }
+      });
+    }
+
+    this.debugLog("Step 6 cleanup completed");
+  }
 }
 
-// Global functions for installation flow
+// Global functions for installation flow - Production ready
 window.viewWebsite = function () {
   if (window.step6SummaryInstallation) {
     window.step6SummaryInstallation.updateWebsiteDetails();
@@ -1169,20 +1248,21 @@ window.viewWebsite = function () {
     .replace(/\s+/g, "-")}.com`;
 
   // Use custom message box instead of confirm()
-  window.step6SummaryInstallation.showCustomMessageBox(
-    "Instalasi Selesai",
-    `Pembukaan ${storeName}... Apakah Anda ingin membuat situs web lain?`,
-    () => {
-      // User confirmed "Yes" (create another website)
-      localStorage.removeItem("wizardData");
-      location.reload();
-    },
-    () => {
-      // User confirmed "No" (do not create another website)
-      window.step6SummaryInstallation.closeInstallationModal();
-      console.log(`Installation complete! Website available at: ${websiteUrl}`);
-    }
-  );
+  if (window.step6SummaryInstallation) {
+    window.step6SummaryInstallation.showCustomMessageBox(
+      "Installation Complete",
+      `Opening ${storeName}... Would you like to create another website?`,
+      () => {
+        // User confirmed "Yes" (create another website)
+        localStorage.removeItem("wizardData");
+        location.reload();
+      },
+      () => {
+        // User confirmed "No" (do not create another website)
+        window.step6SummaryInstallation.closeInstallationModal();
+      }
+    );
+  }
 };
 
 window.startInstallation = function () {
@@ -1192,16 +1272,18 @@ window.startInstallation = function () {
 
     // Start installation process
     window.step6SummaryInstallation.startInstallation();
+  } else {
+    console.error("Step6SummaryInstallation not initialized");
   }
 };
 
-// Initialize Step 6 when DOM is ready
+// Initialize Step 6 when DOM is ready - Production optimized
 document.addEventListener("DOMContentLoaded", function () {
   const step6Content = document.querySelector('.step-content[data-step="6"]');
   if (step6Content) {
     window.step6SummaryInstallation = new Step6SummaryInstallation();
 
-    // Also initialize when step 6 becomes visible
+    // Optimized initialization with reduced timeout
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
@@ -1210,22 +1292,36 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
           const step6 = document.querySelector('.step-content[data-step="6"]');
           if (step6 && step6.classList.contains("active")) {
+            // Use shorter timeout for better performance
             setTimeout(() => {
               if (window.step6SummaryInstallation) {
                 window.step6SummaryInstallation.loadWizardData();
                 window.step6SummaryInstallation.generateSummary();
               }
-            }, 100);
+            }, 50); // Reduced from 100ms
           }
         }
       });
     });
 
-    // Start observing
+    // Start observing with optimized settings
     const step6Element = document.querySelector('.step-content[data-step="6"]');
     if (step6Element) {
-      observer.observe(step6Element, { attributes: true });
+      observer.observe(step6Element, {
+        attributes: true,
+        attributeFilter: ["class"], // Only watch for class changes
+      });
     }
+  }
+});
+
+// Cleanup on page unload to prevent memory leaks
+window.addEventListener("beforeunload", function () {
+  if (
+    window.step6SummaryInstallation &&
+    typeof window.step6SummaryInstallation.cleanup === "function"
+  ) {
+    window.step6SummaryInstallation.cleanup();
   }
 });
 

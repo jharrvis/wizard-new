@@ -1,5 +1,5 @@
 // Step 1: Store Info JavaScript Module
-// Updated: 2025-07-15 Enhanced Data Management
+// Updated: 2025-07-19 Performance Optimization - Reduced console logging
 // User: jharrvis
 
 class Step1StoreInfo {
@@ -122,7 +122,10 @@ class Step1StoreInfo {
 
       localStorage.setItem("wizardData", JSON.stringify(wizardData));
 
-      console.log("Store info saved:", { name: name.trim() });
+      // Only log in debug mode
+      if (window.DEBUG_MODE) {
+        console.log("Store info saved:", { name: name.trim() });
+      }
     } catch (error) {
       console.error("Error saving store info:", error);
     }
