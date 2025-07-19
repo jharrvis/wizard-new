@@ -109,7 +109,7 @@ class Step6SummaryInstallation {
     this.updateSampleDataSummary();
     this.generateSystemRequirements();
     this.generateInstallationEstimate();
-    this.addEditButton();
+    // this.addEditButton();
     this.showConfigurationWarnings();
   }
 

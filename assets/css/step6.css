@@ -156,8 +156,8 @@
 /* Installation Summary */
 .installation-summary {
   /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
-  background: #009bde;
-  color: #fff;
+  /* background: #009bde; */
+  /* color: #fff; */
   padding: 3rem;
   border-radius: 2rem;
   margin: 4rem 0;

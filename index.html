@@ -565,22 +565,24 @@
                       id="customFontSelection"
                       style="display: none"
                     >
-                      <label class="form-label">Custom Font Family</label>
-                      <div class="font-search-container">
-                        <div class="font-search-wrapper">
-                          <i class="fas fa-search font-search-icon"></i>
-                          <input
-                            type="text"
-                            class="font-search-input"
-                            id="fontSearchInput"
-                            placeholder="Search Google fonts..."
-                            autocomplete="off"
-                          />
+                      <div class="form__fieldset">
+                        <h4 class="form__fieldset_h4">Custom Font Family</h4>
+                        <div class="font-search-box">
+                          <div class="font-search-container">
+                            <input
+                              type="text"
+                              class="font-search-input"
+                              id="fontSearchInput"
+                              placeholder="Search Google fonts..."
+                              onkeyup="searchGoogleFonts(this.value)"
+                              autocomplete="off"
+                            />
+                            <div
+                              class="font-suggestions"
+                              id="fontSuggestions"
+                            ></div>
+                          </div>
                         </div>
-                        <div
-                          class="font-suggestions"
-                          id="fontSuggestions"
-                        ></div>
                       </div>
                     </div>
                   </div>

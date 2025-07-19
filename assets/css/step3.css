@@ -419,61 +419,77 @@
 }
 
 /* Font Search */
-.font-search-container {
+.font-search-box {
   position: relative;
-  width: 100%;
-}
-
-.font-search-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.font-search-icon {
-  position: absolute;
-  left: 2rem;
-  color: #009bde;
-  font-size: 1.8rem;
-  z-index: 1;
-}
-
-.font-search-input {
-  width: 100%;
-  padding: 2rem 2rem 2rem 5rem;
-  border: 0.2rem solid rgba(0, 155, 222, 0.1);
-  border-radius: 2rem;
-  font: 500 1.6rem/1 "Montserrat", sans-serif;
-  color: #0f488a;
+  margin-top: 1.5rem;
+  box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.025);
+  border-radius: 3rem;
   background: #fff;
-  transition: all 0.3s ease;
+}
+
+.font-search-box:after {
+  content: "";
+  position: absolute;
+  top: 2.5rem;
+  left: 2.5rem;
+  height: 1rem;
+  width: 1rem;
+  margin: auto;
+  border-radius: 1rem;
+  background: #ff7101;
+}
+
+/* Font Search Input - exactly matching form__fieldset_input */
+.font-search-input {
+  position: relative;
+  height: 6rem;
+  width: 100%;
+  padding: 0 3rem 0 5rem;
+  border-radius: 3rem !important;
+  border: 0.5rem solid rgba(0, 155, 222, 0.1);
+  font: 500 1.8rem/1.5 "Montserrat", sans-serif;
+  color: #0f488a;
+  transition: all 0.3s ease-out;
+}
+
+.font-search-input:hover {
+  border-color: rgba(255, 113, 1, 0.15);
 }
 
 .font-search-input:focus {
-  outline: none;
-  border-color: #ff7101;
-  box-shadow: 0 0 0 0.3rem rgba(255, 113, 1, 0.1);
+  border-color: rgba(255, 113, 1, 0.3);
 }
 
-.font-search-input:focus + .font-search-icon {
-  color: #ff7101;
+.font-search-input::-webkit-input-placeholder {
+  color: #0f488a;
+  opacity: 1;
 }
 
-/* Font Suggestions */
+.font-search-input::-moz-placeholder {
+  color: #0f488a;
+  opacity: 1;
+}
+
+.font-search-input:-ms-input-placeholder {
+  color: #0f488a;
+  opacity: 1;
+}
+
+/* Font Suggestions Dropdown */
 .font-suggestions {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  top: calc(100% - 0.5rem);
+  left: 0.5rem;
+  right: 0.5rem;
   background: #fff;
-  border: 0.2rem solid rgba(0, 155, 222, 0.1);
+  border: 0.5rem solid rgba(0, 155, 222, 0.1);
   border-top: none;
-  border-radius: 0 0 2rem 2rem;
+  border-radius: 0 0 2.5rem 2.5rem;
   max-height: 25rem;
   overflow-y: auto;
   z-index: 10;
   display: none;
-  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.025);
 }
 
 .font-suggestions.show {
@@ -481,9 +497,9 @@
 }
 
 .font-suggestion-item {
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 2.5rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
   border-bottom: 0.1rem solid rgba(0, 155, 222, 0.05);
   display: flex;
   align-items: center;
@@ -492,17 +508,17 @@
 
 .font-suggestion-item:hover {
   background: rgba(255, 113, 1, 0.05);
-  color: #ff7101;
 }
 
 .font-suggestion-item:last-child {
   border-bottom: none;
+  border-radius: 0 0 2rem 2rem;
 }
 
 .font-suggestion-name {
   font: 500 1.6rem/1 "Montserrat", sans-serif;
   color: #0f488a;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-out;
 }
 
 .font-suggestion-preview {
@@ -513,6 +529,12 @@
 
 .font-suggestion-item:hover .font-suggestion-name {
   color: #ff7101;
+}
+
+/* Container positioning */
+.font-search-container {
+  position: relative;
+  width: 100%;
 }
 
 /* Font Preview */
@@ -583,7 +605,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
+  background: #009bde;
   color: #fff;
 }
 
