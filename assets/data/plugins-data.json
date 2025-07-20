@@ -7,7 +7,7 @@
         "id": "ppcp",
         "name": "PPCP",
         "description": "PayPal Complete Payments (PPCP) - A full-stack payment solution offering seamless checkout, fraud protection, and global payment method support.",
-        "logo_image": "https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png",
+        "logo_image": "assets/img/plugins/paypal.webp",
         "plugin_url": "https://business.adobe.com/products/magento/paypal.html",
         "selected": true,
         "needsLicense": false
@@ -16,7 +16,7 @@
         "id": "fastlane",
         "name": "Fastlane",
         "description": "PayPal Fastlane - A one-click checkout solution that streamlines transactions and improves conversion rates for merchants.",
-        "logo_image": "assets/img/plugins/fastlane.web",
+        "logo_image": "assets/img/plugins/fastlane.webp",
         "plugin_url": "https://www.paypal.com/us/business/accept-payments/fastlane-by-paypal",
         "selected": false,
         "needsLicense": false
@@ -25,7 +25,7 @@
         "id": "mollie",
         "name": "Mollie",
         "description": "Mollie enables businesses to accept multiple payment options with transparent pricing and a user-friendly API.",
-        "logo_image": "https://images.ctfassets.net/k3tqcyh9x9jv/2dPXHAwWMwKcKeQ6y6kKWw/44274db5ad7848b2042032c44b669ec7/mollie-logo.svg",
+        "logo_image": "assets/img/plugins/mollie.webp",
         "plugin_url": "https://www.mollie.com/en/magento",
         "selected": false,
         "needsLicense": false
@@ -34,7 +34,7 @@
         "id": "stripe",
         "name": "Stripe",
         "description": "A comprehensive payment platform supporting credit cards, digital wallets, and local payment methods with advanced fraud protection.",
-        "logo_image": "https://images.ctfassets.net/fzn2n1nzq965/HTTOloNPhisV9P4hlMPNA/edd7d6c3550073630b72533c7020cea0/logo-stripe-blue.png",
+        "logo_image": "assets/img/plugins/stripe.webp",
         "plugin_url": "https://stripe.com/docs/plugins/magento",
         "selected": false,
         "needsLicense": false
@@ -43,7 +43,7 @@
         "id": "adyen",
         "name": "Adyen",
         "description": "Global payment company offering a single platform for accepting payments anywhere, on any device.",
-        "logo_image": "https://www.adyen.com/dam/jcr:3050d407-b877-4c2f-a7f0-8094af914e8e/adyen-logo-green.svg",
+        "logo_image": "assets/img/plugins/adyen.webp",
         "plugin_url": "https://www.adyen.com/plugins/adobe-commerce",
         "selected": false,
         "needsLicense": false
@@ -52,7 +52,7 @@
         "id": "square",
         "name": "Square",
         "description": "Complete commerce platform with payment processing, inventory management, and analytics.",
-        "logo_image": "https://images.ctfassets.net/2d5q1td6cyxq/49216q0154I6O24i8W2SSk/44a1fc6c95e9be25fe2919c0490b4d45/Square_Logo_Black.png",
+        "logo_image": "assets/img/plugins/square.webp",
         "plugin_url": "https://developer.squareup.com/docs/commerce-integrations/adobe-commerce",
         "selected": false,
         "needsLicense": false
@@ -67,7 +67,7 @@
         "id": "loqate",
         "name": "Loqate",
         "description": "Loqate - A global address verification and geolocation service that ensures accurate customer data for smooth checkouts and deliveries.",
-        "logo_image": "https://www.loqate.com/media/s02gcc2w/fulllogo-dark-loqate.png",
+        "logo_image": "assets/img/plugins/loqate.webp",
         "plugin_url": "https://www.loqate.com/en-gb/integrations/adobe-commerce-magento/",
         "selected": false,
         "needsLicense": true
@@ -76,7 +76,7 @@
         "id": "google_address",
         "name": "Google Address Autocomplete",
         "description": "Google's Places API for accurate address suggestions and autocomplete functionality.",
-        "logo_image": "https://www.gstatic.com/images/branding/product/2x/maps_96dp.png",
+        "logo_image": "assets/img/plugins/googleaddress.webp",
         "plugin_url": "https://developers.google.com/maps/documentation/javascript/places-autocomplete",
         "selected": false,
         "needsLicense": true
@@ -85,7 +85,7 @@
         "id": "postcode_anywhere",
         "name": "Postcode Anywhere",
         "description": "UK and international address lookup and validation service for accurate delivery addresses. Now part of Loqate.",
-        "logo_image": "https://www.loqate.com/media/2061/loqate-logo-rgb.svg",
+        "logo_image": "assets/img/plugins/loqate2.webp",
         "plugin_url": "https://www.loqate.com/en-us/platforms/magento/",
         "selected": false,
         "needsLicense": true
@@ -100,7 +100,7 @@
         "id": "klaviyo",
         "name": "Klaviyo Email",
         "description": "Klaviyo Email - A data-driven email marketing platform that enables ecommerce brands to create personalised, automated customer engagement campaigns.",
-        "logo_image": "https://www.klaviyo.com/wp-content/uploads/2016/09/klaviyo-logo-black-1.png",
+        "logo_image": "assets/img/plugins/klaviyo.webp",
         "plugin_url": "https://www.klaviyo.com/integrations/magento",
         "selected": false,
         "needsLicense": true
@@ -109,7 +109,7 @@
         "id": "dotdigital",
         "name": "DotDigital",
         "description": "DotDigital Email - A marketing automation platform specialising in personalised email campaigns, customer segmentation, and omnichannel engagement.",
-        "logo_image": "https://dotdigital.com/wp-content/uploads/2022/11/Dotdigital_logo_black.svg",
+        "logo_image": "assets/img/plugins/dotdigital.webp",
         "plugin_url": "https://dotdigital.com/integrations/adobe-commerce-magento/",
         "selected": false,
         "needsLicense": true
@@ -118,7 +118,7 @@
         "id": "mailchimp",
         "name": "Mailchimp",
         "description": "All-in-one marketing platform with email marketing, automation, and audience insights.",
-        "logo_image": "https://mailchimp.com/ctf/images/yzco4xsimv0y/30TVCb8RVDWLz7XG1XwhlY/2150df2b57f682ddeaa73e1251449f0c/MC_50-50_-_Brand_Assets_02.png?w=980&fm=avif&q=60",
+        "logo_image": "assets/img/plugins/mailchimp.webp",
         "plugin_url": "https://mailchimp.com/integrations/magento/",
         "selected": false,
         "needsLicense": true
@@ -127,7 +127,7 @@
         "id": "twilio",
         "name": "Twilio SMS",
         "description": "Cloud communications platform for SMS notifications, two-factor authentication, and customer engagement.",
-        "logo_image": "https://www.twilio.com/content/dam/twilio-com/global/en/products/messaging/sms-api/sms-api-icon-blue.svg",
+        "logo_image": "assets/img/plugins/twilio.webp",
         "plugin_url": "https://www.twilio.com/solutions/commerce-communications/adobe-magento",
         "selected": false,
         "needsLicense": true
@@ -136,7 +136,7 @@
         "id": "sendgrid",
         "name": "SendGrid",
         "description": "Cloud-based email delivery service for transactional and marketing emails with detailed analytics.",
-        "logo_image": "https://sendgrid.com/wp-content/uploads/2021/09/sendgrid-logo.svg",
+        "logo_image": "assets/img/plugins/sendgrid.webp",
         "plugin_url": "https://sendgrid.com/partners/adobe/",
         "selected": false,
         "needsLicense": true
@@ -151,7 +151,7 @@
         "id": "shipperq",
         "name": "ShipperHQ",
         "description": "ShipperHQ - A shipping rate management platform that optimises checkout with real-time shipping rates, delivery options, and custom shipping rules.",
-        "logo_image": "https://shipperhq.com/wp-content/uploads/2021/04/shipperhq-logo.svg",
+        "logo_image": "assets/img/plugins/shipperhq.webp",
         "plugin_url": "https://shipperhq.com/magento",
         "selected": false,
         "needsLicense": true
@@ -160,7 +160,7 @@
         "id": "avalara",
         "name": "Avalara",
         "description": "Automated tax compliance solution providing real-time tax calculations and filing services.",
-        "logo_image": "https://www.avalara.com/content/dam/avalara/public/logos/avalara-logo.svg",
+        "logo_image": "assets/img/plugins/avalara.webp",
         "plugin_url": "https://www.avalara.com/us/en/products/integrations/magento.html",
         "selected": false,
         "needsLicense": true
@@ -169,7 +169,7 @@
         "id": "taxjar",
         "name": "TaxJar",
         "description": "Sales tax automation platform with real-time calculations and reporting for e-commerce.",
-        "logo_image": "https://www.taxjar.com/img/logos/taxjar-logo.svg",
+        "logo_image": "assets/img/plugins/taxjar.webp",
         "plugin_url": "https://www.taxjar.com/integrations/magento/",
         "selected": false,
         "needsLicense": true
@@ -178,7 +178,7 @@
         "id": "fedex",
         "name": "FedEx Shipping",
         "description": "Official FedEx integration for real-time shipping rates and tracking.",
-        "logo_image": "https://www.fedex.com/content/dam/fedex-com/logos/FedEx-Purple-Orange-RGB.svg",
+        "logo_image": "assets/img/plugins/fedex.webp",
         "plugin_url": "https://marketplace.magento.com/fedex-shipping.html",
         "selected": false,
         "needsLicense": false
@@ -187,7 +187,7 @@
         "id": "ups",
         "name": "UPS Shipping",
         "description": "UPS shipping integration with real-time rates, tracking, and delivery options.",
-        "logo_image": "https://www.ups.com/assets/resources/images/UPS_P_RGB.svg",
+        "logo_image": "assets/img/plugins/ups.webp",
         "plugin_url": "https://marketplace.magento.com/ups-module-shipping.html",
         "selected": false,
         "needsLicense": false
@@ -202,7 +202,7 @@
         "id": "yotpo",
         "name": "Yotpo Reviews",
         "description": "Yotpo Reviews - A customer review platform that helps brands collect, display, and leverage authentic reviews to build trust and drive conversions.",
-        "logo_image": "https://www.yotpo.com/wp-content/uploads/2023/01/yotpo-logo.svg",
+        "logo_image": "assets/img/plugins/yotpo.webp",
         "plugin_url": "https://www.yotpo.com/platform/magento/",
         "selected": false,
         "needsLicense": true
@@ -211,7 +211,7 @@
         "id": "reviewsio",
         "name": "Reviews.io",
         "description": "Reviews.io - A review collection and management platform that enables businesses to gather customer feedback and showcase authentic ratings.",
-        "logo_image": "https://www.reviews.io/assets/images/header/reviews-logo.svg",
+        "logo_image": "assets/img/plugins/reviews.webp",
         "plugin_url": "https://www.reviews.io/magento-reviews",
         "selected": false,
         "needsLicense": true
@@ -220,7 +220,7 @@
         "id": "trustpilot",
         "name": "Trustpilot",
         "description": "Global review platform helping businesses collect and display customer reviews to build trust.",
-        "logo_image": "https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg",
+        "logo_image": "assets/img/plugins/trustpilot.webp",
         "plugin_url": "https://business.trustpilot.com/integrations/magento",
         "selected": false,
         "needsLicense": true
@@ -229,7 +229,7 @@
         "id": "bazaarvoice",
         "name": "Bazaarvoice",
         "description": "Comprehensive UGC platform for reviews, ratings, Q&A, and visual content.",
-        "logo_image": "https://media.bazaarvoice.com/logo-bv-full-dark.svg",
+        "logo_image": "assets/img/plugins/bazaarvoice.webp",
         "plugin_url": "https://www.bazaarvoice.com/integrations/adobe-magento/",
         "selected": false,
         "needsLicense": true
@@ -244,7 +244,7 @@
         "id": "klevu",
         "name": "Klevu",
         "description": "Klevu - An AI-powered site search and product discovery solution that enhances ecommerce experiences with smart search, merchandising, and recommendations.",
-        "logo_image": "https://www.klevu.com/wp-content/uploads/2021/08/klevu-logo-dark.svg",
+        "logo_image": "assets/img/plugins/klevu.webp",
         "plugin_url": "https://www.klevu.com/magento/",
         "selected": false,
         "needsLicense": true
@@ -253,7 +253,7 @@
         "id": "nosto",
         "name": "Nosto",
         "description": "Nosto - A personalisation platform that delivers AI-driven product recommendations, dynamic content, and tailored shopping experiences to boost conversions.",
-        "logo_image": "https://www.nosto.com/wp-content/uploads/2022/10/nosto-logo-black.svg",
+        "logo_image": "assets/img/plugins/nosto.webp",
         "plugin_url": "https://www.nosto.com/magento-personalization/",
         "selected": false,
         "needsLicense": true
@@ -262,7 +262,7 @@
         "id": "algolia",
         "name": "Algolia",
         "description": "Fast and relevant search-as-a-service platform with instant search and discovery capabilities.",
-        "logo_image": "https://res.cloudinary.com/hilnmyskv/image/upload/v1632236650/Algolia_com_Website_assets/images/shared/algolia_logo/logo-algolia-nebula-blue-full.svg",
+        "logo_image": "assets/img/plugins/algolia.webp",
         "plugin_url": "https://www.algolia.com/doc/integration/magento-2/getting-started/quick-start/?client=php",
         "selected": false,
         "needsLicense": true
@@ -271,7 +271,7 @@
         "id": "elasticsearch",
         "name": "Elasticsearch",
         "description": "Powerful search and analytics engine for fast, scalable search functionality.",
-        "logo_image": "https://static-www.elastic.co/v3/assets/bltefdd0b53724fa2ce/blt05047fdbe3b9c333/5c11ec1f3312ce2e785d9c30/logo-elasticsearch-32-color.svg",
+        "logo_image": "assets/img/plugins/elasticsearch.webp",
         "plugin_url": "https://www.elastic.co/guide/en/elasticsearch/plugins/current/index.html",
         "selected": false,
         "needsLicense": false
@@ -280,7 +280,7 @@
         "id": "dynamic_yield",
         "name": "Dynamic Yield",
         "description": "Personalization platform offering product recommendations, A/B testing, and behavioral targeting.",
-        "logo_image": "https://www.dynamicyield.com/wp-content/uploads/2021/07/DY-by-MC-logo-1.svg",
+        "logo_image": "assets/img/plugins/dynamicyield.webp",
         "plugin_url": "https://www.dynamicyield.com/integration/adobe-commerce/",
         "selected": false,
         "needsLicense": true
