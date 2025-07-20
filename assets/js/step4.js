@@ -1,5 +1,5 @@
 // Step 4: Plugin Settings JavaScript Module
-// Updated: 2025-07-19 Production Ready - Zero Console Spam
+// Updated: 2025-07-19 Production Ready - With Logo and URL Support
 // User: jharrvis
 
 class Step4PluginSettings {
@@ -75,6 +75,20 @@ class Step4PluginSettings {
         const pluginId = e.target.getAttribute("data-plugin");
         if (pluginId) {
           this.openLicenseModal(pluginId);
+        }
+      }
+    });
+
+    // Plugin link events
+    document.addEventListener("click", (e) => {
+      if (e.target.closest(".plugin-link")) {
+        const link = e.target.closest(".plugin-link");
+        const url = link.getAttribute("href");
+        if (url && url !== "#") {
+          // Link will open in new tab naturally
+          this.debugLog("Opening plugin URL", url);
+        } else {
+          e.preventDefault();
         }
       }
     });
@@ -181,21 +195,32 @@ class Step4PluginSettings {
               isSelected ? "selected" : ""
             }" data-plugin="${plugin.id}">
               <div class="plugin-info">
-                <div class="plugin-name">
-                  ${this.getPluginIcon(plugin)}
-                  ${plugin.name}
-                  ${
-                    needsLicense
-                      ? '<span class="plugin-status premium">Premium</span>'
-                      : '<span class="plugin-status free">Free</span>'
-                  }
+                <div class="plugin-header">
+                  ${this.getPluginLogo(plugin)}
+                  <div class="plugin-details">
+                    <div class="plugin-name">
+                      ${plugin.name}
+                      ${
+                        needsLicense
+                          ? '<span class="plugin-status premium">Premium</span>'
+                          : '<span class="plugin-status free">Free</span>'
+                      }
+                      ${
+                        plugin.plugin_url
+                          ? `<a href="${plugin.plugin_url}" target="_blank" rel="noopener noreferrer" class="plugin-link" title="Learn more about ${plugin.name}">
+                               <i class="fas fa-external-link-alt"></i> View Details
+                             </a>`
+                          : ""
+                      }
+                    </div>
+                    <div class="plugin-description">${plugin.description}</div>
+                    ${
+                      needsLicense && hasLicense
+                        ? '<div class="plugin-license-status"><i class="fas fa-check-circle"></i> License key configured</div>'
+                        : ""
+                    }
+                  </div>
                 </div>
-                <div class="plugin-description">${plugin.description}</div>
-                ${
-                  needsLicense && hasLicense
-                    ? '<div class="plugin-license-status">✓ License key configured</div>'
-                    : ""
-                }
               </div>
               <div class="plugin-controls">
                 <div class="plugin-toggle">
@@ -219,23 +244,49 @@ class Step4PluginSettings {
           `;
   }
 
-  getPluginIcon(plugin) {
-    // If the icon is a URL, use it directly
-    if (plugin.icon && plugin.icon.startsWith("http")) {
-      return `<div class="plugin-icon" style="background: none;"><img src="${plugin.icon}" alt="${plugin.name} icon" style="max-width: 100%; max-height: 100%; object-fit: contain;"></div>`;
+  getPluginLogo(plugin) {
+    // Use logo_image from the plugin data
+    if (plugin.logo_image) {
+      return `
+        <div class="plugin-logo">
+          <img src="${plugin.logo_image}" 
+               alt="${plugin.name} logo" 
+               loading="lazy"
+               onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'plugin-logo-fallback\\'>${plugin.name
+                 .substring(0, 2)
+                 .toUpperCase()}</div>';">
+        </div>
+      `;
     }
-    // If the icon is a letter, extract the letter and use it
+
+    // Fallback to letter-based logo
+    const firstTwo = plugin.name.substring(0, 2).toUpperCase();
+    return `<div class="plugin-logo plugin-logo-fallback">${firstTwo}</div>`;
+  }
+
+  // Deprecated - kept for backward compatibility
+  // getPluginIcon(plugin) {
+  //   return this.getPluginLogo(plugin);
+  // }
+
+  getPluginIcon(plugin) {
+    // Jika icon berupa 'letter:', buat ikon dari huruf.
     if (plugin.icon && plugin.icon.startsWith("letter:")) {
       const letter = plugin.icon.split(":")[1];
-      let bgColor = "#009bde"; // Default background color
-      // Assign different colors based on the letter for variety
+      let bgColor = "#009bde"; // Warna latar default
       if (letter === "F" || letter === "M" || letter === "S")
         bgColor = "#ff7101";
       if (letter === "A" || letter === "T" || letter === "SG")
         bgColor = "#32be7d";
       return `<div class="plugin-icon" style="background: ${bgColor};">${letter}</div>`;
     }
-    // Fallback if no specific icon is provided
+
+    // JIKA ADA path ikon (baik lokal maupun url 'http'), tampilkan sebagai gambar.
+    if (plugin.icon) {
+      return `<div class="plugin-icon" style="background: none;"><img src="${plugin.icon}" alt="${plugin.name} icon" style="max-width: 100%; max-height: 100%; object-fit: contain;"></div>`;
+    }
+
+    // Fallback jika sama sekali tidak ada ikon yang disediakan.
     return `<div class="plugin-icon" style="background: #0f488a;">${plugin.name
       .substring(0, 2)
       .toUpperCase()}</div>`;
@@ -285,10 +336,12 @@ class Step4PluginSettings {
     if (needsLicense && hasLicense && !existingStatus) {
       const statusDiv = document.createElement("div");
       statusDiv.className = "plugin-license-status";
-      statusDiv.innerHTML = "✓ License key configured";
-      pluginItem
-        .querySelector(".plugin-description")
-        .insertAdjacentElement("afterend", statusDiv);
+      statusDiv.innerHTML =
+        '<i class="fas fa-check-circle"></i> License key configured';
+      const description = pluginItem.querySelector(".plugin-description");
+      if (description) {
+        description.insertAdjacentElement("afterend", statusDiv);
+      }
     } else if (!hasLicense && existingStatus) {
       existingStatus.remove();
     }
@@ -322,6 +375,18 @@ class Step4PluginSettings {
       }
     }
     return pluginId;
+  }
+
+  getPluginData(pluginId) {
+    for (const section of Object.values(this.pluginData)) {
+      if (section && section.plugins) {
+        const plugin = section.plugins.find((p) => p && p.id === pluginId);
+        if (plugin) {
+          return plugin;
+        }
+      }
+    }
+    return null;
   }
 
   openLicenseModal(pluginId) {
@@ -492,12 +557,17 @@ class Step4PluginSettings {
     const stepData = {
       selectedPlugins: this.selectedPlugins,
       licenseKeys: this.licenseKeys,
-      pluginDetails: selectedPluginIds.map((id) => ({
-        id,
-        name: this.getPluginName(id),
-        needsLicense: this.checkIfPluginNeedsLicense(id),
-        hasLicense: !!this.licenseKeys[id],
-      })),
+      pluginDetails: selectedPluginIds.map((id) => {
+        const pluginData = this.getPluginData(id);
+        return {
+          id,
+          name: pluginData?.name || id,
+          needsLicense: pluginData?.needsLicense || false,
+          hasLicense: !!this.licenseKeys[id],
+          logoUrl: pluginData?.logo_image || null,
+          pluginUrl: pluginData?.plugin_url || null,
+        };
+      }),
       timestamp: new Date().toISOString(),
       isValid: true,
     };
@@ -564,6 +634,8 @@ class Step4PluginSettings {
             name: plugin.name,
             needsLicense: plugin.needsLicense,
             hasLicense: !!this.licenseKeys[plugin.id],
+            logoUrl: plugin.logo_image,
+            pluginUrl: plugin.plugin_url,
           })),
         };
       }
@@ -571,11 +643,14 @@ class Step4PluginSettings {
 
     // Create flat list
     selectedPluginIds.forEach((id) => {
+      const pluginData = this.getPluginData(id);
       summary.list.push({
         id,
-        name: this.getPluginName(id),
-        needsLicense: this.checkIfPluginNeedsLicense(id),
+        name: pluginData?.name || id,
+        needsLicense: pluginData?.needsLicense || false,
         hasLicense: !!this.licenseKeys[id],
+        logoUrl: pluginData?.logo_image || null,
+        pluginUrl: pluginData?.plugin_url || null,
       });
     });
 
