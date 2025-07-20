@@ -1,4 +1,5 @@
-/* Step 6: Summary & Installation Specific Styles */
+/* Step 6: Summary & Installation Complete CSS */
+/* Updated: 2025-07-20 - Unified System Requirements styling */
 
 /* Summary Display */
 .summary-display {
@@ -31,7 +32,6 @@
   top: 0;
   bottom: 0;
   width: 4px;
-  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
   background: #009bde;
   border-radius: 2px;
 }
@@ -153,11 +153,100 @@
   color: #666;
 }
 
+/* System Requirements - Styles unified with other summary items */
+.system-requirements {
+  /* This class is now just a selector hook. All styling is inherited from .summary-item */
+}
+
+/* Requirements Grid - we keep the grid layout */
+.requirements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 2rem;
+  margin-top: 0; /* Adjust margin as it's inside a standard summary-item now */
+}
+
+/* Requirement Item - style this to be less prominent */
+.requirement-item {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: rgba(
+    0,
+    155,
+    222,
+    0.02
+  ); /* Use a subtle background like summary-list */
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 155, 222, 0.1); /* Use a subtle border */
+  box-shadow: none; /* Remove the default shadow */
+}
+
+.requirement-item:hover {
+  background: rgba(255, 113, 1, 0.05);
+  border-color: rgba(255, 113, 1, 0.2);
+  transform: translateY(-2px);
+  box-shadow: none;
+}
+
+/* Requirement Icon - styles remain the same */
+.requirement-icon {
+  width: 5rem;
+  height: 5rem;
+  margin-right: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Icon colors matching Step 2 exactly */
+.requirement-icon.php {
+  background: #8892bf;
+}
+
+.requirement-icon.mariadb {
+  background: #003545;
+}
+
+.requirement-icon.redis {
+  background: #dc382d;
+}
+
+.requirement-icon.opensearch {
+  background: #005eb8;
+}
+
+.requirement-item:hover .requirement-icon {
+  transform: scale(1.1);
+}
+
+/* Requirement Details - styles remain the same */
+.requirement-details {
+  flex: 1;
+}
+
+.requirement-text {
+  font: 700 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.requirement-version {
+  font: 600 1.5rem/1 "Montserrat", sans-serif;
+  color: #32be7d; /* Keeping the green version number for a bit of color */
+}
+
 /* Installation Summary */
 .installation-summary {
-  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
-  /* background: #009bde; */
-  /* color: #fff; */
   padding: 3rem;
   border-radius: 2rem;
   margin: 4rem 0;
@@ -199,89 +288,28 @@
   letter-spacing: 0.1em;
 }
 
-/* System Requirements Check */
-.system-requirements {
-  background: rgba(50, 190, 125, 0.1);
-  border: 2px solid rgba(50, 190, 125, 0.2);
-  border-radius: 2rem;
-  padding: 3rem;
-  margin: 3rem 0;
-}
-
-.system-requirements h4 {
-  font: 700 2rem/1.2 "Montserrat", sans-serif;
-  color: #32be7d;
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.system-requirements h4 i {
-  font-size: 2.2rem;
-}
-
-.requirements-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  gap: 2rem;
-}
-
-.requirement-item {
-  display: flex;
-  align-items: center;
-  padding: 1.5rem;
-  background: rgba(50, 190, 125, 0.1);
-  border-radius: 1rem;
-  border: 1px solid rgba(50, 190, 125, 0.2);
-}
-
-.requirement-icon {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  background: #32be7d;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  flex-shrink: 0;
-}
-
-.requirement-text {
-  font: 500 1.4rem/1.3 "Montserrat", sans-serif;
-  color: #32be7d;
-}
-
-.requirement-version {
-  font: 600 1.3rem/1 "Montserrat", sans-serif;
-  color: #0f488a;
-  margin-top: 0.3rem;
-}
-
-/* Installation Modal Enhancements */
+/* Installation Modal */
 .installation-modal {
-  position: fixed; /* Make it fixed to the viewport */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Dark overlay */
-  display: none; /* Hidden by default */
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
-  z-index: 9999; /* Ensure it's on top of everything */
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
   backdrop-filter: blur(8px);
-  opacity: 0; /* Start with opacity 0 for fade-in */
-  visibility: hidden; /* Hidden for accessibility/interaction */
-  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .installation-modal.show {
-  display: flex; /* Show the modal */
-  opacity: 1; /* Fade in */
-  visibility: visible; /* Make visible */
+  display: flex;
+  opacity: 1;
+  visibility: visible;
 }
 
 .installation-modal .modal-content {
@@ -289,18 +317,18 @@
   border-radius: 1.5rem;
   max-width: 90rem;
   width: 95%;
-  position: relative; /* Needed for z-index and internal positioning */
+  position: relative;
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.3);
-  z-index: 10000; /* Ensure content is above overlay */
-  transform: translateY(20px); /* Start slightly off-screen for animation */
-  opacity: 0; /* Start hidden for animation */
-  transition: transform 0.3s ease, opacity 0.3s ease; /* Animation for content */
-  overflow: hidden; /* Ensure rounded corners clip content */
+  z-index: 10000;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
 }
 
 .installation-modal.show .modal-content {
-  transform: translateY(0); /* Slide into place */
-  opacity: 1; /* Fade in */
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .installation-modal .modal-header {
@@ -309,19 +337,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
   background: #009bde;
   color: #fff;
-  /* Removed border-radius here as it's handled by .modal-content */
 }
 
 .installation-modal .modal-title {
-  font: 700 2.2rem/1.2 "Montserrat", sans-serif; /* Slightly larger font */
+  font: 700 2.2rem/1.2 "Montserrat", sans-serif;
   margin: 0;
 }
 
 .installation-modal .modal-body {
-  padding: 3rem; /* Increased padding */
+  padding: 3rem;
 }
 
 /* Installation Steps */
@@ -580,34 +606,6 @@
   font-size: 1.6rem;
 }
 
-/* Configuration Review */
-.config-review {
-  background: rgba(255, 193, 7, 0.1);
-  border: 2px solid rgba(255, 193, 7, 0.3);
-  border-radius: 2rem;
-  padding: 3rem;
-  margin: 3rem 0;
-}
-
-.config-review h4 {
-  font: 700 2rem/1.2 "Montserrat", sans-serif;
-  color: #ff8c00;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.config-review h4 i {
-  font-size: 2.2rem;
-}
-
-.config-review p {
-  font: 400 1.5rem/1.4 "Montserrat", sans-serif;
-  color: #666;
-  margin: 0;
-}
-
 /* Progress Bar for Installation */
 .installation-progress-bar {
   width: 100%;
@@ -620,7 +618,6 @@
 
 .installation-progress-fill {
   height: 100%;
-  /* background: linear-gradient(90deg, #009bde 0%, #ff7101 100%); */
   background: #009bde;
   border-radius: 1rem;
   width: 0%;
@@ -676,53 +673,71 @@
   letter-spacing: 0.1em;
 }
 
-/* License Information Display */
-.license-info {
-  background: rgba(255, 113, 1, 0.1);
-  border: 2px solid rgba(255, 113, 1, 0.2);
+/* Configuration Review */
+.config-review {
+  background: rgba(255, 193, 7, 0.1);
+  border: 2px solid rgba(255, 193, 7, 0.3);
   border-radius: 2rem;
-  padding: 2rem;
-  margin: 2rem 0;
+  padding: 3rem;
+  margin: 3rem 0;
 }
 
-.license-info h5 {
-  font: 600 1.6rem/1.2 "Montserrat", sans-serif;
-  color: #ff7101;
-  margin-bottom: 1rem;
+.config-review h4 {
+  font: 700 2rem/1.2 "Montserrat", sans-serif;
+  color: #ff8c00;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
-.license-info h5 i {
-  font-size: 1.4rem;
+.config-review h4 i {
+  font-size: 2.2rem;
 }
 
-.license-list {
-  list-style: none;
+.config-review p {
+  font: 400 1.5rem/1.4 "Montserrat", sans-serif;
+  color: #666;
   margin: 0;
+}
+
+/* Warning List */
+.warning-list {
+  list-style: none;
+  margin: 2rem 0 0 0;
   padding: 0;
 }
 
-.license-list li {
-  padding: 0.8rem 0;
-  font: 500 1.4rem/1.3 "Montserrat", sans-serif;
+.warning-item {
+  font: 500 1.6rem/1.5 "Montserrat", sans-serif;
   color: #666;
-  border-bottom: 1px solid rgba(255, 113, 1, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.2);
 }
 
-.license-list li:last-child {
+.warning-item:last-child {
   border-bottom: none;
 }
 
-.license-status {
-  font: 600 1.2rem/1 "Montserrat", sans-serif;
-  color: #32be7d;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+/* Configuration Warnings */
+.config-warnings {
+  background: rgba(255, 193, 7, 0.1);
+  border: 2px solid rgba(255, 193, 7, 0.3);
+  border-radius: 2rem;
+  padding: 3rem;
+  margin: 3rem 0;
+}
+
+.config-warnings::before {
+  background: #ffc107 !important;
+}
+
+.config-warnings .h4-headline {
+  color: #ff8c00 !important;
+}
+
+.config-warnings .h4-headline i {
+  color: #ff8c00 !important;
 }
 
 /* Responsive Design for Step 6 */
@@ -744,21 +759,43 @@
     grid-template-columns: 1fr;
   }
 
+  .requirement-item {
+    padding: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .requirement-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .requirement-details {
+    text-align: center;
+  }
+
+  .system-requirements .h4-headline {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    justify-content: center;
+  }
+
   .install-step {
     flex-direction: column;
-    align-items: flex-start; /* Align content to start for better readability on small screens */
-    text-align: left; /* Align text to left */
+    align-items: flex-start;
+    text-align: left;
     gap: 1rem;
   }
 
   .install-icon {
     margin-right: 0;
     margin-bottom: 1rem;
-    align-self: center; /* Center icon when stacked */
+    align-self: center;
   }
 
   .install-text {
-    text-align: center; /* Center text within the text block */
+    text-align: center;
   }
 
   .website-details-grid {
@@ -768,12 +805,6 @@
   .installation-actions {
     flex-direction: column;
     align-items: center;
-  }
-
-  .edit-config-btn {
-    position: static;
-    margin-bottom: 2rem;
-    align-self: center;
   }
 
   .final-stats {
@@ -788,29 +819,6 @@
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
-  }
-}
-
-/* Print Styles for Configuration Export */
-@media print {
-  .summary-display {
-    box-shadow: none;
-    border: 1px solid #ccc;
-  }
-
-  .edit-config-btn,
-  .installation-actions {
-    display: none;
-  }
-
-  .summary-item {
-    page-break-inside: avoid;
-  }
-
-  .installation-summary {
-    background: #f0f0f0 !important;
-    color: #000 !important;
-    border: 1px solid #ccc;
   }
 }
 
@@ -830,14 +838,21 @@
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Subtle animations for summary items */
 .summary-item {
   animation: fadeInUp 0.3s ease forwards;
   opacity: 0;
-}
-
-.warning-item {
-  font: 500 1.6rem/1.5 "Montserrat", sans-serif;
 }
 
 .summary-item:nth-child(1) {
@@ -854,15 +869,4 @@
 }
 .summary-item:nth-child(5) {
   animation-delay: 0.5s;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
