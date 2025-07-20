@@ -1,78 +1,134 @@
-/* Step 5: Sample Data Fixed Styles */
-/* Updated: 2025-07-15 Fixed Radio Button Issues */
-/* User: jharrvis */
+/* Step 5: Sample Data Final Styles - Fully Consistent with Step 3 Theme Selection */
+/* Updated: 2025-07-20 - Made completely consistent with theme selection colors and style */
 
 /* Sample Data Selection Container */
 .sample-data-selection {
-  max-width: 70rem;
+  max-width: 80rem;
   margin: 0 auto;
   padding: 3rem 0;
 }
 
 /* Sample Data Question */
 .sample-data-question {
-  font: 600 2rem/1.4 "Montserrat", sans-serif;
+  font: 600 2.2rem/1.4 "Montserrat", sans-serif;
   color: #0f488a;
   margin-bottom: 4rem;
   text-align: center;
 }
 
-/* Sample Data Options */
+/* Sample Data Options - Layout like theme selection */
 .sample-data-options {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  max-width: 60rem;
+  gap: 3rem;
+  max-width: 70rem;
   margin: 0 auto;
 }
 
-/* Sample Data Option - Fixed Structure */
+/* Sample Data Option - Exactly matching theme-card style */
 .sample-data-option {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 2.5rem;
+  padding: 3rem;
   background: #fff;
-  border: 2px solid #e1e8ed;
-  border-radius: 1.2rem;
+  border: 2px solid rgba(0, 155, 222, 0.1);
+  border-radius: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
 .sample-data-option:hover {
-  border-color: #009bde;
-  background: rgba(0, 155, 222, 0.03);
+  border: 1px solid #ff7101;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 155, 222, 0.1);
 }
 
 .sample-data-option.selected {
-  border-color: #009bde;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 155, 222, 0.08) 0%,
-    rgba(0, 155, 222, 0.05) 100%
-  );
-  box-shadow: 0 8px 25px rgba(0, 155, 222, 0.15);
+  border: 1px solid #ff7101;
+  background: rgba(255, 113, 1, 0.05);
+  box-shadow: 0 1rem 2rem rgba(255, 113, 1, 0.2);
 }
 
-.sample-data-option.selected::before {
+/* Sample Data Option Animation - matching theme card */
+.sample-data-option::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
-  width: 4px;
+  left: -100%;
+  width: 100%;
   height: 100%;
-  background: #009bde;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 113, 1, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
 }
 
-/* Radio Button Container - Fixed */
+.sample-data-option:hover::before {
+  left: 100%;
+}
+
+/* Sample Data Icon - Matching theme icon style exactly */
+.sample-data-icon {
+  width: 8rem;
+  height: 8rem;
+  margin-right: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 155, 222, 0.1);
+  border-radius: 1rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  font-size: 3rem;
+  color: #009bde;
+}
+
+.sample-data-option.selected .sample-data-icon {
+  background: rgba(255, 113, 1, 0.1);
+  color: #ff7101;
+  transform: scale(1.05);
+}
+
+/* Sample Data Content */
+.sample-data-content {
+  flex: 1;
+  margin-right: 2rem;
+}
+
+/* Sample Option Label - Exactly matching theme name style */
+.sample-option-label {
+  font: 700 2rem/1.2 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 1rem;
+  display: block;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+/* Keep label color consistent - don't change on selection like Step 3 */
+.sample-data-option.selected .sample-option-label {
+  color: #0f488a;
+}
+
+/* Sample Data Description - Matching theme description */
+.sample-data-description {
+  font: 400 1.6rem/1.5 "Montserrat", sans-serif;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Radio Button Container - Exactly matching theme actions */
 .sample-radio {
   position: relative;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2.5rem;
+  height: 2.5rem;
   margin: 0;
   flex-shrink: 0;
 }
@@ -88,14 +144,14 @@
   z-index: 2;
 }
 
-/* Custom Radio Button Outer Circle */
+/* Custom Radio Button - Matching theme radio visual with orange color */
 .sample-radio::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border: 2px solid #cbd5e0;
   border-radius: 50%;
   background: #fff;
@@ -103,7 +159,6 @@
   z-index: 1;
 }
 
-/* Custom Radio Button Inner Circle */
 .sample-radio::after {
   content: "";
   position: absolute;
@@ -112,7 +167,7 @@
   width: 1.2rem;
   height: 1.2rem;
   border-radius: 50%;
-  background: #009bde;
+  background: #ff7101;
   transform: translate(-50%, -50%) scale(0);
   transition: all 0.3s ease;
   z-index: 1;
@@ -120,14 +175,14 @@
 
 /* Radio Button Hover State */
 .sample-data-option:hover .sample-radio::before {
-  border-color: #009bde;
+  border-color: #ff7101;
 }
 
 /* Radio Button Selected State */
 .sample-data-option.selected .sample-radio::before {
-  border-color: #009bde;
+  border-color: #ff7101;
   background: #fff;
-  box-shadow: 0 0 0 1px #009bde inset;
+  box-shadow: 0 0 0 1px #ff7101 inset;
 }
 
 .sample-data-option.selected .sample-radio::after {
@@ -135,55 +190,43 @@
 }
 
 /* Focus State */
-.sample-radio input[type="radio"]:focus + .sample-radio::before,
 .sample-radio input[type="radio"]:focus::before {
-  box-shadow: 0 0 0 3px rgba(0, 155, 222, 0.2);
+  box-shadow: 0 0 0 3px rgba(255, 113, 1, 0.2);
   outline: none;
 }
 
-/* Sample Option Label */
-.sample-option-label {
-  flex: 1;
-  font: 500 1.7rem/1.4 "Montserrat", sans-serif;
-  color: #2d3748;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.3s ease;
-}
-
-.sample-data-option.selected .sample-option-label {
-  color: #0f488a;
-  font-weight: 600;
-}
-
-/* Additional Info Panel */
+/* Additional Info Panel - Matching Step 3 info styling */
 .sample-data-info {
-  margin-top: 3rem;
-  padding: 2rem;
-  background: #f7fafc;
-  border: 1px solid #e2e8f0;
+  margin-top: 4rem;
+  padding: 3rem;
+  background: rgba(0, 155, 222, 0.05);
+  border: 2px solid rgba(0, 155, 222, 0.1);
   border-left: 4px solid #009bde;
-  border-radius: 0.8rem;
-  max-width: 60rem;
+  border-radius: 1.5rem;
+  max-width: 70rem;
   margin-left: auto;
   margin-right: auto;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
 .sample-data-info h4 {
   color: #0f488a;
-  margin-bottom: 1rem;
-  font: 600 1.8rem/1.5 "Montserrat", sans-serif;
+  margin-bottom: 1.5rem;
+  font: 700 2rem/1.2 "Montserrat", sans-serif;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .sample-data-info h4 i {
   color: #009bde;
+  font-size: 2.2rem;
 }
 
 .sample-data-info p {
-  color: #4a5568;
+  color: #666;
   font: 400 1.8rem/1.5 "Montserrat", sans-serif;
   margin: 0;
 }
@@ -204,7 +247,7 @@
   }
 }
 
-/* Selection Animation */
+/* Selection Animation - matching theme selection */
 @keyframes radioSelect {
   0% {
     transform: translate(-50%, -50%) scale(0);
@@ -224,7 +267,7 @@
   animation: radioSelect 0.4s ease-out;
 }
 
-/* Card Selection Animation */
+/* Card Selection Animation - matching theme card */
 @keyframes cardSelect {
   0% {
     transform: translateY(-2px) scale(1);
@@ -248,7 +291,21 @@
   }
 
   .sample-data-option {
-    padding: 2rem;
+    padding: 2.5rem 2rem;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .sample-data-icon {
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .sample-data-content {
+    margin-right: 0;
+    margin-bottom: 2rem;
+    text-align: center;
   }
 
   .sample-data-question {
@@ -257,7 +314,12 @@
   }
 
   .sample-option-label {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .sample-data-description {
+    text-align: center;
   }
 
   .sample-radio {
@@ -278,15 +340,24 @@
 
 @media screen and (max-width: 480px) {
   .sample-data-options {
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
   .sample-data-option {
-    padding: 1.5rem;
-    gap: 1rem;
+    padding: 2rem 1.5rem;
   }
 
   .sample-option-label {
+    font-size: 1.5rem;
+  }
+
+  .sample-data-description {
     font-size: 1.4rem;
+  }
+
+  .sample-data-icon {
+    width: 6rem;
+    height: 6rem;
+    font-size: 2.5rem;
   }
 }

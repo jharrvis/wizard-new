@@ -1,5 +1,5 @@
-// Step 5: Sample Data JavaScript Module
-// Updated: 2025-07-19 Production Ready - Zero Console Spam
+// Step 5: Sample Data JavaScript Module - Updated for new structure
+// Updated: 2025-07-20 - Updated for new card-style layout
 // User: jharrvis
 
 class Step5SampleData {
@@ -59,9 +59,12 @@ class Step5SampleData {
       }
     });
 
-    // Prevent label click from bubbling
+    // Prevent label click from bubbling - updated for new structure
     document.addEventListener("click", (e) => {
-      if (e.target.classList.contains("sample-option-label")) {
+      if (
+        e.target.classList.contains("sample-option-label") ||
+        e.target.classList.contains("sample-data-description")
+      ) {
         e.preventDefault();
         const optionContainer = e.target.closest(".sample-data-option");
         if (optionContainer) {
@@ -70,7 +73,10 @@ class Step5SampleData {
           );
           if (radioInput) {
             radioInput.checked = true;
-            this.debugLog("Label clicked, selecting", radioInput.value);
+            this.debugLog(
+              "Label/description clicked, selecting",
+              radioInput.value
+            );
             this.selectSample(radioInput.value);
           }
         }

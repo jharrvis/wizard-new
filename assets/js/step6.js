@@ -1,5 +1,5 @@
-// Step 6: Summary & Installation JavaScript Module
-// Updated: 2025-07-19 Production Ready - Zero Console Spam
+// Step 6: Summary & Installation JavaScript Module - Updated to remove edit and export buttons
+// Updated: 2025-07-20 - Removed edit configuration and export config buttons
 // User: jharrvis
 
 class Step6SummaryInstallation {
@@ -64,19 +64,7 @@ class Step6SummaryInstallation {
   }
 
   bindEvents() {
-    // Edit configuration button
-    document.addEventListener("click", (e) => {
-      if (e.target.closest(".edit-config-btn")) {
-        this.editConfiguration();
-      }
-    });
-
-    // Export configuration button
-    document.addEventListener("click", (e) => {
-      if (e.target.closest(".export-config-btn")) {
-        this.exportConfiguration();
-      }
-    });
+    // Removed edit configuration and export configuration button events
 
     // Close modal button
     document.addEventListener("click", (e) => {
@@ -123,7 +111,7 @@ class Step6SummaryInstallation {
     this.updateSampleDataSummary();
     this.generateSystemRequirements();
     this.generateInstallationEstimate();
-    this.addEditButton();
+    // Removed: this.addEditButton();
     this.showConfigurationWarnings();
   }
 
@@ -433,24 +421,7 @@ class Step6SummaryInstallation {
       : `${baseSize} MB`;
   }
 
-  addEditButton() {
-    const summaryDisplay = document.querySelector(".summary-display");
-    if (!summaryDisplay || summaryDisplay.querySelector(".edit-config-btn"))
-      return;
-
-    const buttonContainer = document.createElement("div");
-    buttonContainer.className = "summary-actions";
-    buttonContainer.innerHTML = `
-          <button class="btn btn-secondary edit-config-btn">
-            <i class="fas fa-edit"></i> Edit Configuration
-          </button>
-          <button class="btn btn-outline export-config-btn">
-            <i class="fas fa-download"></i> Export Config
-          </button>
-        `;
-
-    summaryDisplay.appendChild(buttonContainer);
-  }
+  // Removed: addEditButton() method completely
 
   showConfigurationWarnings() {
     const warnings = this.getConfigurationWarnings();
@@ -545,65 +516,9 @@ class Step6SummaryInstallation {
     return warnings;
   }
 
-  editConfiguration() {
-    // Hide the modal if it's open
-    const modal = document.getElementById("installationModal");
-    if (modal) {
-      modal.classList.remove("show");
-      document.body.classList.remove("modal-open");
-    }
+  // Removed: editConfiguration() method completely
 
-    // Use a custom message box instead of confirm()
-    this.showCustomMessageBox(
-      "Confirmation",
-      "Do you want to go back and edit your configuration?",
-      () => {
-        // User confirmed "Yes"
-        if (typeof showStep === "function") {
-          showStep(1);
-        }
-      },
-      () => {
-        // User confirmed "No"
-        // Do nothing or provide alternative action
-      }
-    );
-  }
-
-  exportConfiguration() {
-    try {
-      const config = {
-        timestamp: new Date().toISOString(),
-        configuration: this.wizardData,
-        summary: this.generateConfigSummary(),
-        systemRequirements: this.getSystemRequirements(
-          this.wizardData.platform?.selected,
-          this.wizardData.platform?.version
-        ),
-        estimates: {
-          installTime: this.calculateInstallationTime(),
-          totalSize: this.calculateInstallationSize(),
-        },
-        warnings: this.getConfigurationWarnings(),
-      };
-
-      const blob = new Blob([JSON.stringify(config, null, 2)], {
-        type: "application/json",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `website-configuration-${new Date().getTime()}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      this.debugLog("Configuration exported successfully");
-    } catch (error) {
-      this.errorLog("Failed to export configuration", error);
-    }
-  }
+  // Removed: exportConfiguration() method completely
 
   generateConfigSummary() {
     return {
@@ -1035,10 +950,7 @@ class Step6SummaryInstallation {
   }
 
   resetStep() {
-    // Clear any temporary UI elements
-    const editBtn = document.querySelector(".edit-config-btn");
-    if (editBtn) editBtn.remove();
-
+    // Clear any temporary UI elements - but NOT edit/export buttons since they're removed
     const warnings = document.querySelector(".config-warnings");
     if (warnings) warnings.remove();
 
@@ -1047,9 +959,6 @@ class Step6SummaryInstallation {
 
     const installSummary = document.querySelector(".installation-summary");
     if (installSummary) installSummary.remove();
-
-    const summaryActions = document.querySelector(".summary-actions");
-    if (summaryActions) summaryActions.remove();
 
     // Reload data and regenerate fresh summary
     this.loadWizardData();
@@ -1221,7 +1130,9 @@ class Step6SummaryInstallation {
     }
 
     // Remove event listeners
-    document.removeEventListener("click", this.boundClickHandler);
+    if (this.boundClickHandler) {
+      document.removeEventListener("click", this.boundClickHandler);
+    }
 
     // Clear any pending operations
     if (this.pendingOperations) {
