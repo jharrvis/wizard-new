@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Corefinity</title>
+    <link
+      rel="icon"
+      href="https://www.corefinity.com/images/logo-mini.svg"
+      type="image/png"
+    />
+
+    <!-- Base CSS from existing project -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      /* Additional styles using main.css patterns */
+      .auth-container {
+        display: flex;
+        min-height: 100vh;
+        /* background: #f0fafb; */
+        position: relative;
+      }
+
+      .auth-container:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: url(../images/background-blue-01.svg) 50% 50% / cover
+          no-repeat;
+        opacity: 0.1;
+      }
+
+      .auth-left {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 5rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .auth-right {
+        flex: 1;
+        background: linear-gradient(135deg, #009bde 0%, #ff7101 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 4rem;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+      }
+
+      .auth-right:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1.5" fill="white" opacity="0.08"/><circle cx="40" cy="70" r="1" fill="white" opacity="0.12"/><circle cx="90" cy="80" r="2.5" fill="white" opacity="0.06"/><circle cx="10" cy="60" r="1.8" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>')
+          repeat;
+        opacity: 0.3;
+        z-index: 1;
+      }
+
+      .auth-logo {
+        margin-bottom: 4rem;
+      }
+
+      .auth-logo img {
+        height: 6rem;
+        filter: drop-shadow(0.75rem 0.75rem 1.5rem rgba(0, 0, 0, 0.15));
+      }
+
+      .auth-form {
+        width: 100%;
+        max-width: 45rem;
+        /* background: #fff;
+        padding: 4rem;
+        border-radius: 2rem;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(0, 155, 222, 0.1); */
+      }
+
+      /* Register form specific styles */
+      #registerForm {
+        max-width: 70rem;
+      }
+
+      .register-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-bottom: 2rem;
+      }
+
+      .register-column {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .auth-form-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .auth-form-title {
+        font: 700 3rem/1.2 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .auth-form-subtitle {
+        font: 400 1.6rem/1.5 "Montserrat", sans-serif;
+        color: #666;
+      }
+
+      .auth-field {
+        position: relative;
+        margin-bottom: 2.5rem;
+      }
+
+      .auth-field-label {
+        font: 600 1.4rem/1 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 1rem;
+        display: block;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .auth-field-box {
+        position: relative;
+        box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.025);
+        border-radius: 3rem;
+        background: #fff;
+      }
+
+      .auth-field-box:after {
+        content: "";
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        height: 1rem;
+        width: 1rem;
+        margin: auto;
+        border-radius: 1rem;
+        background: #ff7101;
+      }
+
+      .auth-field-input {
+        position: relative;
+        height: 5rem;
+        width: 100%;
+        padding: 0 2.5rem 0 4rem;
+        border-radius: 3rem !important;
+        border: 0.5rem solid rgba(0, 155, 222, 0.1);
+        font: 500 1.6rem/1.5 "Montserrat", sans-serif;
+        color: #0f488a;
+        transition: all 0.3s ease-out;
+      }
+
+      .auth-field-input:hover {
+        border-color: rgba(255, 113, 1, 0.15);
+      }
+
+      .auth-field-input:focus {
+        border-color: rgba(255, 113, 1, 0.3);
+        outline: none;
+        box-shadow: 0 0 0 0.3rem rgba(255, 113, 1, 0.1);
+      }
+
+      .auth-field-input::-webkit-input-placeholder {
+        color: #0f488a;
+        opacity: 0.7;
+      }
+
+      .auth-remember {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+      }
+
+      .auth-checkbox-label {
+        display: flex;
+        align-items: center;
+        font: 500 1.4rem/1 "Montserrat", sans-serif;
+        color: #0f488a;
+        cursor: pointer;
+      }
+
+      .auth-checkbox {
+        margin-right: 1rem;
+        transform: scale(1.2);
+      }
+
+      .auth-forgot-link {
+        font: 500 1.4rem/1 "Montserrat", sans-serif;
+        color: #009bde;
+        text-decoration: none;
+        transition: all 0.3s ease-out;
+      }
+
+      .auth-forgot-link:hover {
+        color: #ff7101;
+        text-decoration: underline;
+      }
+
+      .auth-submit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 5rem;
+        width: 100%;
+        margin-bottom: 2rem;
+        padding: 0 3rem;
+        box-shadow: 0 0.75rem 2rem rgba(255, 113, 1, 0.15);
+        border-radius: 5rem;
+        background: #ff7101;
+        border: none;
+        font: 600 1.6rem/0.8 "Montserrat", sans-serif;
+        text-transform: uppercase;
+        color: #fff;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+      }
+
+      .auth-submit:hover {
+        box-shadow: 0 0.75rem 2rem rgba(255, 113, 1, 0.3);
+        transform: translateY(-0.5rem);
+      }
+
+      .auth-divider {
+        text-align: center;
+        margin: 3rem 0;
+        position: relative;
+      }
+
+      .auth-divider:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: rgba(0, 155, 222, 0.2);
+      }
+
+      .auth-divider-text {
+        background: #fff;
+        padding: 0 2rem;
+        font: 500 1.4rem/1 "Montserrat", sans-serif;
+        color: #666;
+      }
+
+      .auth-google {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 5rem;
+        width: 100%;
+        margin: 2rem 0;
+        padding: 0 2rem;
+        border: 0.2rem solid #e0e0e0;
+        border-radius: 5rem;
+        background: #fff;
+        font: 600 1.4rem/0.8 "Montserrat", sans-serif;
+        color: #333;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+        box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-google:hover {
+        background: #f8f9fa;
+        border-color: #c0c0c0;
+        box-shadow: 0 0.4rem 1rem rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+      }
+
+      .google-icon {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 1rem;
+        background: url('data:image/svg+xml;charset=UTF-8,<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero" fill="none"><path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="%234285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="%2334A853"/><path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z" fill="%23FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58Z" fill="%23EA4335"/></g></svg>')
+          no-repeat center;
+        background-size: contain;
+      }
+
+      .auth-switch {
+        text-align: center;
+        font: 500 1.5rem/1 "Montserrat", sans-serif;
+        color: #666;
+      }
+
+      .auth-switch-link {
+        color: #009bde;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease-out;
+      }
+
+      .auth-switch-link:hover {
+        color: #ff7101;
+        text-decoration: underline;
+      }
+
+      .auth-hero {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        max-width: 50rem;
+      }
+
+      .auth-hero-title {
+        font: 700 4rem/1.2 "Montserrat", sans-serif;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-hero-subtitle {
+        font: 400 2rem/1.5 "Montserrat", sans-serif;
+        opacity: 0.95;
+        margin-bottom: 0;
+        text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-features {
+        margin-top: 4rem;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 45rem;
+      }
+
+      .auth-feature {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 1.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .auth-feature:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);
+      }
+
+      .auth-feature-icon {
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 2rem;
+        font-size: 2rem;
+        flex-shrink: 0;
+        box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .auth-feature:hover .auth-feature-icon {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .auth-feature-text {
+        font: 500 1.7rem/1.4 "Montserrat", sans-serif;
+        text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+      }
+
+      /* Forgot Password Modal */
+      .forgot-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        backdrop-filter: blur(5px);
+      }
+
+      .forgot-modal.show {
+        display: flex;
+      }
+
+      .forgot-modal-content {
+        background: #fff;
+        border-radius: 2rem;
+        max-width: 50rem;
+        width: 90%;
+        position: relative;
+        box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.3);
+      }
+
+      .forgot-modal-header {
+        padding: 3rem 3rem 0;
+        text-align: center;
+      }
+
+      .forgot-modal-title {
+        font: 700 2.5rem/1.2 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+      }
+
+      .forgot-modal-subtitle {
+        font: 400 1.6rem/1.5 "Montserrat", sans-serif;
+        color: #666;
+      }
+
+      .forgot-modal-body {
+        padding: 3rem;
+      }
+
+      .forgot-modal-actions {
+        display: flex;
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .forgot-modal-close {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        background: none;
+        border: none;
+        font-size: 2.5rem;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+      }
+
+      .forgot-modal-close:hover {
+        color: #ff7101;
+        transform: scale(1.1);
+      }
+
+      /* Mobile and Tablet Responsive Design */
+      @media screen and (max-width: 1024px) {
+        .auth-container {
+          flex-direction: column;
+        }
+
+        .auth-right {
+          order: -1;
+          min-height: 40vh;
+          padding: 3rem 2rem;
+        }
+
+        .auth-left {
+          padding: 3rem 2rem;
+        }
+
+        .auth-form {
+          padding: 3rem 2.5rem;
+          max-width: 55rem;
+        }
+
+        #registerForm {
+          max-width: 60rem;
+        }
+
+        .auth-hero-title {
+          font-size: 3.5rem;
+        }
+
+        .auth-hero-subtitle {
+          font-size: 1.8rem;
+        }
+
+        .auth-features {
+          margin-top: 3rem;
+        }
+
+        .auth-feature {
+          justify-content: flex-start;
+          text-align: left;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .auth-right {
+          min-height: 35vh;
+          padding: 2rem 1.5rem;
+        }
+
+        .auth-left {
+          padding: 2rem 1.5rem;
+        }
+
+        .auth-form {
+          padding: 2.5rem 2rem;
+          max-width: 100%;
+        }
+
+        #registerForm {
+          max-width: 100%;
+        }
+
+        .register-grid {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+
+        .auth-form-title {
+          font-size: 2.5rem;
+        }
+
+        .auth-hero-title {
+          font-size: 2.8rem;
+        }
+
+        .auth-hero-subtitle {
+          font-size: 1.6rem;
+        }
+
+        .auth-features {
+          margin-top: 2rem;
+        }
+
+        .auth-feature {
+          justify-content: center;
+          text-align: center;
+          flex-direction: column;
+          margin-bottom: 1.5rem;
+        }
+
+        .auth-feature-icon {
+          margin: 0 0 1rem 0;
+        }
+
+        .auth-field-input {
+          height: 4.5rem;
+          font-size: 1.5rem;
+          padding: 0 2rem 0 3.5rem;
+        }
+
+        .auth-field-box:after {
+          top: 1.7rem;
+          left: 1.7rem;
+          height: 0.8rem;
+          width: 0.8rem;
+        }
+
+        .auth-submit,
+        .auth-google {
+          height: 4.5rem;
+          font-size: 1.4rem;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .auth-right {
+          min-height: 30vh;
+          padding: 2rem 1rem;
+        }
+
+        .auth-left {
+          padding: 1.5rem 1rem;
+        }
+
+        .auth-form {
+          padding: 2rem 1.5rem;
+        }
+
+        .auth-logo img {
+          height: 5rem;
+        }
+
+        .auth-form-title {
+          font-size: 2.2rem;
+        }
+
+        .auth-form-subtitle {
+          font-size: 1.4rem;
+        }
+
+        .auth-hero-title {
+          font-size: 2.4rem;
+        }
+
+        .auth-hero-subtitle {
+          font-size: 1.4rem;
+        }
+
+        .auth-features {
+          margin-top: 1.5rem;
+        }
+
+        .auth-feature {
+          margin-bottom: 1rem;
+        }
+
+        .auth-feature-icon {
+          width: 3rem;
+          height: 3rem;
+          font-size: 1.4rem;
+        }
+
+        .auth-feature-text {
+          font-size: 1.4rem;
+        }
+
+        .auth-field {
+          margin-bottom: 2rem;
+        }
+
+        .auth-field-label {
+          font-size: 1.2rem;
+          margin-bottom: 0.8rem;
+        }
+
+        .auth-field-input {
+          height: 4rem;
+          font-size: 1.4rem;
+          padding: 0 1.5rem 0 3rem;
+        }
+
+        .auth-field-box:after {
+          top: 1.5rem;
+          left: 1.5rem;
+          height: 0.7rem;
+          width: 0.7rem;
+        }
+
+        .auth-submit,
+        .auth-google {
+          height: 4rem;
+          font-size: 1.3rem;
+          padding: 0 1.5rem;
+        }
+
+        .google-icon {
+          width: 1.8rem;
+          height: 1.8rem;
+          margin-right: 0.8rem;
+        }
+
+        .auth-checkbox-label {
+          font-size: 1.3rem;
+        }
+
+        .auth-switch {
+          font-size: 1.3rem;
+        }
+      }
+
+      /* Hide/Show forms */
+      .auth-form.hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-container">
+      <!-- Left Side - Forms -->
+      <div class="auth-left">
+        <div class="auth-logo">
+          <img src="assets/img/logo.svg" alt="Corefinity" />
+        </div>
+
+        <!-- Login Form -->
+        <div class="auth-form" id="loginForm">
+          <div class="auth-form-header">
+            <h1 class="auth-form-title">Sign In</h1>
+            <p class="auth-form-subtitle">
+              Welcome back! Please sign in to your account.
+            </p>
+          </div>
+
+          <form id="loginFormSubmit">
+            <div class="auth-field">
+              <label class="auth-field-label" for="loginUsername"
+                >Username or Email</label
+              >
+              <div class="auth-field-box">
+                <input
+                  type="text"
+                  class="auth-field-input"
+                  id="loginUsername"
+                  placeholder="Enter your username or email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="auth-field">
+              <label class="auth-field-label" for="loginPassword"
+                >Password</label
+              >
+              <div class="auth-field-box">
+                <input
+                  type="password"
+                  class="auth-field-input"
+                  id="loginPassword"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="auth-remember">
+              <label class="auth-checkbox-label">
+                <input type="checkbox" class="auth-checkbox" id="rememberMe" />
+                Remember me
+              </label>
+              <a href="#" class="auth-forgot-link" onclick="switchToForgot()"
+                >Forgot Password?</a
+              >
+            </div>
+
+            <button type="submit" class="auth-submit">
+              <i class="fas fa-sign-in-alt" style="margin-right: 1rem"></i>
+              Sign In
+            </button>
+          </form>
+
+          <div class="auth-divider">
+            <span class="auth-divider-text">Or sign in with</span>
+          </div>
+
+          <button
+            type="button"
+            class="auth-google"
+            onclick="signInWithGoogle()"
+          >
+            <div class="google-icon"></div>
+            Sign in with Google
+          </button>
+
+          <div class="auth-switch">
+            Don't have an account?
+            <a href="#" class="auth-switch-link" onclick="switchToRegister()"
+              >Sign Up</a
+            >
+          </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth-form hidden" id="registerForm">
+          <div class="auth-form-header">
+            <h1 class="auth-form-title">Sign Up</h1>
+            <p class="auth-form-subtitle">
+              Create your account to get started with Corefinity.
+            </p>
+          </div>
+
+          <form id="registerFormSubmit">
+            <!-- Two column layout for register form -->
+            <div class="register-grid">
+              <div class="register-column">
+                <div class="auth-field">
+                  <label class="auth-field-label" for="registerName"
+                    >Full Name</label
+                  >
+                  <div class="auth-field-box">
+                    <input
+                      type="text"
+                      class="auth-field-input"
+                      id="registerName"
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="auth-field">
+                  <label class="auth-field-label" for="registerEmail"
+                    >Email Address</label
+                  >
+                  <div class="auth-field-box">
+                    <input
+                      type="email"
+                      class="auth-field-input"
+                      id="registerEmail"
+                      placeholder="Enter your email address"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="auth-field">
+                  <label class="auth-field-label" for="registerUsername"
+                    >Username</label
+                  >
+                  <div class="auth-field-box">
+                    <input
+                      type="text"
+                      class="auth-field-input"
+                      id="registerUsername"
+                      placeholder="Choose a username"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="register-column">
+                <div class="auth-field">
+                  <label class="auth-field-label" for="registerPassword"
+                    >Password</label
+                  >
+                  <div class="auth-field-box">
+                    <input
+                      type="password"
+                      class="auth-field-input"
+                      id="registerPassword"
+                      placeholder="Create a strong password"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="auth-field">
+                  <label class="auth-field-label" for="confirmPassword"
+                    >Confirm Password</label
+                  >
+                  <div class="auth-field-box">
+                    <input
+                      type="password"
+                      class="auth-field-input"
+                      id="confirmPassword"
+                      placeholder="Confirm your password"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Terms and submit button full width -->
+            <div class="auth-remember">
+              <label class="auth-checkbox-label">
+                <input
+                  type="checkbox"
+                  class="auth-checkbox"
+                  id="agreeTerms"
+                  required
+                />
+                I agree to the
+                <a href="#" class="auth-forgot-link">Terms & Conditions</a>
+              </label>
+            </div>
+
+            <button type="submit" class="auth-submit">
+              <i class="fas fa-user-plus" style="margin-right: 1rem"></i>
+              Create Account
+            </button>
+          </form>
+
+          <div class="auth-divider">
+            <span class="auth-divider-text">Or sign up with</span>
+          </div>
+
+          <button
+            type="button"
+            class="auth-google"
+            onclick="signInWithGoogle()"
+          >
+            <div class="google-icon"></div>
+            Sign up with Google
+          </button>
+
+          <div class="auth-switch">
+            Already have an account?
+            <a href="#" class="auth-switch-link" onclick="switchToLogin()"
+              >Sign In</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Hero -->
+      <div class="auth-right">
+        <div class="auth-hero">
+          <h2 class="auth-hero-title">Welcome to Corefinity</h2>
+          <p class="auth-hero-subtitle">
+            Your powerful platform for creating amazing websites with our
+            no-code wizard. Build, deploy, and manage your digital presence
+            effortlessly.
+          </p>
+        </div>
+
+        <div class="auth-features">
+          <div class="auth-feature">
+            <div class="auth-feature-icon">
+              <i class="fas fa-magic"></i>
+            </div>
+            <div class="auth-feature-text">No-code website creation wizard</div>
+          </div>
+
+          <div class="auth-feature">
+            <div class="auth-feature-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <div class="auth-feature-text">Fast deployment and hosting</div>
+          </div>
+
+          <div class="auth-feature">
+            <div class="auth-feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="auth-feature-text">Enterprise-grade security</div>
+          </div>
+
+          <div class="auth-feature">
+            <div class="auth-feature-icon">
+              <i class="fas fa-headset"></i>
+            </div>
+            <div class="auth-feature-text">24/7 expert support</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="forgot-modal" id="forgotModal">
+      <div class="forgot-modal-content">
+        <button class="forgot-modal-close" onclick="closeForgotModal()">
+          &times;
+        </button>
+        <div class="forgot-modal-header">
+          <h2 class="forgot-modal-title">Reset Password</h2>
+          <p class="forgot-modal-subtitle">
+            Enter your email address and we'll send you a link to reset your
+            password.
+          </p>
+        </div>
+        <div class="forgot-modal-body">
+          <form id="forgotPasswordForm">
+            <div class="auth-field">
+              <label class="auth-field-label" for="forgotEmail"
+                >Email Address</label
+              >
+              <div class="auth-field-box">
+                <input
+                  type="email"
+                  class="auth-field-input"
+                  id="forgotEmail"
+                  placeholder="Enter your email address"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="forgot-modal-actions">
+              <button
+                type="button"
+                class="auth-submit"
+                style="flex: 1; background: #009bde; margin: 0"
+                onclick="closeForgotModal()"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="auth-submit"
+                style="flex: 1; margin: 0"
+              >
+                <i class="fas fa-paper-plane" style="margin-right: 1rem"></i>
+                Send Reset Link
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Form switching functions
+      function switchToRegister() {
+        document.getElementById("loginForm").classList.add("hidden");
+        document.getElementById("registerForm").classList.remove("hidden");
+        document.getElementById("forgotForm").classList.add("hidden");
+      }
+
+      function switchToLogin() {
+        document.getElementById("registerForm").classList.add("hidden");
+        document.getElementById("loginForm").classList.remove("hidden");
+        document.getElementById("forgotForm").classList.add("hidden");
+      }
+
+      function switchToForgot() {
+        document.getElementById("loginForm").classList.add("hidden");
+        document.getElementById("registerForm").classList.add("hidden");
+        document.getElementById("forgotForm").classList.remove("hidden");
+
+        // Debug log
+        console.log("Switching to forgot form");
+        console.log(
+          "Forgot form element:",
+          document.getElementById("forgotForm")
+        );
+      }
+
+      // Forgot password modal functions
+      function showForgotModal() {
+        document.getElementById("forgotModal").classList.add("show");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeForgotModal() {
+        document.getElementById("forgotModal").classList.remove("show");
+        document.body.style.overflow = "auto";
+      }
+
+      // Close modal when clicking outside
+      document
+        .getElementById("forgotModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeForgotModal();
+          }
+        });
+
+      // Form submission handlers
+      document
+        .getElementById("loginFormSubmit")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const username = document.getElementById("loginUsername").value;
+          const password = document.getElementById("loginPassword").value;
+          const remember = document.getElementById("rememberMe").checked;
+
+          // Show loading state
+          const submitBtn = this.querySelector(".auth-submit");
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin" style="margin-right: 1rem;"></i>Signing In...';
+          submitBtn.disabled = true;
+
+          // Simulate API call
+          setTimeout(() => {
+            alert(
+              "Login functionality will be implemented with backend integration."
+            );
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }, 2000);
+        });
+
+      document
+        .getElementById("registerFormSubmit")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById("registerName").value;
+          const email = document.getElementById("registerEmail").value;
+          const username = document.getElementById("registerUsername").value;
+          const password = document.getElementById("registerPassword").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const agreeTerms = document.getElementById("agreeTerms").checked;
+
+          // Validate passwords match
+          if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+          }
+
+          if (!agreeTerms) {
+            alert("Please agree to the Terms & Conditions");
+            return;
+          }
+
+          // Show loading state
+          const submitBtn = this.querySelector(".auth-submit");
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin" style="margin-right: 1rem;"></i>Creating Account...';
+          submitBtn.disabled = true;
+
+          // Simulate API call
+          setTimeout(() => {
+            alert(
+              "Registration functionality will be implemented with backend integration."
+            );
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }, 2000);
+        });
+
+      document
+        .getElementById("forgotPasswordForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("forgotEmail").value;
+
+          // Show loading state
+          const submitBtn = this.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin" style="margin-right: 1rem;"></i>Sending...';
+          submitBtn.disabled = true;
+
+          // Simulate API call
+          setTimeout(() => {
+            alert(`Password reset link has been sent to ${email}`);
+            closeForgotModal();
+            document.getElementById("forgotEmail").value = "";
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }, 2000);
+        });
+    </script>
+  </body>
+</html>

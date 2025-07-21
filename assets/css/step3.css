@@ -1,4 +1,5 @@
 /* Step 3: Styles & Design Specific Styles */
+/* Updated: 2025-07-21 - Moved Preview button to top right with tabs */
 
 /* Style Tabs */
 .style-tabs {
@@ -7,12 +8,26 @@
 
 .style-tabs .tab-navigation {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 4rem;
   border-bottom: 0.2rem solid rgba(0, 155, 222, 0.1);
   padding-bottom: 2rem;
-  justify-content: center;
+}
+
+.style-tabs .tab-buttons-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  flex: 1;
+}
+
+.style-tabs .tab-buttons-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .style-tabs .tab-button {
@@ -28,6 +43,7 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  text-decoration: none;
 }
 
 .style-tabs .tab-button:hover {
@@ -45,6 +61,37 @@
 }
 
 .style-tabs .tab-button i {
+  margin-right: 1rem;
+  font-size: 1.6rem;
+}
+
+/* Theme Preview Button - Updated styling to match tab buttons */
+.theme-preview-btn {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 2.5rem;
+  background: rgba(50, 190, 125, 0.1);
+  border: 0.2rem solid rgba(50, 190, 125, 0.2);
+  border-radius: 3rem;
+  font: 600 1.4rem/1 "Montserrat", sans-serif;
+  color: #32be7d;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.theme-preview-btn:hover {
+  background: #32be7d;
+  border-color: #32be7d;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1.5rem rgba(50, 190, 125, 0.3);
+}
+
+.theme-preview-btn i {
   margin-right: 1rem;
   font-size: 1.6rem;
 }
@@ -193,11 +240,7 @@
   border-color: #ff7101;
 }
 
-/* Theme Preview Section */
-.theme-preview-section {
-  margin-top: 3rem;
-  text-align: center;
-}
+/* Theme Preview Section - REMOVED since button moved to navigation */
 
 /* Logo Uploads */
 .logo-uploads {
@@ -606,7 +649,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* background: linear-gradient(135deg, #009bde 0%, #ff7101 100%); */
   background: #009bde;
   color: #fff;
 }
@@ -882,9 +924,18 @@
 /* Responsive Design for Step 3 */
 @media screen and (max-width: 768px) {
   .style-tabs .tab-navigation {
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+
+  .style-tabs .tab-buttons-left {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .style-tabs .tab-buttons-right {
+    justify-content: center;
   }
 
   .logo-uploads {

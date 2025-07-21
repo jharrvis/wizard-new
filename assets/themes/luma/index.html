@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="title" content="Home Page" />
+    <meta name="robots" content="INDEX,FOLLOW" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>Home Page</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="./index_files/8b035f72eebc0792d185e675b33545de.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen and (min-width: 768px)"
+      href="./index_files/styles-l.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="print"
+      href="./index_files/print.min.css"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://magento-demo.mageplaza.com/static/version1751515305/frontend/Magento/luma/en_US/Magento_Theme/favicon.ico"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="https://magento-demo.mageplaza.com/static/version1751515305/frontend/Magento/luma/en_US/Magento_Theme/favicon.ico"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin="anonymous"
+      href="https://magento-demo.mageplaza.com/static/version1751515305/frontend/Magento/luma/en_US/fonts/opensans/light/opensans-300.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin="anonymous"
+      href="https://magento-demo.mageplaza.com/static/version1751515305/frontend/Magento/luma/en_US/fonts/opensans/regular/opensans-400.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin="anonymous"
+      href="https://magento-demo.mageplaza.com/static/version1751515305/frontend/Magento/luma/en_US/fonts/opensans/semibold/opensans-600.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin="anonymous"
+      href="https://magento-demo.mageplaza.com/static/version1751515305/frontend/Magento/luma/en_US/fonts/opensans/bold/opensans-700.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      crossorigin="anonymous"
+      href="https://magento-demo.mageplaza.com/static/version1751515305/frontend/Magento/luma/en_US/fonts/Luma-Icons.woff2"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      href="./index_files/styles.css"
+    />
+  </head>
+  <body id="html-body" class="cms-home cms-index-index page-layout-1column">
+    <div class="page-wrapper">
+      <header class="page-header">
+        <div class="panel wrapper">
+          <div class="panel header">
+            <a class="action skip contentarea" href="#">
+              <span>Skip to Content</span>
+            </a>
+            <ul class="header links">
+              <li class="greet welcome">
+                <span class="not-logged-in">Default welcome msg!</span>
+              </li>
+              <li class="link authorization-link">
+                <a href="#">Sign In</a>
+              </li>
+              <li><a href="#" id="idaPRUZMBD">Create an Account</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="header content">
+          <span class="action nav-toggle"><span>Toggle Nav</span></span>
+          <a class="logo" href="#">
+            <img src="./index_files/logo.svg" title="" alt="" width="170" />
+          </a>
+          <div class="minicart-wrapper">
+            <a class="action showcart" href="#">
+              <span class="text">My Cart</span>
+              <span class="counter qty empty">
+                <span class="counter-number"></span>
+                <span class="counter-label"></span>
+              </span>
+            </a>
+            <div
+              class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front mage-dropdown-dialog"
+              style="display: none"
+            >
+              <div
+                class="block block-minicart ui-dialog-content ui-widget-content"
+              >
+                <div id="minicart-content-wrapper">
+                  <div class="block-title">
+                    <strong>
+                      <span class="text">My Cart</span>
+                      <span class="qty empty" title="Items in Cart"></span>
+                    </strong>
+                  </div>
+                  <div class="block-content">
+                    <button
+                      type="button"
+                      id="btn-minicart-close"
+                      class="action close"
+                      title="Close"
+                    >
+                      <span>Close</span>
+                    </button>
+                    <strong class="subtitle empty"
+                      >You have no items in your shopping cart.</strong
+                    >
+                    <div id="minicart-widgets" class="minicart-widgets"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="block block-search">
+            <div class="block block-title"><strong>Search</strong></div>
+            <div class="block block-content">
+              <form class="form minisearch" id="search_mini_form" method="get">
+                <div class="field search">
+                  <label class="label" for="search">
+                    <span>Search</span>
+                  </label>
+                  <div class="control">
+                    <input
+                      id="search"
+                      type="text"
+                      name="q"
+                      value=""
+                      placeholder="Search entire store here..."
+                      class="input-text"
+                      maxlength="128"
+                      autocomplete="off"
+                    />
+                    <div
+                      id="search_autocomplete"
+                      class="search-autocomplete"
+                      style="display: none"
+                    ></div>
+                    <div class="nested">
+                      <a class="action advanced" href="#">Advanced Search</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="actions">
+                  <button
+                    type="submit"
+                    title="Search"
+                    class="action search"
+                    disabled=""
+                  >
+                    <span>Search</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <ul class="compare wrapper">
+            <li class="item link compare">
+              <a class="action compare no-display" title="Compare Products">
+                Compare Products <span class="counter qty"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </header>
+      <div class="sections nav-sections">
+        <div class="section-items nav-sections-items mage-tabs-disabled">
+          <div class="section-item-title nav-sections-item-title active">
+            <a class="nav-sections-item-switch" href="#">Menu</a>
+          </div>
+          <div
+            class="section-item-content nav-sections-item-content"
+            id="store.menu"
+          >
+            <nav class="navigation">
+              <ul id="ui-id-1" class="ui-menu ui-widget ui-widget-content">
+                <li
+                  class="level0 nav-1 category-item first level-top ui-menu-item"
+                >
+                  <a href="#" class="level-top ui-menu-item-wrapper"
+                    ><span>What's New</span></a
+                  >
+                </li>
+                <li
+                  class="level0 nav-2 category-item level-top parent ui-menu-item"
+                >
+                  <a href="#" class="level-top ui-menu-item-wrapper"
+                    ><span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span
+                    ><span>Women</span></a
+                  >
+                  <ul
+                    class="level0 submenu ui-menu ui-widget ui-widget-content ui-front"
+                    style="display: none"
+                  >
+                    <li
+                      class="level1 nav-2-1 category-item first parent ui-menu-item"
+                    >
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span
+                          class="ui-menu-icon ui-icon ui-icon-caret-1-e"
+                        ></span
+                        ><span>Tops</span></a
+                      >
+                      <ul
+                        class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded"
+                        style="display: none"
+                      >
+                        <li
+                          class="level2 nav-2-1-1 category-item first ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Jackets</span></a
+                          >
+                        </li>
+                        <li class="level2 nav-2-1-2 category-item ui-menu-item">
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Hoodies &amp; Sweatshirts</span></a
+                          >
+                        </li>
+                        <li class="level2 nav-2-1-3 category-item ui-menu-item">
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Tees</span></a
+                          >
+                        </li>
+                        <li
+                          class="level2 nav-2-1-4 category-item last ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Bras &amp; Tanks</span></a
+                          >
+                        </li>
+                      </ul>
+                    </li>
+                    <li
+                      class="level1 nav-2-2 category-item last parent ui-menu-item"
+                    >
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span
+                          class="ui-menu-icon ui-icon ui-icon-caret-1-e"
+                        ></span
+                        ><span>Bottoms</span></a
+                      >
+                      <ul
+                        class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded"
+                        style="display: none"
+                      >
+                        <li
+                          class="level2 nav-2-2-1 category-item first ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Pants</span></a
+                          >
+                        </li>
+                        <li
+                          class="level2 nav-2-2-2 category-item last ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Shorts</span></a
+                          >
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li
+                  class="level0 nav-3 category-item level-top parent ui-menu-item"
+                >
+                  <a href="#" class="level-top ui-menu-item-wrapper"
+                    ><span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span
+                    ><span>Men</span></a
+                  >
+                  <ul
+                    class="level0 submenu ui-menu ui-widget ui-widget-content ui-front"
+                    style="display: none; top: 47px; left: 0px"
+                  >
+                    <li
+                      class="level1 nav-3-1 category-item first parent ui-menu-item"
+                    >
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span
+                          class="ui-menu-icon ui-icon ui-icon-caret-1-e"
+                        ></span
+                        ><span>Tops</span></a
+                      >
+                      <ul
+                        class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded"
+                        style="display: none"
+                      >
+                        <li
+                          class="level2 nav-3-1-1 category-item first ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Jackets</span></a
+                          >
+                        </li>
+                        <li class="level2 nav-3-1-2 category-item ui-menu-item">
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Hoodies &amp; Sweatshirts</span></a
+                          >
+                        </li>
+                        <li class="level2 nav-3-1-3 category-item ui-menu-item">
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Tees</span></a
+                          >
+                        </li>
+                        <li
+                          class="level2 nav-3-1-4 category-item last ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Tanks</span></a
+                          >
+                        </li>
+                      </ul>
+                    </li>
+                    <li
+                      class="level1 nav-3-2 category-item last parent ui-menu-item"
+                    >
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span
+                          class="ui-menu-icon ui-icon ui-icon-caret-1-e"
+                        ></span
+                        ><span>Bottoms</span></a
+                      >
+                      <ul
+                        class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded"
+                        style="display: none"
+                      >
+                        <li
+                          class="level2 nav-3-2-1 category-item first ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Pants</span></a
+                          >
+                        </li>
+                        <li
+                          class="level2 nav-3-2-2 category-item last ui-menu-item"
+                        >
+                          <a href="#" class="ui-menu-item-wrapper"
+                            ><span>Shorts</span></a
+                          >
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li
+                  class="level0 nav-4 category-item level-top parent ui-menu-item"
+                >
+                  <a href="#" class="level-top ui-menu-item-wrapper"
+                    ><span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span
+                    ><span>Gear</span></a
+                  >
+                  <ul
+                    class="level0 submenu ui-menu ui-widget ui-widget-content ui-front"
+                    style="display: none"
+                  >
+                    <li class="level1 nav-4-1 category-item first ui-menu-item">
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span>Bags</span></a
+                      >
+                    </li>
+                    <li class="level1 nav-4-2 category-item ui-menu-item">
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span>Fitness Equipment</span></a
+                      >
+                    </li>
+                    <li class="level1 nav-4-3 category-item last ui-menu-item">
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span>Watches</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li
+                  class="level0 nav-5 category-item level-top parent ui-menu-item"
+                >
+                  <a href="#" class="level-top ui-menu-item-wrapper"
+                    ><span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span
+                    ><span>Training</span></a
+                  >
+                  <ul
+                    class="level0 submenu ui-menu ui-widget ui-widget-content ui-front"
+                    style="display: none"
+                  >
+                    <li
+                      class="level1 nav-5-1 category-item first last ui-menu-item"
+                    >
+                      <a href="#" class="ui-menu-item-wrapper"
+                        ><span>Video Download</span></a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li
+                  class="level0 nav-6 category-item last level-top ui-menu-item"
+                >
+                  <a href="#" class="level-top ui-menu-item-wrapper"
+                    ><span>Sale</span></a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="section-item-title nav-sections-item-title">
+            <a class="nav-sections-item-switch" href="#">Account</a>
+          </div>
+          <div
+            class="section-item-content nav-sections-item-content"
+            id="store.links"
+            style="display: none"
+          >
+            <ul class="header links">
+              <li class="greet welcome">
+                <span class="not-logged-in">Default welcome msg!</span>
+              </li>
+              <li class="link authorization-link">
+                <a href="#">Sign In</a>
+              </li>
+              <li><a href="#" id="idaPRUZMBD_mobile">Create an Account</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <main id="maincontent" class="page-main">
+        <a id="contentarea"></a>
+        <div class="page-title-wrapper">
+          <h1 class="page-title">
+            <span class="base">Home Page</span>
+          </h1>
+        </div>
+        <div class="page messages">
+          <div></div>
+          <div></div>
+        </div>
+        <div class="columns">
+          <div class="column main">
+            <input name="form_key" type="hidden" value="8b2VP4MFz4yk8woz" />
+            <div id="authenticationPopup" style="display: none"></div>
+            <div class="widget block block-static-block">
+              <div class="blocks-promo">
+                <a href="#" class="block-promo home-main">
+                  <img src="./index_files/home-main.jpg" alt="" />
+                  <span class="content bg-white">
+                    <span class="info">New Luma Yoga Collection</span>
+                    <strong class="title"
+                      >Get fit and look fab in new seasonal styles</strong
+                    >
+                    <span class="action more button">Shop New Yoga</span>
+                  </span>
+                </a>
+                <div class="block-promo-wrapper block-promo-hp">
+                  <a href="#" class="block-promo home-pants">
+                    <img src="./index_files/home-pants.jpg" alt="" />
+                    <span class="content">
+                      <strong class="title">20% OFF</strong>
+                      <span class="info">Luma pants when you shop today*</span>
+                      <span class="action more icon">Shop Pants</span>
+                    </span>
+                  </a>
+                  <a href="#" class="block-promo home-t-shirts">
+                    <span class="image"
+                      ><img src="./index_files/home-t-shirts.png" alt=""
+                    /></span>
+                    <span class="content">
+                      <strong class="title"
+                        >Even more ways to mix and match</strong
+                      >
+                      <span class="info">Buy 3 Luma tees get a 4th free</span>
+                      <span class="action more icon">Shop Tees</span>
+                    </span>
+                  </a>
+                  <a href="#" class="block-promo home-erin">
+                    <img src="./index_files/home-erin.jpg" alt="" />
+                    <span class="content">
+                      <strong class="title">Take it from Erin</strong>
+                      <span class="info"
+                        >Luma founder Erin Renny shares her favorites!</span
+                      >
+                      <span class="action more icon">Shop Erin Recommends</span>
+                    </span>
+                  </a>
+                  <a href="#" class="block-promo home-performance">
+                    <img src="./index_files/home-performance.jpg" alt="" />
+                    <span class="content bg-white">
+                      <strong class="title">Science meets performance</strong>
+                      <span class="info"
+                        >Wicking to raingear, Luma covers you</span
+                      >
+                      <span class="action more icon">Shop Performance</span>
+                    </span>
+                  </a>
+                  <a href="#" class="block-promo home-eco">
+                    <img src="./index_files/home-eco.jpg" alt="" />
+                    <span class="content bg-white">
+                      <strong class="title">Twice around, twice as nice</strong>
+                      <span class="info"
+                        >Find conscientious, comfy clothing in our
+                        <nobr>eco-friendly</nobr> collection</span
+                      >
+                      <span class="action more icon">Shop Eco-Friendly</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="content-heading">
+              <h2 class="title">Hot Sellers</h2>
+              <p class="info">Here is what`s trending on Luma right now</p>
+            </div>
+            <div class="block widget block-products-list grid">
+              <div class="block-content">
+                <div class="products-grid grid">
+                  <ol class="product-items widget-product-grid">
+                    <li class="product-item">
+                      <div class="product-item-info">
+                        <a href="#" class="product-item-photo">
+                          <span
+                            class="product-image-container product-image-container-1556"
+                            style="width: 240px"
+                          >
+                            <span
+                              class="product-image-wrapper"
+                              style="padding-bottom: 125%"
+                            >
+                              <img
+                                class="product-image-photo"
+                                src="./index_files/ws12-orange_main_2.jpg"
+                                loading="lazy"
+                                width="240"
+                                height="300"
+                                alt="Radiant Tee"
+                            /></span>
+                          </span>
+                        </a>
+                        <div class="product-item-details">
+                          <strong class="product-item-name">
+                            <a
+                              title="Radiant Tee"
+                              href="#"
+                              class="product-item-link"
+                              >Radiant Tee</a
+                            >
+                          </strong>
+                          <div class="product-reviews-summary short">
+                            <div class="rating-summary">
+                              <span class="label"><span>Rating:</span></span>
+                              <div
+                                class="rating-result"
+                                id="rating-result_1556"
+                                title="60%"
+                              >
+                                <span style="width: 60%"><span>60%</span></span>
+                              </div>
+                            </div>
+                            <div class="reviews-actions">
+                              <a class="action view" href="#"
+                                >3 &nbsp;<span>Reviews</span></a
+                              >
+                            </div>
+                          </div>
+                          <div class="price-box price-final_price">
+                            <span class="normal-price">
+                              <span
+                                class="price-container price-final_price tax weee"
+                              >
+                                <span class="price-label">As low as</span>
+                                <span
+                                  id="old-price-1556-widget-product-grid"
+                                  class="price-wrapper"
+                                  ><span class="price">$22.00</span></span
+                                >
+                              </span>
+                            </span>
+                          </div>
+                          <div class="swatch-opt-1556">
+                            <div class="swatch-attribute size">
+                              <div class="swatch-attribute-options clearfix">
+                                <div class="swatch-option text">XS</div>
+                                <div class="swatch-option text">S</div>
+                                <div class="swatch-option text">M</div>
+                                <div class="swatch-option text">L</div>
+                                <div class="swatch-option text">XL</div>
+                              </div>
+                            </div>
+                            <div class="swatch-attribute color">
+                              <div class="swatch-attribute-options clearfix">
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #1857f7 no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #eb6703 no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #ef3dff no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="product-item-inner">
+                            <div class="product-item-actions">
+                              <div class="actions-primary">
+                                <form method="post">
+                                  <input
+                                    type="hidden"
+                                    name="product"
+                                    value="1556"
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="uenc"
+                                    value="aHR0cHM6Ly9tYWdlbnRvLWRlbW8ubWFnZXBsYXphLmNvbS9kZWZhdWx0L2NoZWNrb3V0L2NhcnQvYWRkL3VlbmMvYUhSMGNITTZMeTl0WVdkbGJuUnZMV1JsYlc4dWJXRm5aWEJzWVhwaExtTnZiUzlrWldaaGRXeDBMdyUyQyUyQy9wcm9kdWN0LzE1NTYv"
+                                  />
+                                  <input
+                                    name="form_key"
+                                    type="hidden"
+                                    value="8b2VP4MFz4yk8woz"
+                                  />
+                                  <button
+                                    type="submit"
+                                    title="Add to Cart"
+                                    class="action tocart primary"
+                                  >
+                                    <span>Add to Cart</span>
+                                  </button>
+                                </form>
+                              </div>
+                              <div class="actions-secondary">
+                                <a
+                                  href="#"
+                                  class="action towishlist"
+                                  title="Add to Wish List"
+                                >
+                                  <span>Add to Wish List</span>
+                                </a>
+                                <a
+                                  href="#"
+                                  class="action tocompare"
+                                  title="Add to Compare"
+                                >
+                                  <span>Add to Compare</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="product-item">
+                      <div class="product-item-info">
+                        <a href="#" class="product-item-photo">
+                          <span
+                            class="product-image-container product-image-container-1812"
+                            style="width: 240px"
+                          >
+                            <span
+                              class="product-image-wrapper"
+                              style="padding-bottom: 125%"
+                            >
+                              <img
+                                class="product-image-photo"
+                                src="./index_files/wt09-white_main_1.jpg"
+                                loading="lazy"
+                                width="240"
+                                height="300"
+                                alt="Breathe-Easy Tank"
+                            /></span>
+                          </span>
+                        </a>
+                        <div class="product-item-details">
+                          <strong class="product-item-name">
+                            <a
+                              title="Breathe-Easy Tank"
+                              href="#"
+                              class="product-item-link"
+                              >Breathe-Easy Tank</a
+                            >
+                          </strong>
+                          <div class="product-reviews-summary short">
+                            <div class="rating-summary">
+                              <span class="label"><span>Rating:</span></span>
+                              <div
+                                class="rating-result"
+                                id="rating-result_1812"
+                                title="70%"
+                              >
+                                <span style="width: 70%"><span>70%</span></span>
+                              </div>
+                            </div>
+                            <div class="reviews-actions">
+                              <a class="action view" href="#"
+                                >2 &nbsp;<span>Reviews</span></a
+                              >
+                            </div>
+                          </div>
+                          <div class="price-box price-final_price">
+                            <span class="normal-price">
+                              <span
+                                class="price-container price-final_price tax weee"
+                              >
+                                <span class="price-label">As low as</span>
+                                <span
+                                  id="old-price-1812-widget-product-grid"
+                                  class="price-wrapper"
+                                  ><span class="price">$34.00</span></span
+                                >
+                              </span>
+                            </span>
+                          </div>
+                          <div class="swatch-opt-1812">
+                            <div class="swatch-attribute size">
+                              <div class="swatch-attribute-options clearfix">
+                                <div class="swatch-option text">XS</div>
+                                <div class="swatch-option text">S</div>
+                                <div class="swatch-option text">M</div>
+                                <div class="swatch-option text">L</div>
+                                <div class="swatch-option text">XL</div>
+                              </div>
+                            </div>
+                            <div class="swatch-attribute color">
+                              <div class="swatch-attribute-options clearfix">
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #ef3dff no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #ffffff no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #ffd500 no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="product-item-inner">
+                            <div class="product-item-actions">
+                              <div class="actions-primary">
+                                <form method="post">
+                                  <input
+                                    type="hidden"
+                                    name="product"
+                                    value="1812"
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="uenc"
+                                    value="aHR0cHM6Ly9tYWdlbnRvLWRlbW8ubWFnZXBsYXphLmNvbS9kZWZhdWx0L2NoZWNrb3V0L2NhcnQvYWRkL3VlbmMvYUhSMGNITTZMeTl0WVdkbGJuUnZMV1JsYlc4dWJXRm5aWEJzWVhwaExtTnZiUzlrWldaaGRXeDBMdyUyQyUyQy9wcm9kdWN0LzE4MTIv"
+                                  />
+                                  <input
+                                    name="form_key"
+                                    type="hidden"
+                                    value="8b2VP4MFz4yk8woz"
+                                  />
+                                  <button
+                                    type="submit"
+                                    title="Add to Cart"
+                                    class="action tocart primary"
+                                  >
+                                    <span>Add to Cart</span>
+                                  </button>
+                                </form>
+                              </div>
+                              <div class="actions-secondary">
+                                <a
+                                  href="#"
+                                  class="action towishlist"
+                                  title="Add to Wish List"
+                                >
+                                  <span>Add to Wish List</span>
+                                </a>
+                                <a
+                                  href="#"
+                                  class="action tocompare"
+                                  title="Add to Compare"
+                                >
+                                  <span>Add to Compare</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="product-item">
+                      <div class="product-item-info">
+                        <a href="#" class="product-item-photo">
+                          <span
+                            class="product-image-container product-image-container-694"
+                            style="width: 240px"
+                          >
+                            <span
+                              class="product-image-wrapper"
+                              style="padding-bottom: 125%"
+                            >
+                              <img
+                                class="product-image-photo"
+                                src="./index_files/mt07-gray_main_1.jpg"
+                                loading="lazy"
+                                width="240"
+                                height="300"
+                                alt="Argus All-Weather Tank"
+                            /></span>
+                          </span>
+                        </a>
+                        <div class="product-item-details">
+                          <strong class="product-item-name">
+                            <a
+                              title="Argus All-Weather Tank"
+                              href="#"
+                              class="product-item-link"
+                              >Argus All-Weather Tank</a
+                            >
+                          </strong>
+                          <div class="price-box price-final_price">
+                            <span class="normal-price">
+                              <span
+                                class="price-container price-final_price tax weee"
+                              >
+                                <span class="price-label">As low as</span>
+                                <span
+                                  id="old-price-694-widget-product-grid"
+                                  class="price-wrapper"
+                                  ><span class="price">$22.00</span></span
+                                >
+                              </span>
+                            </span>
+                          </div>
+                          <div class="swatch-opt-694">
+                            <div class="swatch-attribute size">
+                              <div class="swatch-attribute-options clearfix">
+                                <div class="swatch-option text">XS</div>
+                                <div class="swatch-option text">S</div>
+                                <div class="swatch-option text">M</div>
+                                <div class="swatch-option text">L</div>
+                                <div class="swatch-option text">XL</div>
+                              </div>
+                            </div>
+                            <div class="swatch-attribute color">
+                              <div class="swatch-attribute-options clearfix">
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #8f8f8f no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="product-item-inner">
+                            <div class="product-item-actions">
+                              <div class="actions-primary">
+                                <form method="post">
+                                  <input
+                                    type="hidden"
+                                    name="product"
+                                    value="694"
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="uenc"
+                                    value="aHR0cHM6Ly9tYWdlbnRvLWRlbW8ubWFnZXBsYXphLmNvbS9kZWZhdWx0L2NoZWNrb3V0L2NhcnQvYWRkL3VlbmMvYUhSMGNITTZMeTl0WVdkbGJuUnZMV1JsYlc4dWJXRm5aWEJzWVhwaExtTnZiUzlrWldaaGRXeDBMdyUyQyUyQy9wcm9kdWN0LzY5NC8,"
+                                  />
+                                  <input
+                                    name="form_key"
+                                    type="hidden"
+                                    value="8b2VP4MFz4yk8woz"
+                                  />
+                                  <button
+                                    type="submit"
+                                    title="Add to Cart"
+                                    class="action tocart primary"
+                                  >
+                                    <span>Add to Cart</span>
+                                  </button>
+                                </form>
+                              </div>
+                              <div class="actions-secondary">
+                                <a
+                                  href="#"
+                                  class="action towishlist"
+                                  title="Add to Wish List"
+                                >
+                                  <span>Add to Wish List</span>
+                                </a>
+                                <a
+                                  href="#"
+                                  class="action tocompare"
+                                  title="Add to Compare"
+                                >
+                                  <span>Add to Compare</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="product-item">
+                      <div class="product-item-info">
+                        <a href="#" class="product-item-photo">
+                          <span
+                            class="product-image-container product-image-container-158"
+                            style="width: 240px"
+                          >
+                            <span
+                              class="product-image-wrapper"
+                              style="padding-bottom: 125%"
+                            >
+                              <img
+                                class="product-image-photo"
+                                src="./index_files/mh07-gray_main_2.jpg"
+                                loading="lazy"
+                                width="240"
+                                height="300"
+                                alt="Hero Hoodie"
+                            /></span>
+                          </span>
+                        </a>
+                        <div class="product-item-details">
+                          <strong class="product-item-name">
+                            <a
+                              title="Hero Hoodie"
+                              href="#"
+                              class="product-item-link"
+                              >Hero Hoodie</a
+                            >
+                          </strong>
+                          <div class="price-box price-final_price">
+                            <span class="normal-price">
+                              <span
+                                class="price-container price-final_price tax weee"
+                              >
+                                <span class="price-label">As low as</span>
+                                <span
+                                  id="old-price-158-widget-product-grid"
+                                  class="price-wrapper"
+                                  ><span class="price">$54.00</span></span
+                                >
+                              </span>
+                            </span>
+                          </div>
+                          <div class="swatch-opt-158">
+                            <div class="swatch-attribute size">
+                              <div class="swatch-attribute-options clearfix">
+                                <div class="swatch-option text">XS</div>
+                                <div class="swatch-option text">S</div>
+                                <div class="swatch-option text">M</div>
+                                <div class="swatch-option text">L</div>
+                                <div class="swatch-option text">XL</div>
+                              </div>
+                            </div>
+                            <div class="swatch-attribute color">
+                              <div class="swatch-attribute-options clearfix">
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #000000 no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #8f8f8f no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                                <div
+                                  class="swatch-option color"
+                                  style="
+                                    background: #53a828 no-repeat center;
+                                    background-size: initial;
+                                  "
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="product-item-inner">
+                            <div class="product-item-actions">
+                              <div class="actions-primary">
+                                <form method="post">
+                                  <input
+                                    type="hidden"
+                                    name="product"
+                                    value="158"
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="uenc"
+                                    value="aHR0cHM6Ly9tYWdlbnRvLWRlbW8ubWFnZXBsYXphLmNvbS9kZWZhdWx0L2NoZWNrb3V0L2NhcnQvYWRkL3VlbmMvYUhSMGNITTZMeTl0WVdkbGJuUnZMV1JsYlc4dWJXRm5aWEJzWVhwaExtTnZiUzlrWldaaGRXeDBMdyUyQyUyQy9wcm9kdWN0LzE1OC8,"
+                                  />
+                                  <input
+                                    name="form_key"
+                                    type="hidden"
+                                    value="8b2VP4MFz4yk8woz"
+                                  />
+                                  <button
+                                    type="submit"
+                                    title="Add to Cart"
+                                    class="action tocart primary"
+                                  >
+                                    <span>Add to Cart</span>
+                                  </button>
+                                </form>
+                              </div>
+                              <div class="actions-secondary">
+                                <a
+                                  href="#"
+                                  class="action towishlist"
+                                  title="Add to Wish List"
+                                >
+                                  <span>Add to Wish List</span>
+                                </a>
+                                <a
+                                  href="#"
+                                  class="action tocompare"
+                                  title="Add to Compare"
+                                >
+                                  <span>Add to Compare</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="product-item">
+                      <div class="product-item-info">
+                        <a href="#" class="product-item-photo">
+                          <span
+                            class="product-image-container product-image-container-6"
+                            style="width: 240px"
+                          >
+                            <span
+                              class="product-image-wrapper"
+                              style="padding-bottom: 125%"
+                            >
+                              <img
+                                class="product-image-photo"
+                                src="./index_files/mb02-gray-0.jpg"
+                                loading="lazy"
+                                width="240"
+                                height="300"
+                                alt="Fusion Backpack"
+                            /></span>
+                          </span>
+                        </a>
+                        <div class="product-item-details">
+                          <strong class="product-item-name">
+                            <a
+                              title="Fusion Backpack"
+                              href="#"
+                              class="product-item-link"
+                              >Fusion Backpack</a
+                            >
+                          </strong>
+                          <div class="product-reviews-summary short">
+                            <div class="rating-summary">
+                              <span class="label"><span>Rating:</span></span>
+                              <div
+                                class="rating-result"
+                                id="rating-result_6"
+                                title="67%"
+                              >
+                                <span style="width: 67%"><span>67%</span></span>
+                              </div>
+                            </div>
+                            <div class="reviews-actions">
+                              <a class="action view" href="#"
+                                >3 &nbsp;<span>Reviews</span></a
+                              >
+                            </div>
+                          </div>
+                          <div class="price-box price-final_price">
+                            <span
+                              class="price-container price-final_price tax weee"
+                            >
+                              <span
+                                id="old-price-6-widget-product-grid"
+                                class="price-wrapper"
+                                ><span class="price">$59.00</span></span
+                              >
+                            </span>
+                          </div>
+                          <div class="product-item-inner">
+                            <div class="product-item-actions">
+                              <div class="actions-primary">
+                                <form method="post">
+                                  <input
+                                    type="hidden"
+                                    name="product"
+                                    value="6"
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="uenc"
+                                    value="aHR0cHM6Ly9tYWdlbnRvLWRlbW8ubWFnZXBsYXphLmNvbS9kZWZhdWx0L2NoZWNrb3V0L2NhcnQvYWRkL3VlbmMvYUhSMGNITTZMeTl0WVdkbGJuUnZMV1JsYlc4dWJXRm5aWEJzWVhwaExtTnZiUzlrWldaaGRXeDBMdyUyQyUyQy9wcm9kdWN0LzYv"
+                                  />
+                                  <input
+                                    name="form_key"
+                                    type="hidden"
+                                    value="8b2VP4MFz4yk8woz"
+                                  />
+                                  <button
+                                    type="submit"
+                                    title="Add to Cart"
+                                    class="action tocart primary"
+                                  >
+                                    <span>Add to Cart</span>
+                                  </button>
+                                </form>
+                              </div>
+                              <div class="actions-secondary">
+                                <a
+                                  href="#"
+                                  class="action towishlist"
+                                  title="Add to Wish List"
+                                >
+                                  <span>Add to Wish List</span>
+                                </a>
+                                <a
+                                  href="#"
+                                  class="action tocompare"
+                                  title="Add to Compare"
+                                >
+                                  <span>Add to Compare</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="product-item">
+                      <div class="product-item-info">
+                        <a href="#" class="product-item-photo">
+                          <span
+                            class="product-image-container product-image-container-14"
+                            style="width: 240px"
+                          >
+                            <span
+                              class="product-image-wrapper"
+                              style="padding-bottom: 125%"
+                            >
+                              <img
+                                class="product-image-photo"
+                                src="./index_files/wb04-blue-0.jpg"
+                                loading="lazy"
+                                width="240"
+                                height="300"
+                                alt="Push It Messenger Bag"
+                            /></span>
+                          </span>
+                        </a>
+                        <div class="product-item-details">
+                          <strong class="product-item-name">
+                            <a
+                              title="Push It Messenger Bag"
+                              href="#"
+                              class="product-item-link"
+                              >Push It Messenger Bag</a
+                            >
+                          </strong>
+                          <div class="product-reviews-summary short">
+                            <div class="rating-summary">
+                              <span class="label"><span>Rating:</span></span>
+                              <div
+                                class="rating-result"
+                                id="rating-result_14"
+                                title="67%"
+                              >
+                                <span style="width: 67%"><span>67%</span></span>
+                              </div>
+                            </div>
+                            <div class="reviews-actions">
+                              <a class="action view" href="#"
+                                >3 &nbsp;<span>Reviews</span></a
+                              >
+                            </div>
+                          </div>
+                          <div class="price-box price-final_price">
+                            <span
+                              class="price-container price-final_price tax weee"
+                            >
+                              <span
+                                id="old-price-14-widget-product-grid"
+                                class="price-wrapper"
+                                ><span class="price">$45.00</span></span
+                              >
+                            </span>
+                          </div>
+                          <div class="product-item-inner">
+                            <div class="product-item-actions">
+                              <div class="actions-primary">
+                                <form method="post">
+                                  <input
+                                    type="hidden"
+                                    name="product"
+                                    value="14"
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="uenc"
+                                    value="aHR0cHM6Ly9tYWdlbnRvLWRlbW8ubWFnZXBsYXphLmNvbS9kZWZhdWx0L2NoZWNrb3V0L2NhcnQvYWRkL3VlbmMvYUhSMGNITTZMeTl0WVdkbGJuUnZMV1JsYlc4dWJXRm5aWEJzWVhwaExtTnZiUzlrWldaaGRXeDBMdyUyQyUyQy9wcm9kdWN0LzE0Lw,,"
+                                  />
+                                  <input
+                                    name="form_key"
+                                    type="hidden"
+                                    value="8b2VP4MFz4yk8woz"
+                                  />
+                                  <button
+                                    type="submit"
+                                    title="Add to Cart"
+                                    class="action tocart primary"
+                                  >
+                                    <span>Add to Cart</span>
+                                  </button>
+                                </form>
+                              </div>
+                              <div class="actions-secondary">
+                                <a
+                                  href="#"
+                                  class="action towishlist"
+                                  title="Add to Wish List"
+                                >
+                                  <span>Add to Wish List</span>
+                                </a>
+                                <a
+                                  href="#"
+                                  class="action tocompare"
+                                  title="Add to Compare"
+                                >
+                                  <span>Add to Compare</span>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="page-footer">
+        <div class="footer content">
+          <div class="block newsletter">
+            <div class="title"><strong>Newsletter</strong></div>
+            <div class="content">
+              <form
+                class="form subscribe"
+                method="post"
+                id="newsletter-validate-detail"
+              >
+                <div class="field newsletter">
+                  <div class="control">
+                    <label for="newsletter">
+                      <span class="label">Sign Up for Our Newsletter:</span>
+                      <input
+                        name="email"
+                        type="email"
+                        id="newsletter"
+                        placeholder="Enter your email address"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div class="actions">
+                  <button
+                    class="action subscribe primary"
+                    title="Subscribe"
+                    type="submit"
+                    aria-label="Subscribe"
+                  >
+                    <span>Subscribe</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="links">
+            <div class="widget block block-static-block">
+              <ul class="footer links">
+                <li class="nav item"><a href="#">About us</a></li>
+                <li class="nav item"><a href="#">Customer Service</a></li>
+              </ul>
+            </div>
+          </div>
+          <ul class="footer links">
+            <li class="nav item"><a href="#">Privacy and Cookie Policy</a></li>
+            <li class="nav item"><a href="#">Search Terms</a></li>
+            <li class="nav item"><a href="#">Advanced Search</a></li>
+            <li class="nav item"><a href="#">Orders and Returns</a></li>
+            <li class="nav item"><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </footer>
+      <small class="copyright">
+        <span>Copyright © 2013-present Magento, Inc. All rights reserved.</span>
+      </small>
+    </div>
+    <div class="swatch-option-tooltip">
+      <div class="image"></div>
+      <div class="title"></div>
+      <div class="corner"></div>
+    </div>
+  </body>
+</html>
