@@ -1,5 +1,5 @@
 // Step 3: Styles & Design JavaScript Module
-// Updated: 2025-07-20 - Improved data persistence logic
+// Updated: 2025-07-21 - Enhanced Theme Preview with External Loading
 // User: jharrvis
 
 class Step3StylesDesign {
@@ -49,28 +49,11 @@ class Step3StylesDesign {
       "Titillium Web",
     ];
 
-    this.themePreviewData = {
-      luma: {
-        name: "Luma Theme",
-        desktop:
-          "https://placehold.co/800x600/f8f9fa/6c757d?text=Luma+Desktop+Preview",
-        mobile:
-          "https://placehold.co/400x600/f8f9fa/6c757d?text=Luma+Mobile+Preview",
-      },
-      hyva: {
-        name: "Hyvä Theme",
-        desktop:
-          "https://placehold.co/800x600/e3f2fd/1976d2?text=Hyva+Desktop+Preview",
-        mobile:
-          "https://placehold.co/400x600/e3f2fd/1976d2?text=Hyva+Mobile+Preview",
-      },
-      default: {
-        name: "Default Theme",
-        desktop:
-          "https://placehold.co/800x600/ffffff/666666?text=Default+Desktop+Preview",
-        mobile:
-          "https://placehold.co/400x600/ffffff/666666?text=Default+Mobile+Preview",
-      },
+    // Theme file paths
+    this.themeFiles = {
+      luma: "assets/themes/luma/index.html",
+      hyva: "assets/themes/hyva/index.html",
+      default: "assets/themes/default/index.html",
     };
 
     this.init();
@@ -146,14 +129,6 @@ class Step3StylesDesign {
     if (fontSearchInput) {
       fontSearchInput.addEventListener("input", (e) => {
         this.searchGoogleFonts(e.target.value);
-      });
-    }
-
-    // Theme preview button
-    const previewBtn = document.querySelector(".theme-preview-section button");
-    if (previewBtn) {
-      previewBtn.addEventListener("click", () => {
-        this.openThemePreview();
       });
     }
 
@@ -319,7 +294,6 @@ class Step3StylesDesign {
       this.logos[`${type}Name`] = file.name;
       this.displayLogo(type, e.target.result);
       this.saveStylingData();
-      this.updateThemePreviewContent();
     };
     reader.readAsDataURL(file);
   }
@@ -347,7 +321,6 @@ class Step3StylesDesign {
     if (textInput) textInput.value = value;
     this.saveStylingData();
     this.updateColorGuide();
-    this.updateThemePreviewContent();
   }
 
   updateColorFromText(colorType, value) {
@@ -357,7 +330,6 @@ class Step3StylesDesign {
       if (picker) picker.value = value;
       this.saveStylingData();
       this.updateColorGuide();
-      this.updateThemePreviewContent();
     }
   }
 
@@ -404,7 +376,6 @@ class Step3StylesDesign {
         : "Montserrat, sans-serif";
     }
     this.saveStylingData();
-    this.updateThemePreviewContent();
   }
 
   searchGoogleFonts(query) {
@@ -452,7 +423,6 @@ class Step3StylesDesign {
     this.loadGoogleFont(fontName);
     this.updateFontPreview(fontName);
     this.saveStylingData();
-    this.updateThemePreviewContent();
   }
 
   loadGoogleFont(fontName) {
@@ -475,22 +445,12 @@ class Step3StylesDesign {
     }
   }
 
-  /**
-   * Saves the selected theme data robustly.
-   * This version reads the latest data from storage, merges the change, and saves it back.
-   */
   saveThemeData() {
     try {
-      // Always read the latest data from storage to avoid overwriting other keys
       const currentWizardData = this.getWizardData() || {};
-
-      // Update the theme property
       currentWizardData.theme = this.selectedTheme;
-
-      // Save the updated object back to localStorage
       localStorage.setItem("wizardData", JSON.stringify(currentWizardData));
 
-      // Also update the global object if it exists, for immediate use by other scripts
       if (window.wizardData) {
         window.wizardData.theme = this.selectedTheme;
       }
@@ -503,10 +463,6 @@ class Step3StylesDesign {
     }
   }
 
-  /**
-   * Saves the complete styling configuration robustly.
-   * This version reads the latest data from storage, merges the change, and saves it back.
-   */
   saveStylingData() {
     try {
       const stylingData = {
@@ -520,16 +476,10 @@ class Step3StylesDesign {
         timestamp: new Date().toISOString(),
       };
 
-      // Always read the latest data from storage to avoid overwriting other keys
       const currentWizardData = this.getWizardData() || {};
-
-      // Update the styling property
       currentWizardData.styling = stylingData;
-
-      // Save the updated object back to localStorage
       localStorage.setItem("wizardData", JSON.stringify(currentWizardData));
 
-      // Also update the global object if it exists
       if (window.wizardData) {
         window.wizardData.styling = stylingData;
       }
@@ -542,12 +492,26 @@ class Step3StylesDesign {
     }
   }
 
-  openThemePreview() {
+  // Enhanced Theme Preview Methods
+  async openThemePreview() {
     const modal = document.getElementById("themePreviewModal");
     if (modal) {
       modal.classList.add("show");
       document.body.classList.add("modal-open");
-      this.updateThemePreviewContent();
+
+      // Update modal title with current theme
+      const modalTitle = document.getElementById("themePreviewTitle");
+      if (modalTitle) {
+        const themeNames = {
+          luma: "Luma Theme Preview",
+          hyva: "Hyvä Theme Preview",
+          default: "Default Theme Preview",
+        };
+        modalTitle.textContent =
+          themeNames[this.selectedTheme] || "Theme Preview";
+      }
+
+      await this.loadThemePreview();
       this.switchPreviewMode(this.currentPreviewMode);
     }
   }
@@ -557,7 +521,165 @@ class Step3StylesDesign {
     if (modal) {
       modal.classList.remove("show");
       document.body.classList.remove("modal-open");
+
+      // Clear iframe content
+      const modalBody = modal.querySelector(".modal-body");
+      if (modalBody) {
+        modalBody.innerHTML = "";
+      }
     }
+  }
+
+  async loadThemePreview() {
+    const modalBody = document.querySelector("#themePreviewModal .modal-body");
+    if (!modalBody) return;
+
+    // Show loading state
+    modalBody.innerHTML = `
+      <div class="theme-preview-loading">
+        <i class="fas fa-spinner"></i>
+        Loading theme preview...
+      </div>
+    `;
+
+    try {
+      const themePath =
+        this.themeFiles[this.selectedTheme] || this.themeFiles.default;
+      const response = await fetch(themePath);
+
+      if (!response.ok) {
+        throw new Error(`Failed to load theme: ${response.status}`);
+      }
+
+      const themeHtml = await response.text();
+
+      // Create iframe containers for both desktop and mobile
+      modalBody.innerHTML = `
+        <div class="theme-preview-iframe-container preview-desktop-view">
+          <iframe class="theme-preview-iframe" id="desktopPreviewFrame"></iframe>
+        </div>
+        <div class="mobile-preview-container preview-mobile-view" style="display: none;">
+          <div class="mobile-frame">
+            <iframe class="theme-preview-iframe" id="mobilePreviewFrame"></iframe>
+          </div>
+        </div>
+      `;
+
+      // Load customized content into both frames
+      setTimeout(() => {
+        this.injectCustomizedContent("desktopPreviewFrame", themeHtml);
+        this.injectCustomizedContent("mobilePreviewFrame", themeHtml);
+      }, 100);
+    } catch (error) {
+      console.error("Error loading theme preview:", error);
+      modalBody.innerHTML = `
+        <div class="theme-preview-loading" style="color: #e91e64;">
+          <i class="fas fa-exclamation-triangle"></i>
+          Failed to load theme preview. Please try again.
+        </div>
+      `;
+    }
+  }
+
+  injectCustomizedContent(iframeId, originalHtml) {
+    const iframe = document.getElementById(iframeId);
+    if (!iframe) return;
+
+    // Customize the HTML with user's settings
+    let customizedHtml = this.applyCustomizations(originalHtml);
+
+    // Create blob URL for the customized content
+    const blob = new Blob([customizedHtml], { type: "text/html" });
+    const blobUrl = URL.createObjectURL(blob);
+
+    iframe.src = blobUrl;
+
+    // Clean up blob URL after loading
+    iframe.onload = () => {
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 1000);
+    };
+  }
+
+  applyCustomizations(html) {
+    let customizedHtml = html;
+
+    // Apply logo customizations
+    if (this.logos.desktop) {
+      // Replace logo src attributes with uploaded logo
+      customizedHtml = customizedHtml.replace(
+        /src="[^"]*logo[^"]*"/gi,
+        `src="${this.logos.desktop}"`
+      );
+    }
+
+    // Apply color customizations
+    const colorStyles = `
+      <style id="wizard-custom-colors">
+        /* Custom color overrides */
+        .action.tocart.primary,
+        .action.primary,
+        .button.primary,
+        .btn-primary {
+          background-color: ${this.colors.primary} !important;
+          border-color: ${this.colors.primary} !important;
+        }
+        
+        .action.tocart.primary:hover,
+        .action.primary:hover,
+        .button.primary:hover,
+        .btn-primary:hover {
+          background-color: ${this.colors.secondary} !important;
+          border-color: ${this.colors.secondary} !important;
+        }
+        
+        .price,
+        .special-price .price,
+        .old-price .price {
+          color: ${this.colors.tertiary} !important;
+        }
+        
+        .page-header,
+        .header.content {
+          border-bottom: 3px solid ${this.colors.primary};
+        }
+        
+        .navigation .level0 > .level-top:hover,
+        .navigation .level0.active > .level-top {
+          color: ${this.colors.primary} !important;
+        }
+        
+        .minicart-wrapper .showcart:before,
+        .block-search .action.search:before {
+          color: ${this.colors.primary} !important;
+        }
+      </style>
+    `;
+
+    // Insert custom styles before closing head tag
+    customizedHtml = customizedHtml.replace("</head>", colorStyles + "</head>");
+
+    // Apply font customizations
+    if (!this.useDefaultFont && this.customFont) {
+      const fontStyles = `
+        <style id="wizard-custom-font">
+          body, .page-wrapper {
+            font-family: '${this.customFont}', sans-serif !important;
+          }
+        </style>
+        <link href="https://fonts.googleapis.com/css2?family=${this.customFont.replace(
+          /\s+/g,
+          "+"
+        )}:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      `;
+      customizedHtml = customizedHtml.replace(
+        "</head>",
+        fontStyles + "</head>"
+      );
+    }
+
+    return customizedHtml;
   }
 
   switchPreviewMode(mode) {
@@ -576,47 +698,6 @@ class Step3StylesDesign {
       mobileView.style.display = mode === "mobile" ? "flex" : "none";
       desktopBtn.classList.toggle("active", mode === "desktop");
       mobileBtn.classList.toggle("active", mode === "mobile");
-    }
-    this.updateThemePreviewContent();
-  }
-
-  updateThemePreviewContent() {
-    const previewBody = document.querySelector(".theme-preview-body");
-    if (!previewBody) return;
-
-    const previewDesktopLogo = document.getElementById("previewDesktopLogo");
-    if (previewDesktopLogo) {
-      previewDesktopLogo.src =
-        this.logos.desktop ||
-        "https://placehold.co/150x40/cccccc/ffffff?text=Your+Logo";
-    }
-    const previewMobileLogo = document.getElementById("previewMobileLogo");
-    if (previewMobileLogo) {
-      previewMobileLogo.src =
-        this.logos.mobile ||
-        "https://placehold.co/80x30/cccccc/ffffff?text=Logo";
-    }
-
-    const styleTagId = "preview-dynamic-styles";
-    let styleTag = document.getElementById(styleTagId);
-    if (!styleTag) {
-      styleTag = document.createElement("style");
-      styleTag.id = styleTagId;
-      document.head.appendChild(styleTag);
-    }
-    styleTag.innerHTML = `
-      .preview-button { background-color: ${this.colors.primary} !important; border-color: ${this.colors.primary} !important; }
-      .preview-button:hover { background-color: ${this.colors.secondary} !important; }
-      .preview-nav-item:hover, .preview-icons i:hover { color: ${this.colors.secondary} !important; }
-      .product-price { color: ${this.colors.tertiary} !important; }
-    `;
-
-    const fontToApply = this.useDefaultFont
-      ? "Montserrat, sans-serif"
-      : `'${this.customFont}', sans-serif`;
-    previewBody.style.fontFamily = fontToApply;
-    if (!this.useDefaultFont && this.customFont) {
-      this.loadGoogleFont(this.customFont);
     }
   }
 
@@ -694,9 +775,7 @@ class Step3StylesDesign {
     this.switchTab("theme");
     if (window.wizardData) {
       window.updateWizardData("theme", null);
-      window.updateWizardData("styling", {
-        /* reset styling object */
-      });
+      window.updateWizardData("styling", {});
     }
   }
 }

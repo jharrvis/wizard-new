@@ -1,5 +1,5 @@
 /* Step 3: Styles & Design Specific Styles */
-/* Updated: 2025-07-21 - Moved Preview button to top right with tabs */
+/* Updated: 2025-07-21 - Wider Modal and Enhanced Theme Preview Loading */
 
 /* Style Tabs */
 .style-tabs {
@@ -239,8 +239,6 @@
 .theme-item.selected .theme-radio-visual {
   border-color: #ff7101;
 }
-
-/* Theme Preview Section - REMOVED since button moved to navigation */
 
 /* Logo Uploads */
 .logo-uploads {
@@ -605,7 +603,7 @@
   transition: all 0.3s ease;
 }
 
-/* Theme Preview Modal Styles */
+/* Theme Preview Modal Styles - UPDATED for wider modal */
 .theme-preview-modal {
   position: fixed;
   top: 0;
@@ -613,10 +611,10 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
-  display: none; /* Hidden by default */
+  display: none;
   justify-content: center;
   align-items: center;
-  z-index: 9998; /* Below installation modal */
+  z-index: 9998;
   backdrop-filter: blur(5px);
   opacity: 0;
   visibility: hidden;
@@ -632,13 +630,13 @@
 .theme-preview-modal .modal-content {
   background: #fff;
   border-radius: 1.5rem;
-  max-width: 100rem; /* Wider for theme preview */
-  width: 90%;
-  height: 90%; /* Take up more height */
+  max-width: 95vw; /* Increased from 100rem to 95% of viewport width */
+  width: 95vw; /* Ensure it takes up 95% of viewport width */
+  height: 95vh; /* Increased from 90% to 95% of viewport height */
   position: relative;
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.3);
   z-index: 1;
-  overflow: hidden; /* Ensure content stays within rounded borders */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -651,6 +649,7 @@
   align-items: center;
   background: #009bde;
   color: #fff;
+  flex-shrink: 0;
 }
 
 /* New: Left and Right sections in modal header */
@@ -694,19 +693,46 @@
 }
 
 .theme-preview-modal .modal-body {
-  flex-grow: 1; /* Allow body to take available space */
-  padding: 0; /* Remove padding here, content will handle its own */
-  overflow-y: auto; /* Allow scrolling if content is too tall */
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  position: relative; /* For absolute positioning of device frames */
+  flex-grow: 1;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Theme Preview Loading */
+.theme-preview-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1.8rem;
+  color: #009bde;
+}
+
+.theme-preview-loading i {
+  margin-right: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Theme Preview Content Styling */
 .theme-preview-body {
   display: flex;
   flex-direction: column;
-  font-family: "Montserrat", sans-serif; /* Default font */
+  font-family: "Montserrat", sans-serif;
   color: #0f488a;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Device Toggle Buttons */
@@ -736,7 +762,7 @@
 }
 
 .preview-device-toggle .device-btn.active {
-  background: #ff7101; /* Active button color */
+  background: #ff7101;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
@@ -745,21 +771,22 @@
 .preview-mobile-view {
   width: 100%;
   height: 100%;
-  flex-shrink: 0; /* Prevent shrinking */
-  box-sizing: border-box; /* Include padding/border in width/height */
-  background-color: #fff; /* Ensure white background for content */
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Allow internal scrolling */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .preview-mobile-view {
-  max-width: 375px; /* Typical mobile width */
-  margin: 0 auto; /* Center mobile view */
-  border: 10px solid #333; /* Mock phone bezel */
-  border-radius: 25px; /* Rounded corners for phone */
+  max-width: 375px;
+  margin: 0 auto;
+  border: 10px solid #333;
+  border-radius: 25px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  position: relative; /* For absolute positioning of content */
+  position: relative;
 }
 
 /* Mock notch for mobile view */
@@ -777,148 +804,59 @@
   z-index: 10;
 }
 
-.preview-header {
+/* Theme Preview iFrame Container */
+.theme-preview-iframe-container {
+  flex: 1;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 4rem;
-  background-color: #f8f8f8;
-  border-bottom: 1px solid #eee;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  gap: 1rem;
-}
-
-.preview-logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.preview-desktop-logo {
-  max-height: 40px;
-  width: auto;
-}
-
-.preview-mobile-logo {
-  max-height: 30px;
-  width: auto;
-}
-
-.preview-nav {
-  display: flex;
-  gap: 2.5rem;
-  flex-grow: 1; /* Allow navigation to take space */
-  justify-content: center; /* Center nav items */
-  flex-wrap: wrap;
-}
-
-.preview-nav-item {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #0f488a;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.preview-nav-item:hover {
-  color: #ff7101;
-}
-
-.preview-icons {
-  display: flex;
-  gap: 2rem;
-  font-size: 1.8rem;
-  color: #0f488a;
-}
-
-.preview-icons i {
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.preview-icons i:hover {
-  color: #ff7101;
-}
-
-.preview-hero {
-  text-align: center;
-  padding: 5rem 4rem;
-  background-color: #f0fafb; /* Light blue background */
-}
-
-.preview-hero h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: #0f488a;
-}
-
-.preview-hero p {
-  font-size: 1.8rem;
-  color: #666;
-  margin-bottom: 2.5rem;
-}
-
-.preview-button {
-  background-color: #ff7101;
-  color: #fff;
-  padding: 1.2rem 3rem;
-  border-radius: 5rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: none;
-  box-shadow: 0 0.5rem 1.5rem rgba(255, 113, 1, 0.2);
-}
-
-.preview-button:hover {
-  background-color: #009bde;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 155, 222, 0.2);
-  transform: translateY(-2px);
-}
-
-.preview-product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 3rem;
-  padding: 4rem;
-  background-color: #fff;
-}
-
-.preview-product-card {
-  border: 1px solid #eee;
-  border-radius: 1rem;
   overflow: hidden;
-  text-align: center;
-  padding-bottom: 2rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
 }
 
-.preview-product-card img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 1.5rem;
+.theme-preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  flex: 1;
 }
 
-.product-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #0f488a;
-  margin-bottom: 0.8rem;
+/* Mobile Preview Container */
+.mobile-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  height: 100%;
+  overflow-y: auto;
 }
 
-.product-price {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #ff7101;
+.mobile-frame {
+  max-width: 375px;
+  width: 375px;
+  height: calc(100% - 4rem);
+  border: 10px solid #333;
+  border-radius: 25px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
 }
 
-.preview-footer {
-  text-align: center;
-  padding: 2rem 4rem;
-  background-color: #0f488a;
-  color: #fff;
-  font-size: 1.4rem;
+.mobile-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 20px;
+  background: #333;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 10;
+}
+
+.mobile-frame .theme-preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Responsive Design for Step 3 */
@@ -962,39 +900,22 @@
   }
 
   .theme-preview-modal .modal-content {
-    width: 95%;
-    height: 95%;
-  }
-
-  .preview-header {
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 1.5rem 2rem;
-  }
-
-  .preview-nav {
-    gap: 1.5rem;
-  }
-
-  .preview-hero {
-    padding: 3rem 2rem;
-  }
-
-  .preview-hero h1 {
-    font-size: 2.8rem;
-  }
-
-  .preview-hero p {
-    font-size: 1.6rem;
-  }
-
-  .preview-product-grid {
-    padding: 2rem;
-    grid-template-columns: 1fr; /* Stack products on small screens */
+    width: 98vw;
+    height: 98vh;
+    max-width: 98vw;
   }
 
   .preview-device-toggle {
-    margin-top: 1rem; /* Adjust spacing on mobile */
+    margin-top: 1rem;
+  }
+
+  .mobile-preview-container {
+    padding: 1rem;
+  }
+
+  .mobile-frame {
+    width: 320px;
+    max-width: 320px;
   }
 }
 
