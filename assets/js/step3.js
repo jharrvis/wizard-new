@@ -1,6 +1,12 @@
 // Step 3: Styles & Design JavaScript Module
 // Updated: 2025-07-21 - Enhanced Theme Preview with External Loading
 // User: jharrvis
+// MODIFIED: Re-enabled modal and added live-update functionality within it.
+// FIXED: Changed iframe loading method to fix broken styles (CSS not loading).
+// FIXED: Implemented a robust 2-way communication to prevent style update race conditions.
+// FIXED: Added theme-specific CSS selectors for robust styling across themes.
+// FIXED: Implemented a more robust logo replacement method.
+// FIXED: Updated mobile preview to resize modal instead of using a frame.
 
 class Step3StylesDesign {
   constructor() {
@@ -60,13 +66,60 @@ class Step3StylesDesign {
   }
 
   init() {
+    this.injectModalStyles(); // [NEW] Inject custom styles for the modal
     this.bindEvents();
     this.loadStoredData();
     this.initializeColorGuide();
     this.updateThemeOptions();
   }
 
+  // [NEW] Injects CSS to handle the mobile preview appearance.
+  injectModalStyles() {
+    const styleId = "jh-modal-preview-styles";
+    if (document.getElementById(styleId)) return;
+
+    const css = `
+        #themePreviewModal.is-mobile-preview .modal-dialog {
+            max-width: 414px; /* Typical mobile width */
+            height: 85vh;
+            margin-top: 5vh;
+            transition: max-width 0.3s ease-in-out, height 0.3s ease-in-out;
+        }
+        #themePreviewModal.is-mobile-preview .modal-content {
+            height: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        #themePreviewModal .mobile-frame {
+            border: none !important;
+            background: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+            width: 100%;
+            height: 100%;
+        }
+        #themePreviewModal .mobile-preview-container {
+            height: 100%;
+        }
+    `;
+
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.type = "text/css";
+    style.appendChild(document.createTextNode(css));
+    document.head.appendChild(style);
+  }
+
   bindEvents() {
+    // Listen for messages from the iframe
+    window.addEventListener("message", (event) => {
+      if (event.data && event.data.type === "JH_IFRAME_READY") {
+        if (window.DEBUG_MODE)
+          console.log("Iframe is ready. Sending initial styles.");
+        this.broadcastStyleUpdate();
+      }
+    });
+
     // Tab navigation
     document.querySelectorAll(".style-tabs .tab-button").forEach((button) => {
       button.addEventListener("click", (e) => {
@@ -75,9 +128,15 @@ class Step3StylesDesign {
       });
     });
 
-    // Theme selection
+    // Theme selection and preview button
     document.querySelectorAll(".theme-item").forEach((item) => {
       item.addEventListener("click", (e) => {
+        if (e.target.closest(".theme-preview-btn")) {
+          const theme = item.getAttribute("data-theme");
+          this.selectTheme(theme);
+          this.openThemePreview();
+          return;
+        }
         const theme = item.getAttribute("data-theme");
         this.selectTheme(theme);
       });
@@ -86,155 +145,123 @@ class Step3StylesDesign {
     // Logo uploads
     const desktopLogoFile = document.getElementById("desktopLogoFile");
     const mobileLogoFile = document.getElementById("mobileLogoFile");
-
-    if (desktopLogoFile) {
-      desktopLogoFile.addEventListener("change", (e) => {
-        this.handleLogoUpload(e.target, "desktop");
-      });
-    }
-
-    if (mobileLogoFile) {
-      mobileLogoFile.addEventListener("change", (e) => {
-        this.handleLogoUpload(e.target, "mobile");
-      });
-    }
+    if (desktopLogoFile)
+      desktopLogoFile.addEventListener("change", (e) =>
+        this.handleLogoUpload(e.target, "desktop")
+      );
+    if (mobileLogoFile)
+      mobileLogoFile.addEventListener("change", (e) =>
+        this.handleLogoUpload(e.target, "mobile")
+      );
 
     // Color inputs
     ["primary", "secondary", "tertiary"].forEach((colorType) => {
       const picker = document.getElementById(`${colorType}ColorPicker`);
       const input = document.getElementById(`${colorType}ColorValue`);
-
-      if (picker) {
-        picker.addEventListener("input", (e) => {
-          this.updateColor(colorType, e.target.value);
-        });
-      }
-
-      if (input) {
-        input.addEventListener("input", (e) => {
-          this.updateColorFromText(colorType, e.target.value);
-        });
-      }
+      if (picker)
+        picker.addEventListener("input", (e) =>
+          this.updateColor(colorType, e.target.value)
+        );
+      if (input)
+        input.addEventListener("input", (e) =>
+          this.updateColorFromText(colorType, e.target.value)
+        );
     });
 
     // Font selection
     const useDefaultFont = document.getElementById("useDefaultFont");
-    if (useDefaultFont) {
-      useDefaultFont.addEventListener("change", (e) => {
-        this.toggleFontSelection(e.target.checked);
-      });
-    }
-
+    if (useDefaultFont)
+      useDefaultFont.addEventListener("change", (e) =>
+        this.toggleFontSelection(e.target.checked)
+      );
     const fontSearchInput = document.getElementById("fontSearchInput");
-    if (fontSearchInput) {
-      fontSearchInput.addEventListener("input", (e) => {
-        this.searchGoogleFonts(e.target.value);
-      });
-    }
-
-    // Click outside to close font suggestions
+    if (fontSearchInput)
+      fontSearchInput.addEventListener("input", (e) =>
+        this.searchGoogleFonts(e.target.value)
+      );
     document.addEventListener("click", (e) => {
-      if (!e.target.closest(".font-search-container")) {
+      if (!e.target.closest(".font-search-container"))
         this.hideFontSuggestions();
-      }
     });
 
-    // Responsive device toggle buttons
+    // Responsive device toggle buttons for modal
     document
       .querySelectorAll(".preview-device-toggle .device-btn")
       .forEach((button) => {
-        button.addEventListener("click", (e) => {
-          const device = button.dataset.device;
-          this.switchPreviewMode(device);
-        });
+        button.addEventListener("click", (e) =>
+          this.switchPreviewMode(e.dataset.device)
+        );
       });
 
-    // Close theme preview modal by clicking overlay
+    // Close theme preview modal
     const themePreviewModal = document.getElementById("themePreviewModal");
-    if (themePreviewModal) {
+    if (themePreviewModal)
       themePreviewModal.addEventListener("click", (e) => {
-        if (e.target === themePreviewModal) {
-          this.closeThemePreview();
-        }
+        if (e.target === themePreviewModal) this.closeThemePreview();
       });
-    }
-
-    // Close theme preview modal by clicking the 'x' button
     const themePreviewCloseBtn = document.querySelector(
       "#themePreviewModal .modal-close"
     );
-    if (themePreviewCloseBtn) {
-      themePreviewCloseBtn.addEventListener("click", () => {
-        this.closeThemePreview();
-      });
-    }
+    if (themePreviewCloseBtn)
+      themePreviewCloseBtn.addEventListener("click", () =>
+        this.closeThemePreview()
+      );
   }
 
   loadStoredData() {
     const savedData = this.getWizardData();
-
-    if (savedData) {
-      if (window.DEBUG_MODE) {
-        console.log("Loading styling data from localStorage:", savedData);
+    if (!savedData) return;
+    if (window.DEBUG_MODE)
+      console.log("Loading styling data from localStorage:", savedData);
+    if (savedData.theme) {
+      this.selectedTheme = savedData.theme;
+      this.updateThemeUI(savedData.theme);
+    }
+    if (savedData.styling) {
+      const { colors, fonts, logos } = savedData.styling;
+      if (colors) {
+        Object.assign(this.colors, colors);
+        this.updateColorInputs();
       }
-
-      if (savedData.theme) {
-        this.selectedTheme = savedData.theme;
-        this.updateThemeUI(savedData.theme);
-      }
-
-      if (savedData.styling) {
-        const styling = savedData.styling;
-        if (styling.colors) {
-          Object.assign(this.colors, styling.colors);
-          this.updateColorInputs();
-        }
-        if (styling.fonts) {
-          if (styling.fonts.useDefault !== undefined) {
-            this.useDefaultFont = styling.fonts.useDefault;
-            this.toggleFontSelection(this.useDefaultFont);
-          }
-          if (styling.fonts.customFont && !this.useDefaultFont) {
-            this.customFont = styling.fonts.customFont;
-            const fontInput = document.getElementById("fontSearchInput");
-            if (fontInput) {
-              fontInput.value = this.customFont;
-              this.loadGoogleFont(this.customFont);
-              this.updateFontPreview(this.customFont);
-            }
+      if (fonts) {
+        if (fonts.useDefault !== undefined)
+          this.toggleFontSelection(fonts.useDefault, false);
+        if (fonts.customFont && !fonts.useDefault) {
+          this.customFont = fonts.customFont;
+          const fontInput = document.getElementById("fontSearchInput");
+          if (fontInput) {
+            fontInput.value = this.customFont;
+            this.loadGoogleFont(this.customFont);
+            this.updateFontPreview(this.customFont);
           }
         }
-        if (styling.logos) {
-          Object.assign(this.logos, styling.logos);
-          this.displayLogos();
-        }
+      }
+      if (logos) {
+        Object.assign(this.logos, logos);
+        this.displayLogos();
       }
     }
   }
 
   updateThemeUI(themeName) {
-    document.querySelectorAll(".theme-item").forEach((item) => {
-      item.classList.remove("selected");
-    });
+    document
+      .querySelectorAll(".theme-item.selected")
+      .forEach((item) => item.classList.remove("selected"));
     const selectedItem = document.querySelector(`[data-theme="${themeName}"]`);
-    if (selectedItem) {
-      selectedItem.classList.add("selected");
-    }
+    if (selectedItem) selectedItem.classList.add("selected");
     const radioInput = document.querySelector(`input[value="${themeName}"]`);
-    if (radioInput) {
-      radioInput.checked = true;
-    }
+    if (radioInput) radioInput.checked = true;
   }
 
   switchTab(tabName) {
     this.currentTab = tabName;
-    document.querySelectorAll(".style-tabs .tab-button").forEach((btn) => {
-      btn.classList.remove("active");
-    });
+    document
+      .querySelectorAll(".style-tabs .tab-button.active")
+      .forEach((btn) => btn.classList.remove("active"));
     document.querySelector(`[data-tab="${tabName}"]`).classList.add("active");
-    document.querySelectorAll(".style-tabs .tab-panel").forEach((panel) => {
-      panel.classList.remove("active");
-    });
+    document
+      .querySelectorAll(".style-tabs .tab-panel.active")
+      .forEach((panel) => panel.classList.remove("active"));
     document
       .querySelector(`.style-tabs .tab-panel[data-tab="${tabName}"]`)
       .classList.add("active");
@@ -253,57 +280,40 @@ class Step3StylesDesign {
       this.getWizardData()?.platform?.selected;
     const magentoThemes = document.querySelectorAll(".magento-themes");
     const defaultThemes = document.querySelectorAll(".default-themes");
-
     if (platform === "magento") {
       magentoThemes.forEach((theme) => (theme.style.display = "block"));
       defaultThemes.forEach((theme) => (theme.style.display = "none"));
-      if (
-        !this.selectedTheme ||
-        !["luma", "hyva"].includes(this.selectedTheme)
-      ) {
+      if (!this.selectedTheme || !["luma", "hyva"].includes(this.selectedTheme))
         this.selectTheme("luma");
-      }
     } else {
       magentoThemes.forEach((theme) => (theme.style.display = "none"));
       defaultThemes.forEach((theme) => (theme.style.display = "block"));
-      if (
-        !this.selectedTheme ||
-        ["luma", "hyva"].includes(this.selectedTheme)
-      ) {
+      if (!this.selectedTheme || ["luma", "hyva"].includes(this.selectedTheme))
         this.selectTheme("default");
-      }
     }
   }
 
   handleLogoUpload(input, type) {
     const file = input.files[0];
     if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      alert("File size must be less than 2MB.");
-      return;
-    }
-    if (!file.type.match(/^image\/(png|jpg|jpeg|svg\+xml)$/)) {
-      alert("Please upload a valid image file (PNG, JPG, SVG).");
-      return;
-    }
-
+    if (file.size > 2 * 1024 * 1024)
+      return alert("File size must be less than 2MB.");
+    if (!file.type.match(/^image\/(png|jpg|jpeg|svg\+xml)$/))
+      return alert("Please upload a valid image file (PNG, JPG, SVG).");
     const reader = new FileReader();
     reader.onload = (e) => {
       this.logos[type] = e.target.result;
       this.logos[`${type}Name`] = file.name;
       this.displayLogo(type, e.target.result);
       this.saveStylingData();
+      this.broadcastStyleUpdate();
     };
     reader.readAsDataURL(file);
   }
 
   displayLogo(type, src) {
-    const previewId =
-      type === "desktop" ? "desktopLogoPreview" : "mobileLogoPreview";
-    const imageId = type === "desktop" ? "desktopLogoImage" : "mobileLogoImage";
-    const preview = document.getElementById(previewId);
-    const image = document.getElementById(imageId);
+    const preview = document.getElementById(`${type}LogoPreview`);
+    const image = document.getElementById(`${type}LogoImage`);
     if (preview && image) {
       image.src = src;
       preview.style.display = "block";
@@ -321,36 +331,34 @@ class Step3StylesDesign {
     if (textInput) textInput.value = value;
     this.saveStylingData();
     this.updateColorGuide();
+    this.broadcastStyleUpdate();
   }
 
   updateColorFromText(colorType, value) {
-    if (/^#[0-9A-F]{6}$/i.test(value)) {
-      this.colors[colorType] = value;
-      const picker = document.getElementById(`${colorType}ColorPicker`);
-      if (picker) picker.value = value;
-      this.saveStylingData();
-      this.updateColorGuide();
-    }
+    if (!/^#[0-9A-F]{6}$/i.test(value)) return;
+    this.colors[colorType] = value;
+    const picker = document.getElementById(`${colorType}ColorPicker`);
+    if (picker) picker.value = value;
+    this.saveStylingData();
+    this.updateColorGuide();
+    this.broadcastStyleUpdate();
   }
 
   updateColorGuide = () => {
     if (!this.colors) return;
-    const primaryDemo = document.querySelector(".primary-demo");
-    const secondaryDemo = document.querySelector(".secondary-demo");
-    const tertiaryDemo = document.querySelector(".tertiary-demo");
-    if (primaryDemo) primaryDemo.style.backgroundColor = this.colors.primary;
-    if (secondaryDemo)
-      secondaryDemo.style.backgroundColor = this.colors.secondary;
-    if (tertiaryDemo) tertiaryDemo.style.backgroundColor = this.colors.tertiary;
+    document.querySelector(".primary-demo").style.backgroundColor =
+      this.colors.primary;
+    document.querySelector(".secondary-demo").style.backgroundColor =
+      this.colors.secondary;
+    document.querySelector(".tertiary-demo").style.backgroundColor =
+      this.colors.tertiary;
   };
 
   updateColorInputs = () => {
     if (!this.colors) return;
     Object.entries(this.colors).forEach(([type, value]) => {
-      const picker = document.getElementById(`${type}ColorPicker`);
-      const input = document.getElementById(`${type}ColorValue`);
-      if (picker) picker.value = value;
-      if (input) input.value = value;
+      document.getElementById(`${type}ColorPicker`).value = value;
+      document.getElementById(`${type}ColorValue`).value = value;
     });
     this.updateColorGuide();
   };
@@ -359,45 +367,38 @@ class Step3StylesDesign {
     setTimeout(this.updateColorGuide, 100);
   }
 
-  toggleFontSelection(useDefault = true) {
+  toggleFontSelection(useDefault = true, doSave = true) {
     this.useDefaultFont = useDefault;
-    const customSelection = document.getElementById("customFontSelection");
-    const useDefaultCheckbox = document.getElementById("useDefaultFont");
-    const fontPreviewText = document.getElementById("fontPreviewText");
-
-    if (useDefaultCheckbox) useDefaultCheckbox.checked = useDefault;
-    if (customSelection)
-      customSelection.style.display = useDefault ? "none" : "block";
-    if (fontPreviewText) {
-      fontPreviewText.style.fontFamily = useDefault
-        ? "Montserrat, sans-serif"
-        : this.customFont
-        ? `'${this.customFont}', sans-serif`
-        : "Montserrat, sans-serif";
+    document.getElementById("customFontSelection").style.display = useDefault
+      ? "none"
+      : "block";
+    document.getElementById("useDefaultFont").checked = useDefault;
+    const fontFamily = useDefault
+      ? "Montserrat, sans-serif"
+      : this.customFont
+      ? `'${this.customFont}', sans-serif`
+      : "Montserrat, sans-serif";
+    document.getElementById("fontPreviewText").style.fontFamily = fontFamily;
+    if (doSave) {
+      this.saveStylingData();
+      this.broadcastStyleUpdate();
     }
-    this.saveStylingData();
   }
 
   searchGoogleFonts(query) {
-    const suggestionsContainer = document.getElementById("fontSuggestions");
-    if (!suggestionsContainer || !query || query.trim().length < 2) {
-      this.hideFontSuggestions();
-      return;
-    }
-    const filteredFonts = this.popularGoogleFonts.filter((font) =>
-      font.toLowerCase().includes(query.toLowerCase())
+    const container = document.getElementById("fontSuggestions");
+    if (!container || !query || query.trim().length < 2)
+      return this.hideFontSuggestions();
+    const filtered = this.popularGoogleFonts.filter((f) =>
+      f.toLowerCase().includes(query.toLowerCase())
     );
-    if (filteredFonts.length > 0) {
-      this.showFontSuggestions(filteredFonts.slice(0, 8));
-    } else {
-      this.hideFontSuggestions();
-    }
+    if (filtered.length > 0) this.showFontSuggestions(filtered.slice(0, 8));
+    else this.hideFontSuggestions();
   }
 
   showFontSuggestions(fonts) {
-    const suggestionsContainer = document.getElementById("fontSuggestions");
-    if (!suggestionsContainer) return;
-    suggestionsContainer.innerHTML = fonts
+    const container = document.getElementById("fontSuggestions");
+    container.innerHTML = fonts
       .map(
         (font) => `
       <div class="font-suggestion-item" onclick="window.step3StylesDesign.selectGoogleFont('${font}')">
@@ -406,43 +407,41 @@ class Step3StylesDesign {
       </div>`
       )
       .join("");
-    suggestionsContainer.classList.add("show");
+    container.classList.add("show");
   }
 
   hideFontSuggestions() {
-    const suggestionsContainer = document.getElementById("fontSuggestions");
-    if (suggestionsContainer) suggestionsContainer.classList.remove("show");
+    document.getElementById("fontSuggestions").classList.remove("show");
   }
 
   selectGoogleFont(fontName) {
-    const fontInput = document.getElementById("fontSearchInput");
-    if (fontInput) fontInput.value = fontName;
+    document.getElementById("fontSearchInput").value = fontName;
     this.hideFontSuggestions();
     this.customFont = fontName;
     this.useDefaultFont = false;
     this.loadGoogleFont(fontName);
     this.updateFontPreview(fontName);
     this.saveStylingData();
+    this.broadcastStyleUpdate();
   }
 
   loadGoogleFont(fontName) {
     const fontId = `google-font-${fontName.replace(/\s+/g, "-")}`;
     if (document.getElementById(fontId)) return;
-    const fontLink = document.createElement("link");
-    fontLink.id = fontId;
-    fontLink.rel = "stylesheet";
-    fontLink.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(
+    const link = document.createElement("link");
+    link.id = fontId;
+    link.rel = "stylesheet";
+    link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(
       /\s+/g,
       "+"
     )}:wght@300;400;500;600;700&display=swap`;
-    document.head.appendChild(fontLink);
+    document.head.appendChild(link);
   }
 
   updateFontPreview(fontName) {
-    const previewText = document.getElementById("fontPreviewText");
-    if (previewText) {
-      previewText.style.fontFamily = `'${fontName}', sans-serif`;
-    }
+    document.getElementById(
+      "fontPreviewText"
+    ).style.fontFamily = `'${fontName}', sans-serif`;
   }
 
   saveThemeData() {
@@ -450,14 +449,9 @@ class Step3StylesDesign {
       const currentWizardData = this.getWizardData() || {};
       currentWizardData.theme = this.selectedTheme;
       localStorage.setItem("wizardData", JSON.stringify(currentWizardData));
-
-      if (window.wizardData) {
-        window.wizardData.theme = this.selectedTheme;
-      }
-
-      if (window.DEBUG_MODE) {
+      if (window.wizardData) window.wizardData.theme = this.selectedTheme;
+      if (window.DEBUG_MODE)
         console.log("Theme data saved:", currentWizardData);
-      }
     } catch (error) {
       console.error("Error saving theme data:", error);
     }
@@ -475,215 +469,214 @@ class Step3StylesDesign {
         logos: this.logos,
         timestamp: new Date().toISOString(),
       };
-
       const currentWizardData = this.getWizardData() || {};
       currentWizardData.styling = stylingData;
       localStorage.setItem("wizardData", JSON.stringify(currentWizardData));
-
-      if (window.wizardData) {
-        window.wizardData.styling = stylingData;
-      }
-
-      if (window.DEBUG_MODE) {
+      if (window.wizardData) window.wizardData.styling = stylingData;
+      if (window.DEBUG_MODE)
         console.log("Styling data saved:", currentWizardData);
-      }
     } catch (error) {
       console.error("Error saving styling data:", error);
     }
   }
 
-  // Enhanced Theme Preview Methods
+  broadcastStyleUpdate() {
+    const desktopFrame = document.getElementById("desktopPreviewFrame");
+    const mobileFrame = document.getElementById("mobilePreviewFrame");
+    const liveSettings = {
+      colors: this.colors,
+      font: this.useDefaultFont ? null : this.customFont,
+      logo: this.logos.desktop || this.logos.mobile || null,
+    };
+    const message = { type: "JH_WIZARD_STYLE_UPDATE", settings: liveSettings };
+    if (desktopFrame && desktopFrame.contentWindow)
+      desktopFrame.contentWindow.postMessage(message, "*");
+    if (mobileFrame && mobileFrame.contentWindow)
+      mobileFrame.contentWindow.postMessage(message, "*");
+  }
+
   async openThemePreview() {
     const modal = document.getElementById("themePreviewModal");
-    if (modal) {
-      modal.classList.add("show");
-      document.body.classList.add("modal-open");
-
-      // Update modal title with current theme
-      const modalTitle = document.getElementById("themePreviewTitle");
-      if (modalTitle) {
-        const themeNames = {
-          luma: "Luma Theme Preview",
-          hyva: "Hyvä Theme Preview",
-          default: "Default Theme Preview",
-        };
-        modalTitle.textContent =
-          themeNames[this.selectedTheme] || "Theme Preview";
-      }
-
-      await this.loadThemePreview();
-      this.switchPreviewMode(this.currentPreviewMode);
+    if (!modal) return;
+    modal.classList.add("show");
+    document.body.classList.add("modal-open");
+    const modalTitle = document.getElementById("themePreviewTitle");
+    if (modalTitle) {
+      const themeNames = {
+        luma: "Luma Theme Preview",
+        hyva: "Hyvä Theme Preview",
+        default: "Default Theme Preview",
+      };
+      modalTitle.textContent =
+        themeNames[this.selectedTheme] || "Theme Preview";
     }
+    await this.loadThemePreview();
+    this.switchPreviewMode(this.currentPreviewMode);
   }
 
   closeThemePreview() {
     const modal = document.getElementById("themePreviewModal");
-    if (modal) {
-      modal.classList.remove("show");
-      document.body.classList.remove("modal-open");
-
-      // Clear iframe content
-      const modalBody = modal.querySelector(".modal-body");
-      if (modalBody) {
-        modalBody.innerHTML = "";
-      }
-    }
+    if (!modal) return;
+    modal.classList.remove("show");
+    document.body.classList.remove("modal-open");
+    // [FIXED] Also remove the mobile preview class when closing
+    modal.classList.remove("is-mobile-preview");
+    const modalBody = modal.querySelector(".modal-body");
+    if (modalBody) modalBody.innerHTML = "";
   }
 
   async loadThemePreview() {
     const modalBody = document.querySelector("#themePreviewModal .modal-body");
     if (!modalBody) return;
-
-    // Show loading state
+    modalBody.innerHTML = `<div class="theme-preview-loading"><i class="fas fa-spinner"></i> Loading theme preview...</div>`;
     modalBody.innerHTML = `
-      <div class="theme-preview-loading">
-        <i class="fas fa-spinner"></i>
-        Loading theme preview...
+      <div class="theme-preview-iframe-container preview-desktop-view">
+        <iframe class="theme-preview-iframe" id="desktopPreviewFrame"></iframe>
       </div>
-    `;
-
-    try {
-      const themePath =
-        this.themeFiles[this.selectedTheme] || this.themeFiles.default;
-      const response = await fetch(themePath);
-
-      if (!response.ok) {
-        throw new Error(`Failed to load theme: ${response.status}`);
-      }
-
-      const themeHtml = await response.text();
-
-      // Create iframe containers for both desktop and mobile
-      modalBody.innerHTML = `
-        <div class="theme-preview-iframe-container preview-desktop-view">
-          <iframe class="theme-preview-iframe" id="desktopPreviewFrame"></iframe>
-        </div>
-        <div class="mobile-preview-container preview-mobile-view" style="display: none;">
-          <div class="mobile-frame">
-            <iframe class="theme-preview-iframe" id="mobilePreviewFrame"></iframe>
-          </div>
-        </div>
-      `;
-
-      // Load customized content into both frames
-      setTimeout(() => {
-        this.injectCustomizedContent("desktopPreviewFrame", themeHtml);
-        this.injectCustomizedContent("mobilePreviewFrame", themeHtml);
-      }, 100);
-    } catch (error) {
-      console.error("Error loading theme preview:", error);
-      modalBody.innerHTML = `
-        <div class="theme-preview-loading" style="color: #e91e64;">
-          <i class="fas fa-exclamation-triangle"></i>
-          Failed to load theme preview. Please try again.
-        </div>
-      `;
-    }
+      <div class="mobile-preview-container preview-mobile-view" style="display: none;">
+        <div class="mobile-frame"><iframe class="theme-preview-iframe" id="mobilePreviewFrame"></iframe></div>
+      </div>`;
+    this.injectCustomizedContent("desktopPreviewFrame");
+    this.injectCustomizedContent("mobilePreviewFrame");
   }
 
-  injectCustomizedContent(iframeId, originalHtml) {
+  injectCustomizedContent(iframeId) {
     const iframe = document.getElementById(iframeId);
     if (!iframe) return;
-
-    // Customize the HTML with user's settings
-    let customizedHtml = this.applyCustomizations(originalHtml);
-
-    // Create blob URL for the customized content
-    const blob = new Blob([customizedHtml], { type: "text/html" });
-    const blobUrl = URL.createObjectURL(blob);
-
-    iframe.src = blobUrl;
-
-    // Clean up blob URL after loading
+    const themePath =
+      this.themeFiles[this.selectedTheme] || this.themeFiles.default;
+    if (!themePath) {
+      console.error("Theme path not found for:", this.selectedTheme);
+      return;
+    }
+    iframe.src = themePath;
     iframe.onload = () => {
-      setTimeout(() => {
-        URL.revokeObjectURL(blobUrl);
-      }, 1000);
+      const listenerScript = this.getListenerScript();
+      const scriptEl = iframe.contentDocument.createElement("script");
+      scriptEl.innerHTML = listenerScript;
+      iframe.contentDocument.body.appendChild(scriptEl);
     };
   }
 
-  applyCustomizations(html) {
-    let customizedHtml = html;
+  getListenerScript() {
+    return `
+        function generateCss(settings) {
+            const { colors, font } = settings;
+            return \`
+                /* --- Generic CSS Variables --- */
+                :root {
+                    --jh-primary-color: \${colors.primary || '#4e54c8'};
+                    --jh-secondary-color: \${colors.secondary || '#8f94fb'};
+                    --jh-tertiary-color: \${colors.tertiary || '#19b78a'};
+                    \${font ? \`--jh-body-font: '\${font}', sans-serif;\` : ''}
+                }
 
-    // Apply logo customizations
-    if (this.logos.desktop) {
-      // Replace logo src attributes with uploaded logo
-      customizedHtml = customizedHtml.replace(
-        /src="[^"]*logo[^"]*"/gi,
-        `src="${this.logos.desktop}"`
-      );
-    }
+                /* --- Global Font Override (High Specificity) --- */
+                \${font ? \`
+                body, body *, p, span, div, a, button, input, textarea, select {
+                    font-family: var(--jh-body-font) !important;
+                }
+                h1, h2, h3, h4, h5, h6 {
+                    font-family: var(--jh-body-font) !important;
+                }
+                \` : ''}
 
-    // Apply color customizations
-    const colorStyles = `
-      <style id="wizard-custom-colors">
-        /* Custom color overrides */
-        .action.tocart.primary,
-        .action.primary,
-        .button.primary,
-        .btn-primary {
-          background-color: ${this.colors.primary} !important;
-          border-color: ${this.colors.primary} !important;
+                /* --- Luma Theme Specific Color Overrides --- */
+                .page-wrapper .action.primary,
+                .page-wrapper .action.tocart,
+                .page-wrapper .block-search .action.search {
+                    background-color: var(--jh-primary-color) !important;
+                    border-color: var(--jh-primary-color) !important;
+                    color: white !important;
+                }
+                .page-wrapper .action.primary:hover,
+                .page-wrapper .action.tocart:hover,
+                .page-wrapper .block-search .action.search:hover {
+                    background-color: var(--jh-secondary-color) !important;
+                    border-color: var(--jh-secondary-color) !important;
+                }
+                .page-wrapper .price,
+                .page-wrapper .special-price .price,
+                .page-wrapper .old-price .price {
+                    color: var(--jh-tertiary-color) !important;
+                }
+                .page-wrapper .page-header,
+                .page-wrapper .header.content {
+                    border-bottom-color: var(--jh-primary-color) !important;
+                }
+
+                /* --- Hyva Theme Specific Color Overrides (Tailwind-based) --- */
+                body .bg-primary,
+                body .button-primary {
+                    background-color: var(--jh-primary-color) !important;
+                    border-color: var(--jh-primary-color) !important;
+                    color: white !important;
+                }
+                body .text-primary {
+                    color: var(--jh-primary-color) !important;
+                }
+                body .border-primary {
+                    border-color: var(--jh-primary-color) !important;
+                }
+                body a:hover {
+                    color: var(--jh-secondary-color) !important;
+                }
+                body .price {
+                     color: var(--jh-tertiary-color) !important;
+                }
+            \`;
         }
-        
-        .action.tocart.primary:hover,
-        .action.primary:hover,
-        .button.primary:hover,
-        .btn-primary:hover {
-          background-color: ${this.colors.secondary} !important;
-          border-color: ${this.colors.secondary} !important;
+
+        function applyStyles(settings) {
+            if (!settings) return;
+            
+            // Logo: Replace content of logo container for robustness
+            if (settings.logo) {
+                const logoContainer = document.querySelector('a.logo, .header .logo, .header-logo a, a[aria-label="Go to Home page"]');
+                if (logoContainer) {
+                    logoContainer.innerHTML = \`<img src="\${settings.logo}" alt="Store Logo" style="max-height: 80px; width: auto;">\`;
+                }
+            }
+
+            // Colors & Font
+            let styleTag = document.getElementById('wizard-live-styles');
+            if (!styleTag) {
+                styleTag = document.createElement('style');
+                styleTag.id = 'wizard-live-styles';
+                document.head.appendChild(styleTag);
+            }
+            styleTag.innerHTML = generateCss(settings);
+
+            // Font: Load from Google Fonts
+            if (settings.font) {
+                const fontId = 'google-font-' + settings.font.replace(/\\s+/g, "-");
+                if (!document.getElementById(fontId)) {
+                    const link = document.createElement('link');
+                    link.id = fontId;
+                    link.rel = 'stylesheet';
+                    link.href = 'https://fonts.googleapis.com/css2?family=' + settings.font.replace(/\\s+/g, '+') + ':wght@300;400;500;600;700&display=swap';
+                    document.head.appendChild(link);
+                }
+            }
         }
-        
-        .price,
-        .special-price .price,
-        .old-price .price {
-          color: ${this.colors.tertiary} !important;
-        }
-        
-        .page-header,
-        .header.content {
-          border-bottom: 3px solid ${this.colors.primary};
-        }
-        
-        .navigation .level0 > .level-top:hover,
-        .navigation .level0.active > .level-top {
-          color: ${this.colors.primary} !important;
-        }
-        
-        .minicart-wrapper .showcart:before,
-        .block-search .action.search:before {
-          color: ${this.colors.primary} !important;
-        }
-      </style>
+
+        // Listen for style updates from the parent
+        window.addEventListener('message', function(event) {
+            const data = event.data;
+            if (data && data.type === 'JH_WIZARD_STYLE_UPDATE') {
+                applyStyles(data.settings);
+            }
+        });
+
+        // Announce that the iframe is ready to receive messages
+        window.parent.postMessage({ type: 'JH_IFRAME_READY' }, '*');
     `;
-
-    // Insert custom styles before closing head tag
-    customizedHtml = customizedHtml.replace("</head>", colorStyles + "</head>");
-
-    // Apply font customizations
-    if (!this.useDefaultFont && this.customFont) {
-      const fontStyles = `
-        <style id="wizard-custom-font">
-          body, .page-wrapper {
-            font-family: '${this.customFont}', sans-serif !important;
-          }
-        </style>
-        <link href="https://fonts.googleapis.com/css2?family=${this.customFont.replace(
-          /\s+/g,
-          "+"
-        )}:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-      `;
-      customizedHtml = customizedHtml.replace(
-        "</head>",
-        fontStyles + "</head>"
-      );
-    }
-
-    return customizedHtml;
   }
 
+  // [MODIFIED] Add/remove class from modal for resizing
   switchPreviewMode(mode) {
     this.currentPreviewMode = mode;
+    const modal = document.getElementById("themePreviewModal");
     const desktopView = document.querySelector(".preview-desktop-view");
     const mobileView = document.querySelector(".preview-mobile-view");
     const desktopBtn = document.querySelector(
@@ -693,11 +686,14 @@ class Step3StylesDesign {
       '.device-btn[data-device="mobile"]'
     );
 
-    if (desktopView && mobileView && desktopBtn && mobileBtn) {
+    if (modal && desktopView && mobileView && desktopBtn && mobileBtn) {
       desktopView.style.display = mode === "desktop" ? "flex" : "none";
       mobileView.style.display = mode === "mobile" ? "flex" : "none";
+
       desktopBtn.classList.toggle("active", mode === "desktop");
       mobileBtn.classList.toggle("active", mode === "mobile");
+
+      modal.classList.toggle("is-mobile-preview", mode === "mobile");
     }
   }
 
@@ -712,9 +708,8 @@ class Step3StylesDesign {
   }
 
   updateNextButton() {
-    if (typeof window.updateNextButton === "function") {
+    if (typeof window.updateNextButton === "function")
       window.updateNextButton();
-    }
   }
 
   validateStep() {
