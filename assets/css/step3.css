@@ -1,5 +1,6 @@
 /* Step 3: Styles & Design Specific Styles */
 /* Updated: 2025-07-21 - Wider Modal and Enhanced Theme Preview Loading */
+/* Updated: 2025-07-23 - Fixed Custom Font Layout to be inline */
 
 /* Style Tabs */
 .style-tabs {
@@ -424,11 +425,11 @@
   color: #0f488a;
 }
 
-/* Font Selection */
+/* Font Selection - Updated Layout */
 .font-selection {
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .font-item {
@@ -439,8 +440,9 @@
   border: 2px solid rgba(0, 155, 222, 0.1);
 }
 
+/* Default Font Option */
 .default-font-option {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .checkbox-label {
@@ -456,17 +458,46 @@
   transform: scale(1.2);
 }
 
+/* Custom Font Selection - Updated to be inline */
 .custom-font-selection {
-  margin-top: 2rem;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-/* Font Search */
+/* Custom Font Row - Make it inline */
+.custom-font-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Custom Font Label - Inline style */
+.custom-font-label {
+  font: 600 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  white-space: nowrap;
+  min-width: 18rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Font Search Container - Take remaining space */
+.font-search-container {
+  position: relative;
+  flex: 1;
+  min-width: 30rem;
+}
+
+/* Font Search Box - Remove extra margin */
 .font-search-box {
   position: relative;
-  margin-top: 1.5rem;
   box-shadow: 0.5rem 0.5rem 1rem rgba(0, 0, 0, 0.025);
   border-radius: 3rem;
   background: #fff;
+  margin: 0; /* Remove margin */
 }
 
 .font-search-box:after {
@@ -481,7 +512,7 @@
   background: #ff7101;
 }
 
-/* Font Search Input - exactly matching form__fieldset_input */
+/* Font Search Input - Maintain original styling */
 .font-search-input {
   position: relative;
   height: 6rem;
@@ -500,6 +531,7 @@
 
 .font-search-input:focus {
   border-color: rgba(255, 113, 1, 0.3);
+  outline: none;
 }
 
 .font-search-input::-webkit-input-placeholder {
@@ -517,7 +549,7 @@
   opacity: 1;
 }
 
-/* Font Suggestions Dropdown */
+/* Font Suggestions Dropdown - Position relative to container */
 .font-suggestions {
   position: absolute;
   top: calc(100% - 0.5rem);
@@ -538,6 +570,7 @@
   display: block;
 }
 
+/* Font Suggestion Items */
 .font-suggestion-item {
   padding: 1.5rem 2.5rem;
   cursor: pointer;
@@ -573,19 +606,14 @@
   color: #ff7101;
 }
 
-/* Container positioning */
-.font-search-container {
-  position: relative;
-  width: 100%;
-}
-
-/* Font Preview */
+/* Font Preview Area */
 .font-preview-area {
   background: #fff;
   padding: 4rem;
   border-radius: 2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
   border: 2px solid rgba(0, 155, 222, 0.1);
+  /* margin-top: 2rem; */
 }
 
 .font-preview-text h3 {
@@ -917,6 +945,72 @@
     width: 320px;
     max-width: 320px;
   }
+
+  /* Font Selection Mobile */
+  .custom-font-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .custom-font-label {
+    min-width: auto;
+    margin-bottom: 0;
+  }
+
+  .font-search-container {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .font-preview-area {
+    padding: 2rem;
+  }
+
+  .font-preview-text h3 {
+    font-size: 2rem;
+  }
+
+  .font-preview-text p {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .font-selection {
+    gap: 2rem;
+  }
+
+  .font-item {
+    padding: 2rem;
+  }
+
+  .default-font-option {
+    margin-bottom: 2rem;
+  }
+
+  .custom-font-selection {
+    /* margin-top: 2rem; */
+    gap: 1.5rem;
+  }
+
+  .checkbox-label {
+    font-size: 1.4rem;
+  }
+
+  .custom-font-label {
+    font-size: 1.4rem;
+  }
+
+  .font-search-input {
+    height: 5rem;
+    font-size: 1.6rem;
+  }
+
+  .font-search-box:after {
+    top: 2rem;
+    left: 2rem;
+  }
 }
 
 /* Animation for step entry */
@@ -932,5 +1026,294 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Additional Mobile Responsive Styles for Modal */
+#themePreviewModal.is-mobile-preview .modal-dialog {
+  max-width: 414px; /* Typical mobile width */
+  height: 85vh;
+  margin-top: 5vh;
+  transition: max-width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+#themePreviewModal.is-mobile-preview .modal-content {
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#themePreviewModal .mobile-frame {
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  width: 100%;
+  height: 100%;
+}
+
+#themePreviewModal .mobile-preview-container {
+  height: 100%;
+}
+
+/* Color Guide Responsive */
+@media screen and (max-width: 480px) {
+  .color-guide-list {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .guide-item {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .guide-color {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .guide-text {
+    font-size: 1.4rem;
+  }
+}
+
+/* Logo Upload Area Responsive */
+@media screen and (max-width: 480px) {
+  .logo-upload-area {
+    padding: 3rem 2rem;
+  }
+
+  .upload-content i {
+    font-size: 3rem;
+  }
+
+  .upload-content p {
+    font-size: 1.6rem;
+  }
+
+  .upload-content small {
+    font-size: 1.2rem;
+  }
+}
+
+/* Color Input Group Responsive */
+@media screen and (max-width: 480px) {
+  .color-input-group {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .color-picker {
+    width: 100%;
+    height: 5rem;
+  }
+
+  .color-value {
+    width: 100%;
+    height: 4rem;
+    padding: 1rem;
+  }
+}
+
+/* Tab Button Mobile Responsiveness */
+@media screen and (max-width: 480px) {
+  .style-tabs .tab-button {
+    padding: 1.2rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  .style-tabs .tab-button i {
+    font-size: 1.4rem;
+    margin-right: 0.8rem;
+  }
+
+  .theme-preview-btn {
+    padding: 1.2rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  .theme-preview-btn i {
+    font-size: 1.4rem;
+    margin-right: 0.8rem;
+  }
+}
+
+/* Theme Card Mobile Improvements */
+@media screen and (max-width: 480px) {
+  .theme-item .theme-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .theme-icon {
+    width: 6rem;
+    height: 6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .theme-name {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .theme-description {
+    font-size: 1.4rem;
+  }
+
+  .license-required {
+    font-size: 1.2rem;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    display: block;
+  }
+}
+
+/* Modal Mobile Improvements */
+@media screen and (max-width: 480px) {
+  .theme-preview-modal .modal-header {
+    padding: 1rem 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .modal-header-left {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .modal-header-right {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .theme-preview-modal .modal-title {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .preview-device-toggle .device-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 1.4rem;
+  }
+}
+
+/* Tab Panel Mobile Spacing */
+@media screen and (max-width: 480px) {
+  .style-tabs .tab-panel {
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* Font Search Mobile Improvements */
+@media screen and (max-width: 480px) {
+  .font-search-input {
+    padding: 0 2.5rem 0 4rem;
+  }
+
+  .font-search-box:after {
+    left: 1.8rem;
+    top: 2.2rem;
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  .font-suggestion-item {
+    padding: 1.2rem 2rem;
+  }
+
+  .font-suggestion-name {
+    font-size: 1.4rem;
+  }
+
+  .font-suggestion-preview {
+    font-size: 1.2rem;
+  }
+}
+
+/* Additional Animation for Theme Selection */
+@keyframes radioSelect {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.theme-item.selected .theme-radio-visual:before {
+  animation: radioSelect 0.4s ease-out;
+}
+
+/* Card Selection Animation */
+@keyframes cardSelect {
+  0% {
+    transform: translateY(-2px) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    transform: translateY(-2px) scale(1);
+  }
+}
+
+.theme-item.selected .theme-card {
+  animation: cardSelect 0.5s ease-out;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Focus states for accessibility */
+/* .theme-item .theme-card:focus-within {
+  outline: 2px solid #ff7101;
+  outline-offset: 2px;
+}
+
+.style-tabs .tab-button:focus {
+  outline: 2px solid #ff7101;
+  outline-offset: 2px;
+}
+
+.theme-preview-btn:focus {
+  outline: 2px solid #32be7d;
+  outline-offset: 2px;
+} */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .theme-item .theme-card {
+    border-width: 3px;
+  }
+
+  .theme-item.selected .theme-card {
+    border-width: 4px;
+  }
+
+  .style-tabs .tab-button {
+    border-width: 3px;
+  }
+
+  .style-tabs .tab-button.active {
+    border-width: 4px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -269,9 +269,9 @@
               </div> -->
 
               <div class="form-row">
-                <div class="form-group">
+                <div class="form-group version-group">
                   <label class="form-label" for="versionSelect"
-                    >Select Version</label
+                    >Select Version:</label
                   >
                   <select class="form-select" id="versionSelect">
                     <option value="">Choose version...</option>
@@ -563,7 +563,7 @@
                 </div>
               </div>
 
-              <!-- Font Tab -->
+              <!-- Font Tab - Updated Structure -->
               <div class="tab-panel" data-tab="font">
                 <div class="font-selection">
                   <div class="font-item">
@@ -579,16 +579,17 @@
                       id="customFontSelection"
                       style="display: none"
                     >
-                      <div class="form__fieldset">
-                        <h4 class="form__fieldset_h4">Custom Font Family</h4>
-                        <div class="font-search-box">
-                          <div class="font-search-container">
+                      <div class="custom-font-row">
+                        <label class="custom-font-label"
+                          >Custom Font Family:</label
+                        >
+                        <div class="font-search-container">
+                          <div class="font-search-box">
                             <input
                               type="text"
                               class="font-search-input"
                               id="fontSearchInput"
                               placeholder="Search Google fonts..."
-                              onkeyup="searchGoogleFonts(this.value)"
                               autocomplete="off"
                             />
                             <div
@@ -600,12 +601,15 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="font-preview-area">
                     <div class="font-preview-text" id="fontPreviewText">
                       <h3>Sample Heading Text</h3>
                       <p>
                         This is a sample paragraph text to show how the selected
-                        font will look in your website content.
+                        font will look in your website content. You can see how
+                        different fonts affect the readability and visual
+                        appeal.
                       </p>
                     </div>
                   </div>

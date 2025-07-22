@@ -134,7 +134,7 @@
   margin: 0 auto;
 }
 
-/* Form Row */
+/* Form Row - Updated untuk inline layout */
 .form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
@@ -142,10 +142,54 @@
   margin-bottom: 1rem;
 }
 
-/* Form Groups */
+/* Form Groups - Updated untuk version selection */
 .form-group {
   display: flex;
   flex-direction: column;
+}
+
+/* Version Form Group - Special styling for inline layout */
+.form-group.version-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* Version Label - Inline style */
+.form-group.version-group .form-label {
+  font: 600 1.6rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  min-width: 15rem;
+}
+
+/* Version Select - Take remaining space */
+.form-group.version-group .form-select {
+  flex: 1;
+  min-width: 25rem;
+  padding: 2rem;
+  border: 0.2rem solid rgba(0, 155, 222, 0.1);
+  border-radius: 2rem;
+  font: 500 1.8rem/1 "Montserrat", sans-serif;
+  color: #0f488a;
+  background: #fff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.form-group.version-group .form-select:focus {
+  outline: none;
+  border-color: #ff7101;
+  box-shadow: 0 0 0 0.3rem rgba(255, 113, 1, 0.1);
+}
+
+.form-group.version-group .form-select:hover {
+  border-color: rgba(255, 113, 1, 0.2);
 }
 
 .form-label {
@@ -390,5 +434,39 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+/* Mobile Responsive untuk version group */
+@media screen and (max-width: 768px) {
+  .form-group.version-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .form-group.version-group .form-label {
+    min-width: auto;
+    margin-bottom: 0;
+  }
+
+  .form-group.version-group .form-select {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .form-group.version-group {
+    gap: 1rem;
+  }
+
+  .form-group.version-group .form-label {
+    font-size: 1.4rem;
+  }
+
+  .form-group.version-group .form-select {
+    padding: 1.5rem;
+    font-size: 1.6rem;
   }
 }
