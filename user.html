@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard - Corefinity</title>
+    <link
+      rel="icon"
+      href="https://www.corefinity.com/images/logo-mini.svg"
+      type="image/png"
+    />
+
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      /* User Dashboard Specific Styles */
+      .user-container {
+        display: flex;
+        min-height: 100vh;
+        background: #fff;
+      }
+
+      /* Header like wizard */
+      .user-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: #fff;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.025),
+          0 1.5rem 2rem rgba(0, 0, 0, 0.025);
+        height: 10rem;
+      }
+
+      .user-header__container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        max-width: none;
+        padding: 0 5rem;
+        margin: 0;
+      }
+
+      .user-header__logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease-out;
+      }
+
+      .user-header__logo:hover {
+        transform: scale(1.1);
+      }
+
+      .logo-image {
+        height: 5rem;
+        width: auto;
+        max-height: 5rem;
+        display: flex;
+        flex-shrink: 0;
+      }
+
+      /* User Profile in header */
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        text-align: right;
+      }
+
+      .user-name {
+        font: 700 2rem/1.5 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 0.3rem;
+      }
+
+      .user-role {
+        font: 400 1.4rem/1.3 "Montserrat", sans-serif;
+        color: #009bde;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .user-avatar {
+        position: relative;
+        cursor: pointer;
+      }
+
+      .avatar-image {
+        width: 4.5rem;
+        height: 4.5rem;
+        border-radius: 50%;
+        border: 3px solid #009bde;
+        transition: all 0.3s ease-out;
+        display: flex;
+        flex-shrink: 0;
+      }
+
+      /* User Dropdown */
+      .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 1.5rem;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease-out;
+        z-index: 1001;
+        max-width: 22rem;
+      }
+
+      .user-avatar:hover .user-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-arrow {
+        width: 0;
+        height: 0;
+        border-left: 1.2rem solid transparent;
+        border-right: 1.2rem solid transparent;
+        border-bottom: 1.2rem solid #fff;
+        position: absolute;
+        top: -1.2rem;
+        right: 2rem;
+      }
+
+      .dropdown-menu {
+        background: #fff;
+        border-radius: 1.5rem;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+        padding: 1.5rem 0;
+        min-width: 22rem;
+        border: 2px solid rgba(0, 155, 222, 0.1);
+      }
+
+      .dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem 2.5rem;
+        font: 500 1.5rem/1 "Montserrat", sans-serif;
+        color: #0f488a;
+        text-decoration: none;
+        transition: all 0.3s ease-out;
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(0, 155, 222, 0.05);
+        color: #009bde;
+        text-decoration: none;
+      }
+
+      .dropdown-item i {
+        margin-right: 1.5rem;
+        width: 1.8rem;
+        font-size: 1.6rem;
+        color: #009bde;
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background: rgba(0, 155, 222, 0.1);
+        margin: 1.5rem 0;
+      }
+
+      /* Sidebar like wizard */
+      .user-sidebar {
+        width: 35rem;
+        min-width: 35rem;
+        max-width: 35rem;
+        background: #f0fafb;
+        padding: 12rem 3rem 5rem 3rem;
+        border-right: 0.2rem solid rgba(0, 155, 222, 0.1);
+        overflow-y: auto;
+        height: 100vh;
+        flex-shrink: 0;
+      }
+
+      .user-sidebar::-webkit-scrollbar {
+        width: 1rem;
+        border-left: 0.125rem solid #e9e9e9;
+        background-color: #eceff1;
+      }
+
+      .user-sidebar::-webkit-scrollbar-thumb {
+        box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.05),
+          0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        background: #009bde;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease-out;
+      }
+
+      .user-sidebar::-webkit-scrollbar-thumb:hover {
+        background: #ff7101;
+      }
+
+      .user-nav {
+        margin-bottom: 5rem;
+      }
+
+      .user-nav h3 {
+        font: 700 2rem/1.5 "Montserrat", sans-serif;
+        color: #009bde;
+        margin-bottom: 3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .nav-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 2rem 0;
+        border-bottom: 0.1rem solid rgba(0, 155, 222, 0.1);
+        transition: all 0.3s ease-out;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .nav-item:last-child {
+        border-bottom: none;
+      }
+
+      .nav-item.active {
+        background: rgba(255, 113, 1, 0.05);
+        margin: 0 -3rem;
+        padding: 2rem 3rem;
+        border-radius: 1rem;
+        border-bottom: 0.1rem solid rgba(255, 113, 1, 0.1);
+      }
+
+      .nav-item:hover {
+        background: rgba(0, 155, 222, 0.05);
+        margin: 0 -3rem;
+        padding: 2rem 3rem;
+        border-radius: 1rem;
+      }
+
+      .nav-item.active:hover {
+        background: rgba(255, 113, 1, 0.05);
+      }
+
+      .nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        background: rgba(0, 155, 222, 0.1);
+        font: 700 1.8rem/1 "Montserrat", sans-serif;
+        color: #009bde;
+        margin-right: 2rem;
+        flex-shrink: 0;
+        transition: all 0.3s ease-out;
+        font-size: 1.8rem;
+      }
+
+      .nav-item.active .nav-icon {
+        background: #ff7101;
+        color: #fff;
+      }
+
+      .nav-content {
+        flex: 1;
+      }
+
+      .nav-title {
+        font: 700 1.8rem/1.5 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-item.active .nav-title {
+        color: #ff7101;
+      }
+
+      .nav-description {
+        font: 400 1.4rem/1.5 "Montserrat", sans-serif;
+        color: #666;
+        margin: 0;
+      }
+
+      /* Main Content */
+      .user-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        height: 100vh;
+        overflow: hidden;
+        min-width: 0;
+        margin-top: 10rem;
+      }
+
+      .user-main {
+        flex: 1;
+        padding: 5rem 5rem 3rem 5rem;
+        overflow-y: auto;
+        background: #fff;
+        height: 100%;
+        position: relative;
+      }
+
+      .user-main::-webkit-scrollbar {
+        width: 1rem;
+        border-left: 0.125rem solid #e9e9e9;
+        background-color: #eceff1;
+      }
+
+      .user-main::-webkit-scrollbar-thumb {
+        box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.05),
+          0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        background: #009bde;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease-out;
+      }
+
+      .user-main::-webkit-scrollbar-thumb:hover {
+        background: #ff7101;
+      }
+
+      /* Content Sections */
+      .content-section {
+        display: none;
+      }
+
+      .content-section.active {
+        display: block;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Profile Section */
+      .profile-header {
+        text-align: center;
+        margin-bottom: 5rem;
+      }
+
+      .profile-header h1 {
+        font: 700 4rem/1.2 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 1rem;
+      }
+
+      .profile-header p {
+        font: 400 1.8rem/1.5 "Montserrat", sans-serif;
+        color: #666;
+        margin: 0;
+      }
+
+      /* Simple table for builds */
+      .builds-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 155, 222, 0.1);
+      }
+
+      .builds-table thead {
+        background: #009bde;
+        color: #fff;
+      }
+
+      .builds-table th {
+        padding: 2rem;
+        text-align: left;
+        font: 600 1.6rem/1 "Montserrat", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .builds-table td {
+        padding: 2rem;
+        border-bottom: 1px solid rgba(0, 155, 222, 0.1);
+        font: 500 1.6rem/1.5 "Montserrat", sans-serif;
+        color: #0f488a;
+      }
+
+      .builds-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .builds-table tr:hover {
+        background: rgba(0, 155, 222, 0.02);
+      }
+
+      .site-name {
+        font: 700 1.8rem/1.2 "Montserrat", sans-serif;
+        color: #0f488a;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .site-name:hover {
+        color: #ff7101;
+        text-decoration: underline;
+      }
+
+      .site-url {
+        font: 400 1.4rem/1 "Montserrat", sans-serif;
+        color: #009bde;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .site-url:hover {
+        color: #ff7101;
+        text-decoration: underline;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1.5rem;
+        border-radius: 2rem;
+        font: 600 1.2rem/1 "Montserrat", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .status-badge.active {
+        background: rgba(50, 190, 125, 0.1);
+        color: #32be7d;
+      }
+
+      .status-badge.development {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+      }
+
+      .status-badge.inactive {
+        background: rgba(233, 30, 100, 0.1);
+        color: #e91e64;
+      }
+
+      .platform-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font: 600 1.4rem/1 "Montserrat", sans-serif;
+        color: #666;
+      }
+
+      .platform-icon {
+        font-size: 1.6rem;
+        color: #009bde;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        height: 4rem;
+        padding: 0 2rem;
+        border-radius: 2rem;
+        border: none;
+        font: 600 1.4rem/0.8 "Montserrat", sans-serif;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+        text-decoration: none;
+        white-space: nowrap;
+        letter-spacing: 0.1em;
+        margin: 0 0.5rem;
+      }
+
+      .btn-primary {
+        background: #ff7101;
+        color: #fff;
+        box-shadow: 0 0.3rem 1rem rgba(255, 113, 1, 0.2);
+      }
+
+      .btn-primary:hover {
+        background: #e55a00;
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1.5rem rgba(255, 113, 1, 0.3);
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: #009bde;
+        border: 1px solid #009bde;
+      }
+
+      .btn-secondary:hover {
+        background: #009bde;
+        color: #fff;
+        transform: translateY(-2px);
+        text-decoration: none;
+      }
+
+      /* Profile Layout - 2 Column */
+      .profile-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        max-width: 120rem;
+        margin: 0;
+      }
+
+      .profile-left {
+        background: #fff;
+        padding: 0;
+      }
+
+      .profile-right {
+        background: #fff;
+        padding: 0;
+      }
+
+      /* Form Styles */
+      .profile-form {
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .form-row {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-label {
+        font: 600 1.4rem/1 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .form-input {
+        height: 5rem;
+        padding: 0 2rem;
+        border: 2px solid rgba(0, 155, 222, 0.1);
+        border-radius: 1rem;
+        font: 500 1.6rem/1 "Montserrat", sans-serif;
+        color: #0f488a;
+        background: #fff;
+        transition: all 0.3s ease;
+      }
+
+      .form-input:focus {
+        border-color: #ff7101;
+        outline: none;
+        box-shadow: 0 0 0 0.3rem rgba(255, 113, 1, 0.1);
+      }
+
+      .form-input:disabled {
+        background: #f8f9fa;
+        color: #666;
+        cursor: not-allowed;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-start;
+        gap: 2rem;
+        margin-top: 4rem;
+        padding-top: 3rem;
+        border-top: 1px solid rgba(0, 155, 222, 0.1);
+      }
+
+      /* Security Settings Section */
+      .security-section {
+        background: rgba(0, 155, 222, 0.02);
+        padding: 3rem;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(0, 155, 222, 0.1);
+        margin-bottom: 3rem;
+      }
+
+      .security-section h3 {
+        font: 700 2.2rem/1.2 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .toggle-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 0;
+        border-bottom: 1px solid rgba(0, 155, 222, 0.1);
+      }
+
+      .toggle-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .toggle-info h4 {
+        font: 600 1.8rem/1.2 "Montserrat", sans-serif;
+        color: #0f488a;
+        margin-bottom: 0.5rem;
+      }
+
+      .toggle-info p {
+        font: 400 1.4rem/1.4 "Montserrat", sans-serif;
+        color: #666;
+        margin: 0;
+      }
+
+      .toggle-switch {
+        position: relative;
+        width: 6rem;
+        height: 3rem;
+        background: rgba(0, 155, 222, 0.1);
+        border-radius: 3rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 155, 222, 0.2);
+      }
+
+      .toggle-switch:before {
+        content: "";
+        position: absolute;
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 50%;
+        background: #009bde;
+        top: 0.2rem;
+        left: 0.2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+      }
+
+      .toggle-switch.active {
+        background: rgba(50, 190, 125, 0.2);
+        border-color: #32be7d;
+      }
+
+      .toggle-switch.active:before {
+        left: 3.2rem;
+        background: #32be7d;
+      }
+
+      /* Loading and Success States */
+      .btn.loading {
+        position: relative;
+        color: transparent;
+      }
+
+      .btn.loading:after {
+        content: "";
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        top: 50%;
+        left: 50%;
+        margin-left: -1rem;
+        margin-top: -1rem;
+        border: 2px solid transparent;
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .btn.success {
+        background: #32be7d;
+        border-color: #32be7d;
+      }
+
+      /* Add new button */
+      .add-new-btn {
+        position: fixed;
+        bottom: 3rem;
+        right: 3rem;
+        width: 6rem;
+        height: 6rem;
+        border-radius: 50%;
+        background: #ff7101;
+        color: #fff;
+        border: none;
+        font-size: 2.4rem;
+        cursor: pointer;
+        box-shadow: 0 0.5rem 2rem rgba(255, 113, 1, 0.3);
+        transition: all 0.3s ease;
+        z-index: 999;
+      }
+
+      .add-new-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 1rem 3rem rgba(255, 113, 1, 0.4);
+      }
+
+      /* Responsive */
+      @media screen and (max-width: 768px) {
+        .user-header__container {
+          padding: 0 2rem;
+        }
+
+        .user-info {
+          display: none;
+        }
+
+        .user-container {
+          flex-direction: column;
+        }
+
+        .user-sidebar {
+          width: 100%;
+          min-width: 100%;
+          max-width: 100%;
+          height: auto;
+          max-height: 25rem;
+          order: 2;
+          padding: 2rem;
+        }
+
+        .user-content {
+          order: 1;
+          margin-top: 10rem;
+          height: calc(100vh - 35rem);
+        }
+
+        .user-main {
+          padding: 2rem;
+        }
+
+        .builds-table {
+          font-size: 1.4rem;
+        }
+
+        .builds-table th,
+        .builds-table td {
+          padding: 1.5rem 1rem;
+        }
+
+        .add-new-btn {
+          bottom: 2rem;
+          right: 2rem;
+          width: 5rem;
+          height: 5rem;
+          font-size: 2rem;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+
+        .profile-form {
+          max-width: 100%;
+        }
+
+        .profile-container {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="user-header">
+      <div class="user-header__container">
+        <a href="index.html" class="user-header__logo">
+          <img src="assets/img/logo.svg" alt="Corefinity" class="logo-image" />
+        </a>
+
+        <!-- User Profile Section -->
+        <div class="user-profile">
+          <div class="user-info">
+            <span class="user-name">John Doe</span>
+            <span class="user-role">Enterprise Package</span>
+          </div>
+          <div class="user-avatar">
+            <img
+              src="https://placehold.co/40x40/009bde/ffffff?text=JD"
+              alt="John Doe Avatar"
+              class="avatar-image"
+            />
+            <div class="user-dropdown">
+              <div class="dropdown-arrow"></div>
+              <div class="dropdown-menu">
+                <button class="dropdown-item" onclick="showSection('profile')">
+                  <i class="fas fa-user"></i>
+                  Profile
+                </button>
+                <button class="dropdown-item" onclick="showSection('builds')">
+                  <i class="fas fa-globe"></i>
+                  My Sites
+                </button>
+                <div class="dropdown-divider"></div>
+                <a href="login.html" class="dropdown-item">
+                  <i class="fas fa-sign-out-alt"></i>
+                  Logout
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="user-container">
+      <!-- Sidebar -->
+      <div class="user-sidebar">
+        <div class="user-nav">
+          <h3>Dashboard</h3>
+          <ul class="nav-list">
+            <li class="nav-item" data-section="profile">
+              <div class="nav-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="nav-content">
+                <div class="nav-title">Profile</div>
+                <div class="nav-description">My account settings</div>
+              </div>
+            </li>
+            <li class="nav-item active" data-section="builds">
+              <div class="nav-icon">
+                <i class="fas fa-globe"></i>
+              </div>
+              <div class="nav-content">
+                <div class="nav-title">My Sites</div>
+                <div class="nav-description">Manage websites</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="user-content">
+        <div class="user-main">
+          <!-- Profile Section -->
+          <div class="content-section" data-section="profile">
+            <div class="profile-header">
+              <h1>My Profile</h1>
+              <p>Edit Profile Information</p>
+            </div>
+
+            <div class="profile-container">
+              <!-- Left Column - Profile Form -->
+              <div class="profile-left">
+                <form id="profileForm">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Display Name</label>
+                      <input
+                        type="text"
+                        class="form-input"
+                        name="displayName"
+                        value="John Doe"
+                        placeholder="Name User"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Email</label>
+                      <input
+                        type="email"
+                        class="form-input"
+                        name="email"
+                        value="john.doe@example.com"
+                        placeholder="name@email.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">First Name</label>
+                      <input
+                        type="text"
+                        class="form-input"
+                        name="firstName"
+                        value="John"
+                        placeholder="First Name"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Last Name</label>
+                      <input
+                        type="text"
+                        class="form-input"
+                        name="lastName"
+                        value="Doe"
+                        placeholder="Last Name"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Company</label>
+                      <input
+                        type="text"
+                        class="form-input"
+                        name="company"
+                        value="Tech Solutions Inc."
+                        placeholder="Company Name"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Phone</label>
+                      <input
+                        type="tel"
+                        class="form-input"
+                        name="phone"
+                        value="+1 (555) 123-4567"
+                        placeholder="Phone Number"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-actions">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      onclick="cancelEdit()"
+                    >
+                      <i class="fas fa-times"></i>
+                      Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-save"></i>
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Right Column - Security Settings -->
+              <div class="profile-right">
+                <div class="security-section">
+                  <h3>Security Settings</h3>
+
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <h4>Two-Factor Authentication</h4>
+                      <p>Add an extra layer of security to your account</p>
+                    </div>
+                    <div
+                      class="toggle-switch active"
+                      onclick="toggleTFA(this)"
+                    ></div>
+                  </div>
+
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <h4>Email Notifications</h4>
+                      <p>Receive updates about your websites and account</p>
+                    </div>
+                    <div
+                      class="toggle-switch active"
+                      onclick="toggleSetting(this)"
+                    ></div>
+                  </div>
+
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <h4>SMS Notifications</h4>
+                      <p>Get important alerts via text message</p>
+                    </div>
+                    <div
+                      class="toggle-switch"
+                      onclick="toggleSetting(this)"
+                    ></div>
+                  </div>
+
+                  <div class="toggle-row">
+                    <div class="toggle-info">
+                      <h4>Marketing Emails</h4>
+                      <p>Receive news, tips, and special offers</p>
+                    </div>
+                    <div
+                      class="toggle-switch"
+                      onclick="toggleSetting(this)"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- My Builds Section -->
+          <div class="content-section active" data-section="builds">
+            <div class="profile-header">
+              <h1>My Builds</h1>
+              <p>All your websites in one place</p>
+            </div>
+
+            <table class="builds-table">
+              <thead>
+                <tr>
+                  <th>Site Name</th>
+                  <th>URL</th>
+                  <th>Magento Version</th>
+                  <th>Created By</th>
+                  <th>Created Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a
+                      href="https://alpha.example.com"
+                      target="_blank"
+                      class="site-name"
+                      >Alpha Store</a
+                    >
+                    <br />
+                    <span class="status-badge active">Live</span>
+                  </td>
+                  <td>
+                    <a
+                      href="https://alpha.example.com"
+                      target="_blank"
+                      class="site-url"
+                      >alpha.example.com</a
+                    >
+                  </td>
+                  <td>
+                    <div class="platform-badge">
+                      <i class="fab fa-magento platform-icon"></i>
+                      2.4.6
+                    </div>
+                  </td>
+                  <td>Jane Doe</td>
+                  <td>2025-06-12</td>
+                  <td>
+                    <a
+                      href="https://alpha.example.com"
+                      target="_blank"
+                      class="btn btn-secondary"
+                    >
+                      <i class="fas fa-external-link-alt"></i>
+                      Visit
+                    </a>
+                    <button class="btn btn-primary" onclick="editSite('alpha')">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a
+                      href="https://beta.example.com"
+                      target="_blank"
+                      class="site-name"
+                      >Beta Market</a
+                    >
+                    <br />
+                    <span class="status-badge active">Live</span>
+                  </td>
+                  <td>
+                    <a
+                      href="https://beta.example.com"
+                      target="_blank"
+                      class="site-url"
+                      >beta.example.com</a
+                    >
+                  </td>
+                  <td>
+                    <div class="platform-badge">
+                      <i class="fab fa-magento platform-icon"></i>
+                      2.4.5
+                    </div>
+                  </td>
+                  <td>John Smith</td>
+                  <td>2025-04-29</td>
+                  <td>
+                    <a
+                      href="https://beta.example.com"
+                      target="_blank"
+                      class="btn btn-secondary"
+                    >
+                      <i class="fas fa-external-link-alt"></i>
+                      Visit
+                    </a>
+                    <button class="btn btn-primary" onclick="editSite('beta')">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="site-name">Gamma Shop</span>
+                    <br />
+                    <span class="status-badge development">Development</span>
+                  </td>
+                  <td>
+                    <span class="site-url" style="color: #ccc"
+                      >gamma.example.com</span
+                    >
+                  </td>
+                  <td>
+                    <div class="platform-badge">
+                      <i class="fab fa-magento platform-icon"></i>
+                      2.4.4
+                    </div>
+                  </td>
+                  <td>Alex Lee</td>
+                  <td>2025-03-10</td>
+                  <td>
+                    <button
+                      class="btn btn-secondary"
+                      onclick="previewSite('gamma')"
+                    >
+                      <i class="fas fa-eye"></i>
+                      Preview
+                    </button>
+                    <button class="btn btn-primary" onclick="editSite('gamma')">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add New Website Button -->
+    <button
+      class="add-new-btn"
+      onclick="createNewSite()"
+      title="Create New Website"
+    >
+      <i class="fas fa-plus"></i>
+    </button>
+
+    <script>
+      // Navigation functionality
+      function showSection(section) {
+        // Update active nav item
+        document
+          .querySelectorAll(".nav-item")
+          .forEach((nav) => nav.classList.remove("active"));
+        document
+          .querySelector(`[data-section="${section}"].nav-item`)
+          .classList.add("active");
+
+        // Show corresponding content section
+        document.querySelectorAll(".content-section").forEach((content) => {
+          content.classList.remove("active");
+        });
+        document
+          .querySelector(`[data-section="${section}"].content-section`)
+          .classList.add("active");
+      }
+
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          const section = this.dataset.section;
+          showSection(section);
+        });
+      });
+
+      // Profile form functionality
+      document
+        .getElementById("profileForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          const submitBtn = this.querySelector('button[type="submit"]');
+
+          // Show loading state
+          submitBtn.classList.add("loading");
+          submitBtn.disabled = true;
+
+          // Simulate AJAX request
+          setTimeout(() => {
+            // Success state
+            submitBtn.classList.remove("loading");
+            submitBtn.classList.add("success");
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+
+            showNotification("Profile updated successfully!", "success");
+
+            // Reset button after 2 seconds
+            setTimeout(() => {
+              submitBtn.classList.remove("success");
+              submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+              submitBtn.disabled = false;
+            }, 2000);
+          }, 2000);
+        });
+
+      function cancelEdit() {
+        // Reset form to original values
+        document.getElementById("profileForm").reset();
+
+        // Restore original values
+        const form = document.getElementById("profileForm");
+        form.displayName.value = "John Doe";
+        form.email.value = "john.doe@example.com";
+        form.firstName.value = "John";
+        form.lastName.value = "Doe";
+        form.company.value = "Tech Solutions Inc.";
+        form.phone.value = "+1 (555) 123-4567";
+
+        showNotification("Changes cancelled", "info");
+      }
+
+      function toggleSetting(element) {
+        element.classList.toggle("active");
+      }
+
+      function toggleTFA(element) {
+        element.classList.toggle("active");
+        const isEnabled = element.classList.contains("active");
+
+        if (isEnabled) {
+          showNotification("Two-Factor Authentication enabled", "success");
+        } else {
+          showNotification("Two-Factor Authentication disabled", "info");
+        }
+      }
+
+      // Site management functions
+      function editSite(siteId) {
+        // Show loading state
+        event.target.innerHTML =
+          '<i class="fas fa-spinner fa-spin"></i> Loading...';
+        event.target.disabled = true;
+
+        setTimeout(() => {
+          alert(`Redirecting to edit ${siteId} website...`);
+          // In real app: window.location.href = `index.html?edit=${siteId}`;
+          event.target.innerHTML = '<i class="fas fa-edit"></i> Edit';
+          event.target.disabled = false;
+        }, 1500);
+      }
+
+      function previewSite(siteId) {
+        alert(`Opening preview for ${siteId} website...`);
+        // In real app: window.open(`https://${siteId}.example.com?preview=true`, '_blank');
+      }
+
+      function createNewSite() {
+        window.location.href = "index.html";
+      }
+
+      // Show notification function
+      function showNotification(message, type = "info") {
+        const notification = document.createElement("div");
+        notification.style.cssText = `
+          position: fixed;
+          top: 2rem;
+          right: 2rem;
+          background: ${
+            type === "success"
+              ? "#32be7d"
+              : type === "error"
+              ? "#e91e64"
+              : "#009bde"
+          };
+          color: #fff;
+          padding: 1.5rem 2rem;
+          border-radius: 1rem;
+          box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+          z-index: 9999;
+          font: 600 1.4rem/1 "Montserrat", sans-serif;
+          transform: translateX(100%);
+          transition: transform 0.3s ease;
+          max-width: 300px;
+        `;
+        notification.innerHTML = `<i class="fas ${
+          type === "success"
+            ? "fa-check-circle"
+            : type === "error"
+            ? "fa-exclamation-circle"
+            : "fa-info-circle"
+        }"></i> ${message}`;
+
+        document.body.appendChild(notification);
+
+        // Animate in
+        setTimeout(() => {
+          notification.style.transform = "translateX(0)";
+        }, 100);
+
+        // Auto-remove after 3 seconds
+        setTimeout(() => {
+          notification.style.transform = "translateX(100%)";
+          setTimeout(() => {
+            if (notification.parentNode) {
+              notification.parentNode.removeChild(notification);
+            }
+          }, 300);
+        }, 3000);
+      }
+
+      // Initialize page
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add entrance animations
+        const tableRows = document.querySelectorAll(".builds-table tbody tr");
+        tableRows.forEach((row, index) => {
+          row.style.opacity = "0";
+          row.style.transform = "translateY(10px)";
+
+          setTimeout(() => {
+            row.style.transition = "all 0.3s ease";
+            row.style.opacity = "1";
+            row.style.transform = "translateY(0)";
+          }, index * 100);
+        });
+      });
+    </script>
+  </body>
+</html>
