@@ -87,7 +87,7 @@ class Step5SampleData {
         ? {
             title: "Sample Data Included",
             description:
-              "Your installation will include demo products, categories, and customers. This helps you see how your store will look. Remember to remove sample data before going live.",
+              "Your installation includes demo products, categories, and customers to preview your store. Be sure to remove them before going live.",
           }
         : {
             title: "Clean Installation",

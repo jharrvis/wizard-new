@@ -12,7 +12,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   border-bottom: 0.2rem solid rgba(0, 155, 222, 0.1);
   padding-bottom: 2rem;
 }
@@ -98,10 +98,10 @@
 
 .style-tabs .tab-panel {
   display: none;
-  padding: 4rem;
+  padding: 2.5rem;
   background: rgba(0, 155, 222, 0.02);
   border-radius: 2rem;
-  min-height: 40rem;
+  /* min-height: 40rem; */
   border: 2px solid rgba(0, 155, 222, 0.05);
 }
 
@@ -373,7 +373,7 @@
 
 /* Color Guide */
 .color-guide {
-  margin-top: 4rem;
+  margin-top: 1rem;
   padding: 3rem;
   background: #fff;
   border-radius: 2rem;
@@ -383,7 +383,7 @@
 
 .color-guide-list {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 2rem;
   margin-top: 2rem;
 }
