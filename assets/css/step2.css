@@ -3,9 +3,9 @@
 /* Platform Grid */
 .platform-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
-  gap: 4rem;
-  margin: 5rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
 }
 
 /* Platform Cards */
@@ -15,7 +15,7 @@
   text-align: center;
   background: #fff;
   position: relative;
-  padding: 5rem;
+  /* padding: 3rem; */
   border-radius: 2rem;
   overflow: hidden;
 }
@@ -61,12 +61,13 @@
 
 /* Platform Descriptions */
 .platform-description {
-  font: 400 1.8rem/1.5 "Montserrat", sans-serif;
+  font: 400 1.4rem/1.4 "Montserrat", sans-serif;
   color: #666;
   text-align: center;
   margin-top: 1.5rem;
   padding: 0 2rem;
   min-height: 6rem;
+  display: none; /* to reduce size */
 }
 
 /* Platform Selection Animation */
@@ -93,8 +94,8 @@
 /* Version Section */
 .version-section {
   display: none;
-  margin-top: 5rem;
-  padding: 5rem;
+  margin-top: 3rem;
+  padding: 3rem;
   background: rgba(0, 155, 222, 0.05);
   border-radius: 2rem;
   border: 2px solid rgba(0, 155, 222, 0.1);
@@ -178,8 +179,8 @@
 
 /* Dependencies Display */
 .dependencies {
-  margin-top: 4rem;
-  padding: 4rem;
+  /* margin-top: 4rem; */
+  padding: 2rem;
   background: #fff;
   border-radius: 2rem;
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.05);
@@ -215,7 +216,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
   gap: 2rem;
-  margin-top: 3rem;
+  /* margin-top: 3rem; */
 }
 
 /* Dependency Items */

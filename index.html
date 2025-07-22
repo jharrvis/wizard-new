@@ -190,11 +190,13 @@
 
           <!-- Step 2: Platform Selection -->
           <div class="step-content" data-step="2">
-            <div class="step-header">
-              <h1 class="home-top__content_h1">
+            <div class="step-header" style="margin-bottom: 3rem">
+              <h1 class="home-top__content_h1" style="font-size: 3.5rem">
                 <span class="color-second">Environment</span> Setup
               </h1>
-              <p class="p-text text-center">Select your Platform</p>
+              <p class="p-text text-center" style="font-size: 1.6rem">
+                Select your Platform
+              </p>
             </div>
 
             <div class="platform-grid">
@@ -258,18 +260,18 @@
 
             <!-- Version Selection -->
             <div class="version-section" id="versionSection">
-              <div class="section-header">
+              <!-- <div class="section-header">
                 <h3 class="h4-headline">Platform Configuration</h3>
                 <p class="p-text text-center">
                   Select the version and review the required dependencies for
                   your chosen platform.
                 </p>
-              </div>
+              </div> -->
 
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label" for="versionSelect"
-                    >Platform Version</label
+                    >Select Version</label
                   >
                   <select class="form-select" id="versionSelect">
                     <option value="">Choose version...</option>
@@ -278,7 +280,7 @@
               </div>
 
               <div class="dependencies" id="dependenciesDisplay">
-                <h4 class="h5-headline">Required Dependencies</h4>
+                <h4 class="h5-headline">Version Dependencies</h4>
                 <div class="dependencies-grid" id="dependenciesList"></div>
               </div>
             </div>

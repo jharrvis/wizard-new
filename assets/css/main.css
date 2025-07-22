@@ -338,7 +338,7 @@ blockquote {
 }
 
 .p-text {
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
   font: 400 1.8rem / 1.5 "Montserrat", sans-serif;
   text-align: justify;
 }
@@ -604,8 +604,8 @@ input:checked + .toggle__label:before {
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: 5rem;
-  padding: 5rem;
+  /* margin-top: 5rem; */
+  padding: 3rem;
 }
 
 .item-border {
@@ -632,7 +632,7 @@ input:checked + .toggle__label:before {
 
 .item-border__part {
   position: absolute;
-  border: 2rem solid rgba(0, 155, 222, 0.1);
+  border: 1.25rem solid rgba(0, 155, 222, 0.1);
   transition: all 0.3s ease-out;
 }
 
