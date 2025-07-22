@@ -105,7 +105,7 @@
 .sample-option-label {
   font: 700 2rem/1.2 "Montserrat", sans-serif;
   color: #0f488a;
-  margin-bottom: 1rem;
+  margin-left: 2rem;
   display: block;
   cursor: pointer;
   user-select: none;
